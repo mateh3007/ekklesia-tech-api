@@ -37,6 +37,13 @@ npm run prisma:migrate -- --name init
 npm run prisma:studio
 ```
 
+## Swagger (OpenAPI)
+
+Com a aplicação rodando, acesse:
+
+- `http://localhost:3000/api` (Swagger UI)
+- `http://localhost:3000/api-json` (spec OpenAPI em JSON)
+
 ### Verificar se está saudável
 
 ```bash
