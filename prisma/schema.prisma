@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  EMPLOYEE
+  USER
+}
+
 model Church {
   id            String   @id @default(uuid())
   corporateName String
@@ -15,5 +21,19 @@ model Church {
   phone         String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  users         User[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String
+  role      Role
+  churchId  String
+  church    Church   @relation(fields: [churchId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 

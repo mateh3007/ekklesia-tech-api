@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { RegisterUsecase } from 'src/application/usecases/register/register.usecase';
 import { ChurchRepository } from 'src/domain/repositories/church.repository';
 import { PrismaChurchRepository } from 'src/infra/repositories/prisma-church.repository';
+import { UserRepository } from 'src/domain/repositories/user.repository';
+import { PrismaUserRepository } from 'src/infra/repositories/prisma-user.repository';
 import { RegisterController } from 'src/presentation/controllers/register/register.controller';
 
 @Module({
@@ -11,6 +13,11 @@ import { RegisterController } from 'src/presentation/controllers/register/regist
     {
       provide: ChurchRepository,
       useClass: PrismaChurchRepository,
+    },
+    PrismaUserRepository,
+    {
+      provide: UserRepository,
+      useExisting: PrismaUserRepository,
     },
   ],
   controllers: [RegisterController],

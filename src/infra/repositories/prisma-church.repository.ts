@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/infra/config/prisma/prisma.service';
 import { ChurchRepository, CreateChurchInput } from 'src/domain/repositories/church.repository';
 import { IChurch } from 'src/domain/entities/church.entity';
 
@@ -25,7 +25,9 @@ export class PrismaChurchRepository extends ChurchRepository {
   }
 
   async findById(id: string): Promise<IChurch> {
-    return this.prisma.church.findUniqueOrThrow({ where: { id } });
+    const church = await this.prisma.church.findUnique({ where: { id } });
+    if (!church) throw new NotFoundException(`Church ${id} not found`);
+    return church;
   }
 
   async update(id: string, data: IChurch): Promise<IChurch> {

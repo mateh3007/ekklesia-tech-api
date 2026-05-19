@@ -13,7 +13,6 @@ export class RegisterController {
   @ApiResponse({ status: 400, description: 'Erro ao registrar a igreja' })
   @ApiBody({ type: RegisterDto })
   async execute(@Body() body: RegisterDto): Promise<void> {
-    console.log(body);
     await this.registerUsecase.execute(body);
   }
 }
