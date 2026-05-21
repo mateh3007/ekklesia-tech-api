@@ -5,7 +5,7 @@ import { IUserResponse, UserRepository } from 'src/domain/repositories/user.repo
 export class GetAllUsersUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(): Promise<IUserResponse[]> {
-    return this.userRepository.findAll();
+  async execute(churchId: string): Promise<IUserResponse[]> {
+    return this.userRepository.findByChurchId(churchId);
   }
 }

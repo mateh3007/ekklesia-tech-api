@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { IUserResponse, UpdateUserInput, UserRepository } from 'src/domain/repositories/user.repository';
 
@@ -6,8 +6,10 @@ import { IUserResponse, UpdateUserInput, UserRepository } from 'src/domain/repos
 export class UpdateUserUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(id: string, input: UpdateUserInput): Promise<IUserResponse> {
-    await this.userRepository.findById(id);
+  async execute(id: string, input: UpdateUserInput, churchId: string): Promise<IUserResponse> {
+    const user = await this.userRepository.findById(id);
+    if (user && user.churchId !== churchId) throw new ForbiddenException();
+    if (!user) throw new NotFoundException('User not found');
 
     if (input.email) {
       const existing = await this.userRepository.findByEmail(input.email);
