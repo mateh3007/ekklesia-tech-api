@@ -42,4 +42,9 @@ export class PrismaUserRepository extends UserRepository {
   async findByEmail(email: string): Promise<IUser | null> {
     return this.prisma.user.findUnique({ where: { email } }) as Promise<IUser | null>;
   }
+
+  async findByChurchId(churchId: string): Promise<IUserResponse[]> {
+    const users = await this.prisma.user.findMany({ where: { churchId } });
+    return users.map((u) => this.exclude(u as IUser));
+  }
 }

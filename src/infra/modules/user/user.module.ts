@@ -3,6 +3,7 @@ import { CreateUserUsecase } from 'src/application/usecases/user/create-user.use
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete-user.usecase';
 import { GetAllUsersUsecase } from 'src/application/usecases/user/get-all-users.usecase';
 import { GetUserByIdUsecase } from 'src/application/usecases/user/get-user-by-id.usecase';
+import { GetMeUsecase } from 'src/application/usecases/user/get-me.usecase';
 import { UpdateUserUsecase } from 'src/application/usecases/user/update-user.usecase';
 import { UserRepository } from 'src/domain/repositories/user.repository';
 import { PrismaUserRepository } from 'src/infra/repositories/prisma-user.repository';
@@ -10,6 +11,7 @@ import { CreateUserController } from 'src/presentation/controllers/user/create-u
 import { DeleteUserController } from 'src/presentation/controllers/user/delete-user.controller';
 import { GetAllUsersController } from 'src/presentation/controllers/user/get-all-users.controller';
 import { GetUserByIdController } from 'src/presentation/controllers/user/get-user-by-id.controller';
+import { GetMeController } from 'src/presentation/controllers/user/get-me.controller';
 import { UpdateUserController } from 'src/presentation/controllers/user/update-user.controller';
 
 @Module({
@@ -17,6 +19,7 @@ import { UpdateUserController } from 'src/presentation/controllers/user/update-u
     CreateUserUsecase,
     GetUserByIdUsecase,
     GetAllUsersUsecase,
+    GetMeUsecase,
     UpdateUserUsecase,
     DeleteUserUsecase,
     PrismaUserRepository,
@@ -26,9 +29,10 @@ import { UpdateUserController } from 'src/presentation/controllers/user/update-u
     },
   ],
   controllers: [
+    GetMeController,
     CreateUserController,
-    GetUserByIdController,
     GetAllUsersController,
+    GetUserByIdController,
     UpdateUserController,
     DeleteUserController,
   ],

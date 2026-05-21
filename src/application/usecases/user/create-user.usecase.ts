@@ -7,7 +7,7 @@ import { CreateUserInput, IUserResponse, UserRepository } from 'src/domain/repos
 export class CreateUserUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(input: CreateUserInput): Promise<IUserResponse> {
+  async execute(input: CreateUserInput, churchId: string): Promise<IUserResponse> {
     if (input.role === Role.ADMIN) {
       throw new BadRequestException('Cannot create admin users through this endpoint');
     }
@@ -19,6 +19,6 @@ export class CreateUserUsecase {
 
     const hashedPassword = await bcrypt.hash(input.password, 10);
 
-    return this.userRepository.create({ ...input, password: hashedPassword });
+    return this.userRepository.create({ ...input, churchId, password: hashedPassword });
   }
 }
