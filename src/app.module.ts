@@ -6,12 +6,13 @@ import { ChurchModule } from './infra/modules/church/church.module';
 import { UserModule } from './infra/modules/user/user.module';
 import { AuthModule } from './infra/modules/auth/auth.module';
 import { PermissionModule } from './infra/modules/permission/permission.module';
+import { ChurchServiceModule } from './infra/modules/church-service/church-service.module';
 import { JwtAuthGuard } from './infra/config/jwt/jwt-auth.guard';
 import { RolesGuard } from './infra/config/rbac/roles.guard';
 import { PermissionsGuard } from './infra/config/abac/permissions.guard';
 
 @Module({
-  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule],
+  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule, ChurchServiceModule],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
