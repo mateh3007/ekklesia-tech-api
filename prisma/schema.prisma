@@ -14,14 +14,36 @@ enum Role {
 }
 
 model Church {
-  id            String   @id @default(uuid())
+  id            String             @id @default(uuid())
   corporateName String
-  cnpj          String   @unique
+  cnpj          String             @unique
   email         String
   phone         String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
   users         User[]
+  permissions   ChurchPermission[]
+}
+
+model Permission {
+  id          String             @id @default(uuid())
+  name        String             @unique
+  description String
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  churches    ChurchPermission[]
+}
+
+model ChurchPermission {
+  id           String     @id @default(uuid())
+  churchId     String
+  permissionId String
+  church       Church     @relation(fields: [churchId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([churchId, permissionId])
 }
 
 model User {

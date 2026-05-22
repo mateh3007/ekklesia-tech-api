@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUserResponse, UserRepository } from 'src/domain/repositories/user.repository';
 
 @Injectable()
