@@ -34,6 +34,18 @@ model Church {
   users         User[]
   permissions   ChurchPermission[]
   services      ChurchService[]
+  events        ChurchEvent[]
+}
+
+model ChurchEvent {
+  id          String   @id @default(uuid())
+  churchId    String
+  church      Church   @relation(fields: [churchId], references: [id])
+  title       String
+  description String
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model ChurchService {
