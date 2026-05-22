@@ -5,12 +5,15 @@ import { IUserResponse } from 'src/domain/repositories/user.repository';
 import { CreateUserDto } from 'src/presentation/dtos/user/create-user.dto';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
+import { Roles } from 'src/infra/config/rbac/roles.decorator';
+import { Role } from 'src/domain/enums/role.enum';
 
 @ApiTags('Users')
 @Controller('users')
 export class CreateUserController {
   constructor(private readonly createUserUsecase: CreateUserUsecase) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   @ApiOperation({ summary: 'Create a new employee or user in own church' })
   async execute(@Body() body: CreateUserDto, @GetUser() user: IJwtUser): Promise<IUserResponse> {

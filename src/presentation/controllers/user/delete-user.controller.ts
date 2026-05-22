@@ -3,12 +3,15 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete-user.usecase';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
+import { Roles } from 'src/infra/config/rbac/roles.decorator';
+import { Role } from 'src/domain/enums/role.enum';
 
 @ApiTags('Users')
 @Controller('users')
 export class DeleteUserController {
   constructor(private readonly deleteUserUsecase: DeleteUserUsecase) {}
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete user' })
