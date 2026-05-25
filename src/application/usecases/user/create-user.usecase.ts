@@ -1,13 +1,21 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/domain/enums/role.enum';
-import { CreateUserInput, IUserResponse, UserRepository } from 'src/domain/repositories/user.repository';
+import { IUserResponse, UserRepository } from 'src/domain/repositories/user.repository';
+
+type CreateUserBody = {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: Role;
+};
 
 @Injectable()
 export class CreateUserUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(input: CreateUserInput, churchId: string): Promise<IUserResponse> {
+  async execute(input: CreateUserBody, churchId: string): Promise<IUserResponse> {
     if (input.role === Role.ADMIN) {
       throw new BadRequestException('Cannot create admin users through this endpoint');
     }

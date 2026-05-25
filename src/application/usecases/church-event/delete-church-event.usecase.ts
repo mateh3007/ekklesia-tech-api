@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { ChurchEventRepository } from 'src/domain/repositories/church-event.repository';
 
 @Injectable()

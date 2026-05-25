@@ -18,8 +18,9 @@ enum Day {
 }
 
 enum Role {
+  SUPERADMIN
   ADMIN
-  EMPLOYEE
+  SUPERVISOR
   USER
 }
 
