@@ -8,6 +8,7 @@ export interface IJwtPayload {
   email: string;
   role: string;
   churchId: string;
+  type: string;
   iat: number;
 }
 
@@ -22,6 +23,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IJwtPayload) {
+    if (payload.type !== 'access') throw new UnauthorizedException('Invalid token type');
+
     const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
     if (!user) throw new UnauthorizedException();
 

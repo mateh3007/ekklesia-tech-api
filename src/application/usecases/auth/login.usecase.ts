@@ -10,6 +10,7 @@ export interface ILoginInput {
 
 export interface ILoginResponse {
   accessToken: string;
+  refreshToken: string;
 }
 
 @Injectable()
@@ -26,13 +27,19 @@ export class LoginUsecase {
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new UnauthorizedException('Invalid credentials');
 
-    const payload = {
+    const accessToken = this.jwtService.sign({
       sub: user.id,
       email: user.email,
       role: user.role,
       churchId: user.churchId,
-    };
+      type: 'access',
+    });
 
-    return { accessToken: this.jwtService.sign(payload) };
+    const refreshToken = this.jwtService.sign(
+      { sub: user.id, pwdAt: user.passwordChangedAt?.toISOString() ?? null, type: 'refresh' },
+      { expiresIn: '7d' },
+    );
+
+    return { accessToken, refreshToken };
   }
 }
