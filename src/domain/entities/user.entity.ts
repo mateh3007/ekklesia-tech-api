@@ -8,4 +8,5 @@ export interface IUser extends IBaseEntity {
     phone: string
     role: Role
     churchId: string
+    passwordChangedAt?: Date
 }
