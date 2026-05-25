@@ -8,12 +8,13 @@ import { AuthModule } from './infra/modules/auth/auth.module';
 import { PermissionModule } from './infra/modules/permission/permission.module';
 import { ChurchServiceModule } from './infra/modules/church-service/church-service.module';
 import { ChurchEventModule } from './infra/modules/church-event/church-event.module';
+import { AgendaModule } from './infra/modules/agenda/agenda.module';
 import { JwtAuthGuard } from './infra/config/jwt/jwt-auth.guard';
 import { RolesGuard } from './infra/config/rbac/roles.guard';
 import { PermissionsGuard } from './infra/config/abac/permissions.guard';
 
 @Module({
-  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule, ChurchServiceModule, ChurchEventModule],
+  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule, ChurchServiceModule, ChurchEventModule, AgendaModule],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
