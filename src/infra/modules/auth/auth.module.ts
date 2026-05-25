@@ -4,6 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { LoginUsecase } from 'src/application/usecases/auth/login.usecase';
 import { ForgotPasswordUsecase } from 'src/application/usecases/auth/forgot-password.usecase';
 import { ResetPasswordUsecase } from 'src/application/usecases/auth/reset-password.usecase';
+import { RefreshTokenUsecase } from 'src/application/usecases/auth/refresh-token.usecase';
 import { UserRepository } from 'src/domain/repositories/user.repository';
 import { PasswordResetTokenRepository } from 'src/domain/repositories/password-reset-token.repository';
 import { PrismaUserRepository } from 'src/infra/repositories/prisma-user.repository';
@@ -14,19 +15,22 @@ import { StubEmailAdapter } from 'src/infra/adapters/stub-email.adapter';
 import { LoginController } from 'src/presentation/controllers/auth/login.controller';
 import { ForgotPasswordController } from 'src/presentation/controllers/auth/forgot-password.controller';
 import { ResetPasswordController } from 'src/presentation/controllers/auth/reset-password.controller';
+import { RefreshTokenController } from 'src/presentation/controllers/auth/refresh-token.controller';
+import { LogoutController } from 'src/presentation/controllers/auth/logout.controller';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '7d' },
+      signOptions: { expiresIn: '15m' },
     }),
   ],
   providers: [
     LoginUsecase,
     ForgotPasswordUsecase,
     ResetPasswordUsecase,
+    RefreshTokenUsecase,
     StubEmailAdapter,
     {
       provide: EmailAdapter,
@@ -44,6 +48,6 @@ import { ResetPasswordController } from 'src/presentation/controllers/auth/reset
       useExisting: PrismaPasswordResetTokenRepository,
     },
   ],
-  controllers: [LoginController, ForgotPasswordController, ResetPasswordController],
+  controllers: [LoginController, ForgotPasswordController, ResetPasswordController, RefreshTokenController, LogoutController],
 })
 export class AuthModule {}
