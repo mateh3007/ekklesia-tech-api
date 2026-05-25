@@ -8,4 +8,5 @@ export type IUserResponse = Omit<IUser, 'password'>;
 export abstract class UserRepository extends BaseRepository<IUserResponse, CreateUserInput, UpdateUserInput> {
   abstract findByEmail(email: string): Promise<IUser | null>;
   abstract findByChurchId(churchId: string): Promise<IUserResponse[]>;
+  abstract updatePassword(id: string, hashedPassword: string): Promise<void>;
 }

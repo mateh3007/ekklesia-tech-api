@@ -47,4 +47,11 @@ export class PrismaUserRepository extends UserRepository {
     const users = await this.prisma.user.findMany({ where: { churchId } });
     return users.map((u) => this.exclude(u as IUser));
   }
+
+  async updatePassword(id: string, hashedPassword: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id },
+      data: { password: hashedPassword, passwordChangedAt: new Date() },
+    });
+  }
 }
