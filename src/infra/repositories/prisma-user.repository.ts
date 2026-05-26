@@ -24,9 +24,9 @@ export class PrismaUserRepository extends UserRepository {
     return users.map((u) => this.exclude(u as IUser));
   }
 
-  async findById(id: string): Promise<IUserResponse> {
+  async findById(id: string): Promise<IUserResponse | null> {
     const user = await this.prisma.user.findUnique({ where: { id } });
-    if (!user) throw new NotFoundException(`User ${id} not found`);
+    if (!user) return null;
     return this.exclude(user as IUser);
   }
 

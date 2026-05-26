@@ -8,8 +8,8 @@ export class GetChurchEventByIdUsecase {
 
   async execute(id: string, churchId: string): Promise<IChurchEvent> {
     const event = await this.churchEventRepository.findById(id);
-    if (event && event.churchId !== churchId) throw new ForbiddenException();
     if (!event) throw new NotFoundException('Church event not found');
+    if (event.churchId !== churchId) throw new ForbiddenException();
     return event;
   }
 }

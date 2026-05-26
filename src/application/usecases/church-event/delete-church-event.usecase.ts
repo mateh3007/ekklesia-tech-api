@@ -7,8 +7,8 @@ export class DeleteChurchEventUsecase {
 
   async execute(id: string, churchId: string): Promise<void> {
     const event = await this.churchEventRepository.findById(id);
-    if (event && event.churchId !== churchId) throw new ForbiddenException();
     if (!event) throw new NotFoundException('Church event not found');
+    if (event.churchId !== churchId) throw new ForbiddenException();
     return this.churchEventRepository.delete(id);
   }
 }

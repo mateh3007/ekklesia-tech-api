@@ -26,6 +26,7 @@ export class RefreshTokenUsecase {
     if (payload.type !== 'refresh') throw new UnauthorizedException('Invalid token type');
 
     const user = await this.userRepository.findById(payload.sub);
+    if (!user) throw new UnauthorizedException('User not found');
     const currentPwdAt = user.passwordChangedAt?.toISOString() ?? null;
 
     if (currentPwdAt !== payload.pwdAt) {

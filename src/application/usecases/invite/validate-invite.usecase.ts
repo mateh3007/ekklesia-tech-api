@@ -36,6 +36,6 @@ export class ValidateInviteUsecase {
       this.userRepository.findById(invite.invitedBy),
     ]);
 
-    return { email: invite.email, churchName: church.corporateName, inviterName: inviter.name };
+    return { email: invite.email, churchName: church!.corporateName, inviterName: inviter!.name };
   }
 }

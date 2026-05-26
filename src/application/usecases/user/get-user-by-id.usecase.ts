@@ -7,10 +7,8 @@ export class GetUserByIdUsecase {
 
   async execute(id: string, churchId: string): Promise<IUserResponse> {
     const user = await this.userRepository.findById(id);
-
-    if (user && user.churchId !== churchId) throw new ForbiddenException();
-    if(!user) throw new NotFoundException('User not found');
-    
+    if (!user) throw new NotFoundException('User not found');
+    if (user.churchId !== churchId) throw new ForbiddenException();
     return user;
   }
 }
