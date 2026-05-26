@@ -43,6 +43,7 @@ model Church {
   services      ChurchService[]
   events        ChurchEvent[]
   invites       ChurchInvite[]
+  members       Member[]
 }
 
 model ChurchEvent {
@@ -119,6 +120,17 @@ model ChurchInvite {
   status        InviteStatus @default(PENDING)
   expiresAt     DateTime
   createdAt     DateTime     @default(now())
+}
+
+model Member {
+  id          String   @id @default(uuid())
+  churchId    String
+  church      Church   @relation(fields: [churchId], references: [id])
+  name        String
+  phone       String?
+  dateOfBirth DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model PasswordResetToken {

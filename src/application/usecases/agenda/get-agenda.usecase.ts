@@ -4,10 +4,16 @@ import { IChurchService } from 'src/domain/entities/church-service.entity';
 import { AgendaRepository } from 'src/domain/repositories/agenda.repository';
 import { AgendaFilter } from 'src/presentation/dtos/agenda/get-agenda-query.dto';
 
+export interface IBirthday {
+  id: string;
+  name: string;
+  dateOfBirth: Date;
+}
+
 export interface IAgenda {
   services: IChurchService[];
   events: IChurchEvent[];
-  birthdays: unknown[];
+  birthdays: IBirthday[];
 }
 
 @Injectable()
