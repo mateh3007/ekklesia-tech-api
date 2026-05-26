@@ -53,7 +53,7 @@ export class CreateInviteUsecase {
       this.userRepository.findById(requester.id),
     ]);
 
-    await this.emailAdapter.sendInviteEmail(email, church.corporateName, inviter.name, token);
+    await this.emailAdapter.sendInviteEmail(email, church!.corporateName, inviter!.name, token);
 
     return invite;
   }

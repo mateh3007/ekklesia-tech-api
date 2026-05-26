@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { MemberRepository } from 'src/domain/repositories/member.repository';
 
 @Injectable()
@@ -7,6 +7,7 @@ export class DeleteMemberUsecase {
 
   async execute(id: string, churchId: string): Promise<void> {
     const member = await this.memberRepository.findById(id);
+    if (!member) throw new NotFoundException('Member not found');
     if (member.churchId !== churchId) throw new ForbiddenException('Access denied to this member');
     await this.memberRepository.delete(id);
   }

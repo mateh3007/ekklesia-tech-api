@@ -7,8 +7,8 @@ export class DeleteChurchServiceUsecase {
 
   async execute(id: string, churchId: string): Promise<void> {
     const service = await this.churchServiceRepository.findById(id);
-    if (service && service.churchId !== churchId) throw new ForbiddenException();
-    if (!service) throw new NotFoundException();
+    if (!service) throw new NotFoundException('Church service not found');
+    if (service.churchId !== churchId) throw new ForbiddenException();
     return this.churchServiceRepository.delete(id);
   }
 }

@@ -6,7 +6,7 @@ export type UpdateChurchServiceInput = Partial<Omit<IChurchService, 'id' | 'chur
 export abstract class ChurchServiceRepository {
   abstract create(data: CreateChurchServiceInput): Promise<IChurchService>;
   abstract findAll(churchId: string): Promise<IChurchService[]>;
-  abstract findById(id: string): Promise<IChurchService>;
+  abstract findById(id: string): Promise<IChurchService | null>;
   abstract update(id: string, data: UpdateChurchServiceInput): Promise<IChurchService>;
   abstract delete(id: string): Promise<void>;
 }

@@ -17,10 +17,8 @@ export class PrismaMemberRepository extends MemberRepository {
     return this.prisma.member.findMany() as Promise<IMember[]>;
   }
 
-  async findById(id: string): Promise<IMember> {
-    const member = await this.prisma.member.findUnique({ where: { id } });
-    if (!member) throw new NotFoundException(`Member ${id} not found`);
-    return member as IMember;
+  async findById(id: string): Promise<IMember | null> {
+    return this.prisma.member.findUnique({ where: { id } }) as Promise<IMember | null>;
   }
 
   async update(id: string, data: UpdateMemberInput): Promise<IMember> {
