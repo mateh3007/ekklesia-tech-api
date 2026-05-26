@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
 enum Day {
   SUNDAY
   MONDAY
@@ -36,6 +42,7 @@ model Church {
   permissions   ChurchPermission[]
   services      ChurchService[]
   events        ChurchEvent[]
+  invites       ChurchInvite[]
 }
 
 model ChurchEvent {
@@ -98,6 +105,20 @@ model User {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   passwordResetTokens PasswordResetToken[]
+  sentInvites         ChurchInvite[]       @relation("SentInvites")
+}
+
+model ChurchInvite {
+  id            String       @id @default(uuid())
+  churchId      String
+  church        Church       @relation(fields: [churchId], references: [id])
+  invitedBy     String
+  invitedByUser User         @relation("SentInvites", fields: [invitedBy], references: [id])
+  email         String
+  token         String       @unique
+  status        InviteStatus @default(PENDING)
+  expiresAt     DateTime
+  createdAt     DateTime     @default(now())
 }
 
 model PasswordResetToken {
