@@ -30,6 +30,14 @@ enum Role {
   USER
 }
 
+enum PixKeyType {
+  CPF
+  CNPJ
+  EMAIL
+  PHONE
+  RANDOM
+}
+
 model Church {
   id            String             @id @default(uuid())
   corporateName String
@@ -44,6 +52,7 @@ model Church {
   events        ChurchEvent[]
   invites       ChurchInvite[]
   members       Member[]
+  profile       ChurchProfile?
 }
 
 model ChurchEvent {
@@ -131,6 +140,33 @@ model Member {
   dateOfBirth DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model ChurchProfile {
+  id           String      @id @default(uuid())
+  churchId     String      @unique
+  church       Church      @relation(fields: [churchId], references: [id])
+  name         String
+  description  String?
+  logoUrl      String?
+  foundedAt    DateTime?
+  address      String?
+  city         String?
+  state        String?
+  country      String?
+  zipCode      String?
+  phone        String?
+  contactEmail String?
+  whatsapp     String?
+  website      String?
+  instagram    String?
+  facebook     String?
+  youtube      String?
+  pixKey       String?
+  pixKeyType   PixKeyType?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
 }
 
 model PasswordResetToken {
