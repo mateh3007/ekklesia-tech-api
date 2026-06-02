@@ -54,6 +54,7 @@ model Church {
   members         Member[]
   profile         ChurchProfile?
   serviceRecords  ChurchServiceRecord[]
+  announcements   Announcement[]
 }
 
 model ChurchEvent {
@@ -134,6 +135,7 @@ model User {
   updatedAt          DateTime             @updatedAt
   passwordResetTokens PasswordResetToken[]
   sentInvites         ChurchInvite[]       @relation("SentInvites")
+  announcements       Announcement[]
 }
 
 model ChurchInvite {
@@ -185,6 +187,20 @@ model ChurchProfile {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   deletedAt    DateTime?
+}
+
+model Announcement {
+  id        String    @id @default(uuid())
+  churchId  String
+  church    Church    @relation(fields: [churchId], references: [id])
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id])
+  title     String
+  content   String
+  date      DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }
 
 model PasswordResetToken {
