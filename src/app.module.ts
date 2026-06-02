@@ -12,12 +12,13 @@ import { InviteModule } from './infra/modules/invite/invite.module';
 import { AgendaModule } from './infra/modules/agenda/agenda.module';
 import { MemberModule } from './infra/modules/member/member.module';
 import { ChurchProfileModule } from './infra/modules/church-profile/church-profile.module';
+import { ChurchServiceRecordModule } from './infra/modules/church-service-record/church-service-record.module';
 import { JwtAuthGuard } from './infra/config/jwt/jwt-auth.guard';
 import { RolesGuard } from './infra/config/rbac/roles.guard';
 import { PermissionsGuard } from './infra/config/abac/permissions.guard';
 
 @Module({
-  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule, ChurchServiceModule, ChurchEventModule, InviteModule, AgendaModule, MemberModule, ChurchProfileModule],
+  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule, ChurchServiceModule, ChurchEventModule, InviteModule, AgendaModule, MemberModule, ChurchProfileModule, ChurchServiceRecordModule],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },

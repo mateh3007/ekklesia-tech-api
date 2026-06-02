@@ -46,13 +46,14 @@ model Church {
   phone         String
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
-  users         User[]
-  permissions   ChurchPermission[]
-  services      ChurchService[]
-  events        ChurchEvent[]
-  invites       ChurchInvite[]
-  members       Member[]
-  profile       ChurchProfile?
+  users           User[]
+  permissions     ChurchPermission[]
+  services        ChurchService[]
+  events          ChurchEvent[]
+  invites         ChurchInvite[]
+  members         Member[]
+  profile         ChurchProfile?
+  serviceRecords  ChurchServiceRecord[]
 }
 
 model ChurchEvent {
@@ -67,18 +68,35 @@ model ChurchEvent {
 }
 
 model ChurchService {
-  id          String   @id @default(uuid())
+  id          String                @id @default(uuid())
   churchId    String
-  church      Church   @relation(fields: [churchId], references: [id])
+  church      Church                @relation(fields: [churchId], references: [id])
   title       String
   description String
   day         Day
   startsAt    String
   endsAt      String
-  isOnline    Boolean  @default(false)
+  isOnline    Boolean               @default(false)
   streamUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  records     ChurchServiceRecord[]
+}
+
+model ChurchServiceRecord {
+  id         String         @id @default(uuid())
+  churchId   String
+  church     Church         @relation(fields: [churchId], references: [id])
+  serviceId  String?
+  service    ChurchService? @relation(fields: [serviceId], references: [id])
+  preacher   String
+  topic      String
+  bibleVerse String?
+  notes      String?
+  date       DateTime
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  deletedAt  DateTime?
 }
 
 model Permission {
