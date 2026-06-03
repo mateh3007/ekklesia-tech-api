@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetMyChurchUsecase, IMyChurchResponse } from 'src/application/usecases/church/get-my-church.usecase';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 
+@ApiBearerAuth()
 @ApiTags('Church')
 @Controller('church')
 export class GetMyChurchController {

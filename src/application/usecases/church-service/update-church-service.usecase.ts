@@ -8,8 +8,8 @@ export class UpdateChurchServiceUsecase {
 
   async execute(id: string, input: UpdateChurchServiceInput, churchId: string): Promise<IChurchService> {
     const service = await this.churchServiceRepository.findById(id);
-    if (service && service.churchId !== churchId) throw new ForbiddenException();
     if (!service) throw new NotFoundException('Church service not found');
+    if (service.churchId !== churchId) throw new ForbiddenException();
     return this.churchServiceRepository.update(id, input);
   }
 }

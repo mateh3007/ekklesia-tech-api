@@ -24,4 +24,10 @@ export class PrismaChurchPermissionRepository extends ChurchPermissionRepository
     });
     return !!record;
   }
+
+  async assign(churchId: string, permissionId: string): Promise<IChurchPermission> {
+    return this.prisma.churchPermission.create({
+      data: { churchId, permissionId },
+    }) as Promise<IChurchPermission>;
+  }
 }

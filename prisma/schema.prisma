@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
 enum Day {
   SUNDAY
   MONDAY
@@ -18,9 +24,18 @@ enum Day {
 }
 
 enum Role {
+  SUPERADMIN
   ADMIN
-  EMPLOYEE
+  SUPERVISOR
   USER
+}
+
+enum PixKeyType {
+  CPF
+  CNPJ
+  EMAIL
+  PHONE
+  RANDOM
 }
 
 model Church {
@@ -31,10 +46,16 @@ model Church {
   phone         String
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
-  users         User[]
-  permissions   ChurchPermission[]
-  services      ChurchService[]
-  events        ChurchEvent[]
+  users           User[]
+  permissions     ChurchPermission[]
+  services        ChurchService[]
+  events          ChurchEvent[]
+  invites         ChurchInvite[]
+  members         Member[]
+  profile         ChurchProfile?
+  serviceRecords  ChurchServiceRecord[]
+  announcements   Announcement[]
+  prayerRequests  PrayerRequest[]
 }
 
 model ChurchEvent {
@@ -49,18 +70,35 @@ model ChurchEvent {
 }
 
 model ChurchService {
-  id          String   @id @default(uuid())
+  id          String                @id @default(uuid())
   churchId    String
-  church      Church   @relation(fields: [churchId], references: [id])
+  church      Church                @relation(fields: [churchId], references: [id])
   title       String
   description String
   day         Day
   startsAt    String
   endsAt      String
-  isOnline    Boolean  @default(false)
+  isOnline    Boolean               @default(false)
   streamUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  records     ChurchServiceRecord[]
+}
+
+model ChurchServiceRecord {
+  id         String         @id @default(uuid())
+  churchId   String
+  church     Church         @relation(fields: [churchId], references: [id])
+  serviceId  String?
+  service    ChurchService? @relation(fields: [serviceId], references: [id])
+  preacher   String
+  topic      String
+  bibleVerse String?
+  notes      String?
+  date       DateTime
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  deletedAt  DateTime?
 }
 
 model Permission {
@@ -85,15 +123,108 @@ model ChurchPermission {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  phone     String
-  role      Role
+  id                 String               @id @default(uuid())
+  name               String
+  email              String               @unique
+  password           String
+  phone              String
+  role               Role
+  churchId           String
+  church             Church               @relation(fields: [churchId], references: [id])
+  passwordChangedAt  DateTime?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  passwordResetTokens PasswordResetToken[]
+  sentInvites         ChurchInvite[]       @relation("SentInvites")
+  announcements       Announcement[]
+  prayerRequests      PrayerRequest[]
+}
+
+model ChurchInvite {
+  id            String       @id @default(uuid())
+  churchId      String
+  church        Church       @relation(fields: [churchId], references: [id])
+  invitedBy     String
+  invitedByUser User         @relation("SentInvites", fields: [invitedBy], references: [id])
+  email         String
+  token         String       @unique
+  status        InviteStatus @default(PENDING)
+  expiresAt     DateTime
+  createdAt     DateTime     @default(now())
+}
+
+model Member {
+  id          String   @id @default(uuid())
+  churchId    String
+  church      Church   @relation(fields: [churchId], references: [id])
+  name        String
+  phone       String?
+  dateOfBirth DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ChurchProfile {
+  id           String      @id @default(uuid())
+  churchId     String      @unique
+  church       Church      @relation(fields: [churchId], references: [id])
+  name         String
+  description  String?
+  logoUrl      String?
+  foundedAt    DateTime?
+  address      String?
+  city         String?
+  state        String?
+  country      String?
+  zipCode      String?
+  phone        String?
+  contactEmail String?
+  whatsapp     String?
+  website      String?
+  instagram    String?
+  facebook     String?
+  youtube      String?
+  pixKey       String?
+  pixKeyType   PixKeyType?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
+}
+
+model Announcement {
+  id        String    @id @default(uuid())
   churchId  String
-  church    Church   @relation(fields: [churchId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  church    Church    @relation(fields: [churchId], references: [id])
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id])
+  title     String
+  content   String
+  date      DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model PrayerRequest {
+  id        String    @id @default(uuid())
+  churchId  String
+  church    Church    @relation(fields: [churchId], references: [id])
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id])
+  name      String
+  request   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  token     String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
 }
 

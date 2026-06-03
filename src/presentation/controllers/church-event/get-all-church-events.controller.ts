@@ -1,10 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetAllChurchEventsUsecase } from 'src/application/usecases/church-event/get-all-church-events.usecase';
 import { IChurchEvent } from 'src/domain/entities/church-event.entity';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 
+@ApiBearerAuth()
 @ApiTags('Church Events')
 @Controller('church-events')
 export class GetAllChurchEventsController {

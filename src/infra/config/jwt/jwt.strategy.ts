@@ -1,23 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { PrismaService } from 'src/infra/config/prisma/prisma.service';
 
 export interface IJwtPayload {
   sub: string;
   email: string;
   role: string;
   churchId: string;
+  type: string;
+  iat: number;
 }
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-      throw new Error('JWT_SECRET is not configured. Please define JWT_SECRET in your .env file.');
-    }
-
+  constructor(private readonly prisma: PrismaService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -25,7 +22,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: IJwtPayload) {
+  async validate(payload: IJwtPayload) {
+    if (payload.type !== 'access') throw new UnauthorizedException('Invalid token type');
+
+    const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+    if (!user) throw new UnauthorizedException();
+
+    if (user.passwordChangedAt && user.passwordChangedAt.getTime() > payload.iat * 1000) {
+      throw new UnauthorizedException('Session invalidated after password change');
+    }
+
     return {
       id: payload.sub,
       email: payload.email,

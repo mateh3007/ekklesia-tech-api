@@ -24,9 +24,9 @@ export class PrismaChurchEventRepository extends ChurchEventRepository {
     }) as Promise<IChurchEvent[]>;
   }
 
-  async findById(id: string): Promise<IChurchEvent> {
+  async findById(id: string): Promise<IChurchEvent | null> {
     const event = await this.prisma.churchEvent.findUnique({ where: { id } });
-    if (!event) throw new NotFoundException(`ChurchEvent ${id} not found`);
+    if (!event) return null;
     return event as IChurchEvent;
   }
 

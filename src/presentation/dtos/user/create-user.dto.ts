@@ -19,11 +19,8 @@ export class CreateUserDto {
   @IsString()
   phone: string;
 
-  @ApiProperty({ enum: [Role.EMPLOYEE, Role.USER], example: Role.EMPLOYEE })
-  @IsEnum([Role.EMPLOYEE, Role.USER])
-  role: Role.EMPLOYEE | Role.USER;
+  @ApiProperty({ enum: [Role.SUPERVISOR, Role.USER], example: Role.SUPERVISOR })
+  @IsEnum(Role, { message: `role must be one of: ${Role.SUPERVISOR}, ${Role.USER}` })
+  role: Role.SUPERVISOR | Role.USER;
 
-  @ApiProperty({ example: 'uuid-da-igreja' })
-  @IsString()
-  churchId: string;
 }

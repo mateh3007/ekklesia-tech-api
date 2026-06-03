@@ -21,9 +21,9 @@ export class PrismaChurchServiceRepository extends ChurchServiceRepository {
     return this.prisma.churchService.findMany({ where: { churchId } }) as Promise<IChurchService[]>;
   }
 
-  async findById(id: string): Promise<IChurchService> {
+  async findById(id: string): Promise<IChurchService | null> {
     const service = await this.prisma.churchService.findUnique({ where: { id } });
-    if (!service) throw new NotFoundException(`ChurchService ${id} not found`);
+    if (!service) return null;
     return service as IChurchService;
   }
 

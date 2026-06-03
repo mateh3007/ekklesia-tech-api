@@ -8,8 +8,8 @@ export class UpdateUserUsecase {
 
   async execute(id: string, input: UpdateUserInput, churchId: string): Promise<IUserResponse> {
     const user = await this.userRepository.findById(id);
-    if (user && user.churchId !== churchId) throw new ForbiddenException();
     if (!user) throw new NotFoundException('User not found');
+    if (user.churchId !== churchId) throw new ForbiddenException();
 
     if (input.email) {
       const existing = await this.userRepository.findByEmail(input.email);
