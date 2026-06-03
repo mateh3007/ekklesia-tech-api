@@ -15,6 +15,7 @@ async function bootstrap() {
     .setTitle('Ekklesia Tech API')
     .setDescription('Documentação da API')
     .setVersion('1.0.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

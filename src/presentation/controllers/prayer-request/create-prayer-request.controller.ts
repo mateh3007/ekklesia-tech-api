@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreatePrayerRequestUsecase } from 'src/application/usecases/prayer-request/create-prayer-request.usecase';
 import { IPrayerRequest } from 'src/domain/entities/prayer-request.entity';
 import { Role } from 'src/domain/enums/role.enum';
@@ -8,6 +8,7 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { CreatePrayerRequestDto } from 'src/presentation/dtos/prayer-request/create-prayer-request.dto';
 
+@ApiBearerAuth()
 @ApiTags('Prayer Requests')
 @Controller('prayer-requests')
 export class CreatePrayerRequestController {

@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateAnnouncementUsecase } from 'src/application/usecases/announcement/create-announcement.usecase';
 import { IAnnouncement } from 'src/domain/entities/announcement.entity';
 import { Role } from 'src/domain/enums/role.enum';
@@ -8,6 +8,7 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { CreateAnnouncementDto } from 'src/presentation/dtos/announcement/create-announcement.dto';
 
+@ApiBearerAuth()
 @ApiTags('Announcements')
 @Controller('announcements')
 export class CreateAnnouncementController {

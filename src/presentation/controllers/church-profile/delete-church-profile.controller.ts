@@ -1,11 +1,12 @@
 import { Controller, Delete, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteChurchProfileUsecase } from 'src/application/usecases/church-profile/delete-church-profile.usecase';
 import { Role } from 'src/domain/enums/role.enum';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 
+@ApiBearerAuth()
 @ApiTags('Church Profile')
 @Controller('church-profile')
 export class DeleteChurchProfileController {

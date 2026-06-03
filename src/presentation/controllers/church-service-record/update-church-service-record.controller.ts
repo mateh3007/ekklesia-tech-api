@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateChurchServiceRecordUsecase } from 'src/application/usecases/church-service-record/update-church-service-record.usecase';
 import { IChurchServiceRecord } from 'src/domain/entities/church-service-record.entity';
 import { Role } from 'src/domain/enums/role.enum';
@@ -8,6 +8,7 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { UpdateChurchServiceRecordDto } from 'src/presentation/dtos/church-service-record/update-church-service-record.dto';
 
+@ApiBearerAuth()
 @ApiTags('Church Service Records')
 @Controller('church-service-records')
 export class UpdateChurchServiceRecordController {

@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateMemberUsecase } from 'src/application/usecases/member/update-member.usecase';
 import { IMember } from 'src/domain/entities/member.entity';
 import { Role } from 'src/domain/enums/role.enum';
@@ -8,6 +8,7 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { UpdateMemberDto } from 'src/presentation/dtos/member/update-member.dto';
 
+@ApiBearerAuth()
 @ApiTags('Members')
 @Controller('members')
 export class UpdateMemberController {

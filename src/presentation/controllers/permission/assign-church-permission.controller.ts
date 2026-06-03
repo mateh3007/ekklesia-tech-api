@@ -1,11 +1,12 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AssignChurchPermissionUsecase } from 'src/application/usecases/permission/assign-church-permission.usecase';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { Role } from 'src/domain/enums/role.enum';
 import { AssignChurchPermissionDto } from 'src/presentation/dtos/permission/assign-church-permission.dto';
 import { IChurchPermission } from 'src/domain/entities/church-permission.entity';
 
+@ApiBearerAuth()
 @ApiTags('Permissions')
 @Controller('church-permissions')
 export class AssignChurchPermissionController {

@@ -1,11 +1,12 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete-user.usecase';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { Role } from 'src/domain/enums/role.enum';
 
+@ApiBearerAuth()
 @ApiTags('Users')
 @Controller('users')
 export class DeleteUserController {

@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateChurchProfileUsecase } from 'src/application/usecases/church-profile/create-church-profile.usecase';
 import { IChurchProfile } from 'src/domain/entities/church-profile.entity';
 import { Role } from 'src/domain/enums/role.enum';
@@ -8,6 +8,7 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { CreateChurchProfileDto } from 'src/presentation/dtos/church-profile/create-church-profile.dto';
 
+@ApiBearerAuth()
 @ApiTags('Church Profile')
 @Controller('church-profile')
 export class CreateChurchProfileController {

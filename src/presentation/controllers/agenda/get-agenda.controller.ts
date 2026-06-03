@@ -1,5 +1,5 @@
 import { Controller, ForbiddenException, Get, Param, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetAgendaUsecase } from 'src/application/usecases/agenda/get-agenda.usecase';
 import type { IAgenda } from 'src/application/usecases/agenda/get-agenda.usecase';
 import { Role } from 'src/domain/enums/role.enum';
@@ -8,6 +8,7 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
 import { GetAgendaQueryDto } from 'src/presentation/dtos/agenda/get-agenda-query.dto';
 
+@ApiBearerAuth()
 @ApiTags('Agenda')
 @Controller('churches')
 export class GetAgendaController {
