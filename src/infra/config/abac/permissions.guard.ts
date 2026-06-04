@@ -26,11 +26,12 @@ export class PermissionsGuard implements CanActivate {
     if (!requiredPermissions || requiredPermissions.length === 0) return true;
 
     const { user } = context.switchToHttp().getRequest<{ user?: IJwtUser }>();
-    if (user?.role === Role.SUPERADMIN) return true;
+    if (!user) throw new ForbiddenException('Unauthorized');
+    if (user.role === Role.SUPERADMIN) return true;
 
     for (const permissionName of requiredPermissions) {
       const has = await this.churchPermissionRepository.hasPermission(
-        user?.churchId,
+        user.churchId,
         permissionName,
       );
       if (!has)
