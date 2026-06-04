@@ -19,7 +19,8 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             cd ~/projects/ekklesia-tech-api
+            git reset --hard
             git pull origin develop
             npm install
             npm run build
-            pm2 restart ekklesia_api
+            pm2 restart ekklesia_api 
