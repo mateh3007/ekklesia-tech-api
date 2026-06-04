@@ -12,10 +12,13 @@ export class PrismaChurchPermissionRepository extends ChurchPermissionRepository
   async findByChurchId(churchId: string): Promise<IChurchPermission[]> {
     return this.prisma.churchPermission.findMany({
       where: { churchId },
-    }) as Promise<IChurchPermission[]>;
+    });
   }
 
-  async hasPermission(churchId: string, permissionName: string): Promise<boolean> {
+  async hasPermission(
+    churchId: string,
+    permissionName: string,
+  ): Promise<boolean> {
     const record = await this.prisma.churchPermission.findFirst({
       where: {
         churchId,
@@ -25,9 +28,12 @@ export class PrismaChurchPermissionRepository extends ChurchPermissionRepository
     return !!record;
   }
 
-  async assign(churchId: string, permissionId: string): Promise<IChurchPermission> {
+  async assign(
+    churchId: string,
+    permissionId: string,
+  ): Promise<IChurchPermission> {
     return this.prisma.churchPermission.create({
       data: { churchId, permissionId },
-    }) as Promise<IChurchPermission>;
+    });
   }
 }

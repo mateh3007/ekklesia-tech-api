@@ -17,7 +17,10 @@ export class CreateUserController {
   @Roles(Role.ADMIN)
   @Post()
   @ApiOperation({ summary: 'Create a new employee or user in own church' })
-  async execute(@Body() body: CreateUserDto, @GetUser() user: IJwtUser): Promise<IUserResponse> {
+  async execute(
+    @Body() body: CreateUserDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IUserResponse> {
     return this.createUserUsecase.execute(body, user.churchId);
   }
 }

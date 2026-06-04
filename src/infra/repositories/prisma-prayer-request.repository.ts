@@ -14,7 +14,9 @@ export class PrismaPrayerRequestRepository extends PrayerRequestRepository {
   }
 
   async create(data: CreatePrayerRequestInput): Promise<IPrayerRequest> {
-    return this.prisma.prayerRequest.create({ data }) as Promise<IPrayerRequest>;
+    return this.prisma.prayerRequest.create({
+      data,
+    }) as Promise<IPrayerRequest>;
   }
 
   async findAllByChurchId(churchId: string): Promise<IPrayerRequest[]> {
@@ -30,7 +32,10 @@ export class PrismaPrayerRequestRepository extends PrayerRequestRepository {
     }) as Promise<IPrayerRequest | null>;
   }
 
-  async update(id: string, data: UpdatePrayerRequestInput): Promise<IPrayerRequest> {
+  async update(
+    id: string,
+    data: UpdatePrayerRequestInput,
+  ): Promise<IPrayerRequest> {
     return this.prisma.prayerRequest.update({
       where: { id },
       data,

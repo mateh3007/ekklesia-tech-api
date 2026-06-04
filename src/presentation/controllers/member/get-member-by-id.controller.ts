@@ -16,7 +16,10 @@ export class GetMemberByIdController {
   @Get(':id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @ApiOperation({ summary: 'Get a member by id' })
-  async execute(@Param('id') id: string, @GetUser() user: IJwtUser): Promise<IMember> {
+  async execute(
+    @Param('id') id: string,
+    @GetUser() user: IJwtUser,
+  ): Promise<IMember> {
     return this.getMemberByIdUsecase.execute(id, user.churchId);
   }
 }

@@ -1,6 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetMyChurchUsecase, IMyChurchResponse } from 'src/application/usecases/church/get-my-church.usecase';
+import {
+  GetMyChurchUsecase,
+  IMyChurchResponse,
+} from 'src/application/usecases/church/get-my-church.usecase';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 

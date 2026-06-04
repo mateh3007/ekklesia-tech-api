@@ -12,7 +12,9 @@ import { UpdateAnnouncementDto } from 'src/presentation/dtos/announcement/update
 @ApiTags('Announcements')
 @Controller('announcements')
 export class UpdateAnnouncementController {
-  constructor(private readonly updateAnnouncementUsecase: UpdateAnnouncementUsecase) {}
+  constructor(
+    private readonly updateAnnouncementUsecase: UpdateAnnouncementUsecase,
+  ) {}
 
   @Patch(':id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)

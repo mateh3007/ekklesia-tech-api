@@ -9,7 +9,9 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 @ApiTags('Church Services')
 @Controller('church-services')
 export class GetAllChurchServicesController {
-  constructor(private readonly getAllChurchServicesUsecase: GetAllChurchServicesUsecase) {}
+  constructor(
+    private readonly getAllChurchServicesUsecase: GetAllChurchServicesUsecase,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'List all services of own church' })

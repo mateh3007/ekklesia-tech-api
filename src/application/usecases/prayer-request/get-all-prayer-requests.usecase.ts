@@ -4,7 +4,9 @@ import { PrayerRequestRepository } from 'src/domain/repositories/prayer-request.
 
 @Injectable()
 export class GetAllPrayerRequestsUsecase {
-  constructor(private readonly prayerRequestRepository: PrayerRequestRepository) {}
+  constructor(
+    private readonly prayerRequestRepository: PrayerRequestRepository,
+  ) {}
 
   async execute(churchId: string): Promise<IPrayerRequest[]> {
     return this.prayerRequestRepository.findAllByChurchId(churchId);

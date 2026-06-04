@@ -1,6 +1,12 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from 'src/domain/enums/role.enum';
+import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { ROLES_KEY } from './roles.decorator';
 
 @Injectable()
@@ -15,9 +21,9 @@ export class RolesGuard implements CanActivate {
 
     if (!requiredRoles || requiredRoles.length === 0) return true;
 
-    const { user } = context.switchToHttp().getRequest();
+    const { user } = context.switchToHttp().getRequest<{ user?: IJwtUser }>();
     if (user?.role === Role.SUPERADMIN) return true;
-    if (!requiredRoles.includes(user?.role)) {
+    if (!requiredRoles.includes(user?.role as Role)) {
       throw new ForbiddenException('Insufficient role');
     }
 

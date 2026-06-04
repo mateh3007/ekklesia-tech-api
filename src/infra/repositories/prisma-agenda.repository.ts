@@ -26,9 +26,15 @@ function getDaysInRange(startDate: Date, endDate: Date): Day[] {
 
 function birthdayInRange(dateOfBirth: Date, start: Date, end: Date): boolean {
   const year = start.getUTCFullYear();
-  const bday = new Date(Date.UTC(year, dateOfBirth.getUTCMonth(), dateOfBirth.getUTCDate()));
-  const bdayNext = new Date(Date.UTC(year + 1, dateOfBirth.getUTCMonth(), dateOfBirth.getUTCDate()));
-  return (bday >= start && bday <= end) || (bdayNext >= start && bdayNext <= end);
+  const bday = new Date(
+    Date.UTC(year, dateOfBirth.getUTCMonth(), dateOfBirth.getUTCDate()),
+  );
+  const bdayNext = new Date(
+    Date.UTC(year + 1, dateOfBirth.getUTCMonth(), dateOfBirth.getUTCDate()),
+  );
+  return (
+    (bday >= start && bday <= end) || (bdayNext >= start && bdayNext <= end)
+  );
 }
 
 @Injectable()
@@ -37,7 +43,11 @@ export class PrismaAgendaRepository extends AgendaRepository {
     super();
   }
 
-  async getAgenda(churchId: string, startDate: Date, endDate: Date): Promise<IAgenda> {
+  async getAgenda(
+    churchId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<IAgenda> {
     const daysInRange = getDaysInRange(startDate, endDate);
 
     const [services, events, members] = await Promise.all([
@@ -56,6 +66,10 @@ export class PrismaAgendaRepository extends AgendaRepository {
       .filter((m) => birthdayInRange(m.dateOfBirth, startDate, endDate))
       .map((m) => ({ id: m.id, name: m.name, dateOfBirth: m.dateOfBirth }));
 
-    return { services: services as unknown as IAgenda['services'], events: events as unknown as IAgenda['events'], birthdays };
+    return {
+      services: services as unknown as IAgenda['services'],
+      events: events as unknown as IAgenda['events'],
+      birthdays,
+    };
   }
 }

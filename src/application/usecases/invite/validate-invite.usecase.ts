@@ -1,4 +1,9 @@
-import { ConflictException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  GoneException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InviteStatus } from '@prisma/client';
 import { ChurchInviteRepository } from 'src/domain/repositories/church-invite.repository';
 import { ChurchRepository } from 'src/domain/repositories/church.repository';
@@ -23,7 +28,10 @@ export class ValidateInviteUsecase {
     if (!invite) throw new NotFoundException('Invite not found');
 
     if (invite.expiresAt < new Date()) {
-      await this.churchInviteRepository.updateStatus(invite.id, InviteStatus.EXPIRED);
+      await this.churchInviteRepository.updateStatus(
+        invite.id,
+        InviteStatus.EXPIRED,
+      );
       throw new GoneException('Invite has expired');
     }
 
@@ -36,6 +44,10 @@ export class ValidateInviteUsecase {
       this.userRepository.findById(invite.invitedBy),
     ]);
 
-    return { email: invite.email, churchName: church!.corporateName, inviterName: inviter!.name };
+    return {
+      email: invite.email,
+      churchName: church!.corporateName,
+      inviterName: inviter!.name,
+    };
   }
 }

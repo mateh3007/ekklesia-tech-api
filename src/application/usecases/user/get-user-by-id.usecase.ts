@@ -1,5 +1,12 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { IUserResponse, UserRepository } from 'src/domain/repositories/user.repository';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  IUserResponse,
+  UserRepository,
+} from 'src/domain/repositories/user.repository';
 
 @Injectable()
 export class GetUserByIdUsecase {

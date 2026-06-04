@@ -20,12 +20,19 @@ export interface IAgenda {
 export class GetAgendaUsecase {
   constructor(private readonly agendaRepository: AgendaRepository) {}
 
-  async execute(churchId: string, filter: AgendaFilter, date: string): Promise<IAgenda> {
+  async execute(
+    churchId: string,
+    filter: AgendaFilter,
+    date: string,
+  ): Promise<IAgenda> {
     const { startDate, endDate } = this.computeDateRange(filter, date);
     return this.agendaRepository.getAgenda(churchId, startDate, endDate);
   }
 
-  private computeDateRange(filter: AgendaFilter, date: string): { startDate: Date; endDate: Date } {
+  private computeDateRange(
+    filter: AgendaFilter,
+    date: string,
+  ): { startDate: Date; endDate: Date } {
     const startDate = new Date(`${date}T00:00:00.000Z`);
 
     if (filter === AgendaFilter.DAY) {

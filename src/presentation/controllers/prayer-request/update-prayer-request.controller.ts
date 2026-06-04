@@ -12,7 +12,9 @@ import { UpdatePrayerRequestDto } from 'src/presentation/dtos/prayer-request/upd
 @ApiTags('Prayer Requests')
 @Controller('prayer-requests')
 export class UpdatePrayerRequestController {
-  constructor(private readonly updatePrayerRequestUsecase: UpdatePrayerRequestUsecase) {}
+  constructor(
+    private readonly updatePrayerRequestUsecase: UpdatePrayerRequestUsecase,
+  ) {}
 
   @Patch(':id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)

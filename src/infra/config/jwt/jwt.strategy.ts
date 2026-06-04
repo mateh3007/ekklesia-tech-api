@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Role } from 'src/domain/enums/role.enum';
 import { PrismaService } from 'src/infra/config/prisma/prisma.service';
 
 export interface IJwtPayload {
@@ -23,19 +24,27 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IJwtPayload) {
-    if (payload.type !== 'access') throw new UnauthorizedException('Invalid token type');
+    if (payload.type !== 'access')
+      throw new UnauthorizedException('Invalid token type');
 
-    const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.sub },
+    });
     if (!user) throw new UnauthorizedException();
 
-    if (user.passwordChangedAt && user.passwordChangedAt.getTime() > payload.iat * 1000) {
-      throw new UnauthorizedException('Session invalidated after password change');
+    if (
+      user.passwordChangedAt &&
+      user.passwordChangedAt.getTime() > payload.iat * 1000
+    ) {
+      throw new UnauthorizedException(
+        'Session invalidated after password change',
+      );
     }
 
     return {
       id: payload.sub,
       email: payload.email,
-      role: payload.role,
+      role: payload.role as Role,
       churchId: payload.churchId,
     };
   }

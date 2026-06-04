@@ -4,10 +4,13 @@ import { ChurchServiceRecordRepository } from 'src/domain/repositories/church-se
 
 @Injectable()
 export class GetLatestChurchServiceRecordUsecase {
-  constructor(private readonly churchServiceRecordRepository: ChurchServiceRecordRepository) {}
+  constructor(
+    private readonly churchServiceRecordRepository: ChurchServiceRecordRepository,
+  ) {}
 
   async execute(churchId: string): Promise<IChurchServiceRecord | null> {
-    const lastChurchServiceRecord = await this.churchServiceRecordRepository.findLatestByChurchId(churchId);
+    const lastChurchServiceRecord =
+      await this.churchServiceRecordRepository.findLatestByChurchId(churchId);
     if (!lastChurchServiceRecord) return null;
     return lastChurchServiceRecord;
   }

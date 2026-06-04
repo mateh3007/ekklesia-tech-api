@@ -12,12 +12,20 @@ import { CreateChurchServiceDto } from 'src/presentation/dtos/church-service/cre
 @ApiTags('Church Services')
 @Controller('church-services')
 export class CreateChurchServiceController {
-  constructor(private readonly createChurchServiceUsecase: CreateChurchServiceUsecase) {}
+  constructor(
+    private readonly createChurchServiceUsecase: CreateChurchServiceUsecase,
+  ) {}
 
   @Roles(Role.ADMIN)
   @Post()
   @ApiOperation({ summary: 'Create a new church service' })
-  async execute(@Body() body: CreateChurchServiceDto, @GetUser() user: IJwtUser): Promise<IChurchService> {
-    return this.createChurchServiceUsecase.execute({ ...body, churchId: user.churchId });
+  async execute(
+    @Body() body: CreateChurchServiceDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IChurchService> {
+    return this.createChurchServiceUsecase.execute({
+      ...body,
+      churchId: user.churchId,
+    });
   }
 }
