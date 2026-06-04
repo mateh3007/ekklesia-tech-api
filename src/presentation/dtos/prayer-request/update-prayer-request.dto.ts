@@ -7,7 +7,10 @@ export class UpdatePrayerRequestDto {
   @IsString()
   name?: string;
 
-  @ApiProperty({ example: 'Pedido de cura para minha mãe que está internada.', required: false })
+  @ApiProperty({
+    example: 'Pedido de cura para minha mãe que está internada.',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   request?: string;

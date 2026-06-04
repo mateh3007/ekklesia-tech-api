@@ -13,7 +13,10 @@ export class LoginController {
   @Public()
   @Post('login')
   @ApiOperation({ summary: 'Authenticate and receive JWT token' })
-  async execute(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response): Promise<{ accessToken: string }> {
+  async execute(
+    @Body() body: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<{ accessToken: string }> {
     const { accessToken, refreshToken } = await this.loginUsecase.execute(body);
 
     res.cookie('refresh_token', refreshToken, {

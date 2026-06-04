@@ -1,4 +1,10 @@
-import { Controller, Delete, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete-user.usecase';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
@@ -16,7 +22,10 @@ export class DeleteUserController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete user' })
-  async execute(@Param('id') id: string, @GetUser() user: IJwtUser): Promise<void> {
+  async execute(
+    @Param('id') id: string,
+    @GetUser() user: IJwtUser,
+  ): Promise<void> {
     return this.deleteUserUsecase.execute(id, user.churchId);
   }
 }

@@ -36,7 +36,11 @@ export class LoginUsecase {
     });
 
     const refreshToken = this.jwtService.sign(
-      { sub: user.id, pwdAt: user.passwordChangedAt?.toISOString() ?? null, type: 'refresh' },
+      {
+        sub: user.id,
+        pwdAt: user.passwordChangedAt?.toISOString() ?? null,
+        type: 'refresh',
+      },
       { expiresIn: '7d' },
     );
 

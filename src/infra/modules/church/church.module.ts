@@ -27,4 +27,3 @@ import { GetMyChurchController } from 'src/presentation/controllers/church/get-m
   exports: [ChurchRepository],
 })
 export class ChurchModule {}
-

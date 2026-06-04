@@ -11,12 +11,17 @@ import { Roles } from 'src/infra/config/rbac/roles.decorator';
 @ApiTags('Prayer Requests')
 @Controller('prayer-requests')
 export class GetPrayerRequestByIdController {
-  constructor(private readonly getPrayerRequestByIdUsecase: GetPrayerRequestByIdUsecase) {}
+  constructor(
+    private readonly getPrayerRequestByIdUsecase: GetPrayerRequestByIdUsecase,
+  ) {}
 
   @Get(':id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @ApiOperation({ summary: 'Get a prayer request by id' })
-  async execute(@Param('id') id: string, @GetUser() user: IJwtUser): Promise<IPrayerRequest> {
+  async execute(
+    @Param('id') id: string,
+    @GetUser() user: IJwtUser,
+  ): Promise<IPrayerRequest> {
     return this.getPrayerRequestByIdUsecase.execute(id, user.churchId);
   }
 }

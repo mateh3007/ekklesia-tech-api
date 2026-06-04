@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IChurchService } from 'src/domain/entities/church-service.entity';
 import {
   ChurchServiceRepository,
@@ -14,21 +14,33 @@ export class PrismaChurchServiceRepository extends ChurchServiceRepository {
   }
 
   async create(data: CreateChurchServiceInput): Promise<IChurchService> {
-    return this.prisma.churchService.create({ data }) as Promise<IChurchService>;
+    return this.prisma.churchService.create({
+      data,
+    }) as Promise<IChurchService>;
   }
 
   async findAll(churchId: string): Promise<IChurchService[]> {
-    return this.prisma.churchService.findMany({ where: { churchId } }) as Promise<IChurchService[]>;
+    return this.prisma.churchService.findMany({
+      where: { churchId },
+    }) as Promise<IChurchService[]>;
   }
 
   async findById(id: string): Promise<IChurchService | null> {
-    const service = await this.prisma.churchService.findUnique({ where: { id } });
+    const service = await this.prisma.churchService.findUnique({
+      where: { id },
+    });
     if (!service) return null;
     return service as IChurchService;
   }
 
-  async update(id: string, data: UpdateChurchServiceInput): Promise<IChurchService> {
-    return this.prisma.churchService.update({ where: { id }, data }) as Promise<IChurchService>;
+  async update(
+    id: string,
+    data: UpdateChurchServiceInput,
+  ): Promise<IChurchService> {
+    return this.prisma.churchService.update({
+      where: { id },
+      data,
+    }) as Promise<IChurchService>;
   }
 
   async delete(id: string): Promise<void> {

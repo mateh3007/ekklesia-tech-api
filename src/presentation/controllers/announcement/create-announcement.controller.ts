@@ -12,12 +12,17 @@ import { CreateAnnouncementDto } from 'src/presentation/dtos/announcement/create
 @ApiTags('Announcements')
 @Controller('announcements')
 export class CreateAnnouncementController {
-  constructor(private readonly createAnnouncementUsecase: CreateAnnouncementUsecase) {}
+  constructor(
+    private readonly createAnnouncementUsecase: CreateAnnouncementUsecase,
+  ) {}
 
   @Post()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @ApiOperation({ summary: 'Create a new announcement' })
-  async execute(@Body() body: CreateAnnouncementDto, @GetUser() user: IJwtUser): Promise<IAnnouncement> {
+  async execute(
+    @Body() body: CreateAnnouncementDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IAnnouncement> {
     return this.createAnnouncementUsecase.execute({
       ...body,
       churchId: user.churchId,

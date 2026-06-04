@@ -23,14 +23,17 @@ export class RefreshTokenUsecase {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
 
-    if (payload.type !== 'refresh') throw new UnauthorizedException('Invalid token type');
+    if (payload.type !== 'refresh')
+      throw new UnauthorizedException('Invalid token type');
 
     const user = await this.userRepository.findById(payload.sub);
     if (!user) throw new UnauthorizedException('User not found');
     const currentPwdAt = user.passwordChangedAt?.toISOString() ?? null;
 
     if (currentPwdAt !== payload.pwdAt) {
-      throw new UnauthorizedException('Session invalidated after password change');
+      throw new UnauthorizedException(
+        'Session invalidated after password change',
+      );
     }
 
     const accessToken = this.jwtService.sign({

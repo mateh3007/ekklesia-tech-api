@@ -10,7 +10,9 @@ import { Roles } from 'src/infra/config/rbac/roles.decorator';
 @ApiTags('Church Profile')
 @Controller('church-profile')
 export class DeleteChurchProfileController {
-  constructor(private readonly deleteChurchProfileUsecase: DeleteChurchProfileUsecase) {}
+  constructor(
+    private readonly deleteChurchProfileUsecase: DeleteChurchProfileUsecase,
+  ) {}
 
   @Delete()
   @Roles(Role.ADMIN)

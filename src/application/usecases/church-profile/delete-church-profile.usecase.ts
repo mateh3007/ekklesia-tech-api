@@ -3,7 +3,9 @@ import { ChurchProfileRepository } from 'src/domain/repositories/church-profile.
 
 @Injectable()
 export class DeleteChurchProfileUsecase {
-  constructor(private readonly churchProfileRepository: ChurchProfileRepository) {}
+  constructor(
+    private readonly churchProfileRepository: ChurchProfileRepository,
+  ) {}
 
   async execute(churchId: string): Promise<void> {
     const profile = await this.churchProfileRepository.findByChurchId(churchId);

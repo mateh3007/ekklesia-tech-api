@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/config/prisma/prisma.service';
-import { CreateUserInput, IUserResponse, UpdateUserInput, UserRepository } from 'src/domain/repositories/user.repository';
+import {
+  CreateUserInput,
+  IUserResponse,
+  UpdateUserInput,
+  UserRepository,
+} from 'src/domain/repositories/user.repository';
 import { IUser } from 'src/domain/entities/user.entity';
 
 @Injectable()
@@ -9,8 +14,7 @@ export class PrismaUserRepository extends UserRepository {
     super();
   }
 
-  private exclude(user: IUser): IUserResponse {
-    const { password: _password, ...rest } = user as any;
+  private exclude({ password: _password, ...rest }: IUser): IUserResponse {
     return rest;
   }
 
@@ -40,7 +44,9 @@ export class PrismaUserRepository extends UserRepository {
   }
 
   async findByEmail(email: string): Promise<IUser | null> {
-    return this.prisma.user.findUnique({ where: { email } }) as Promise<IUser | null>;
+    return this.prisma.user.findUnique({
+      where: { email },
+    }) as Promise<IUser | null>;
   }
 
   async findByChurchId(churchId: string): Promise<IUserResponse[]> {

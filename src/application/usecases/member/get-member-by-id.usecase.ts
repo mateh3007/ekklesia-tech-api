@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { IMember } from 'src/domain/entities/member.entity';
 import { MemberRepository } from 'src/domain/repositories/member.repository';
 
@@ -9,7 +13,8 @@ export class GetMemberByIdUsecase {
   async execute(id: string, churchId: string): Promise<IMember> {
     const member = await this.memberRepository.findById(id);
     if (!member) throw new NotFoundException('Member not found');
-    if (member.churchId !== churchId) throw new ForbiddenException('Access denied to this member');
+    if (member.churchId !== churchId)
+      throw new ForbiddenException('Access denied to this member');
     return member;
   }
 }

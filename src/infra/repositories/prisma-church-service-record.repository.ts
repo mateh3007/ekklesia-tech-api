@@ -13,8 +13,12 @@ export class PrismaChurchServiceRecordRepository extends ChurchServiceRecordRepo
     super();
   }
 
-  async create(data: CreateChurchServiceRecordInput): Promise<IChurchServiceRecord> {
-    return this.prisma.churchServiceRecord.create({ data }) as Promise<IChurchServiceRecord>;
+  async create(
+    data: CreateChurchServiceRecordInput,
+  ): Promise<IChurchServiceRecord> {
+    return this.prisma.churchServiceRecord.create({
+      data,
+    }) as Promise<IChurchServiceRecord>;
   }
 
   async findAllByChurchId(churchId: string): Promise<IChurchServiceRecord[]> {
@@ -30,14 +34,19 @@ export class PrismaChurchServiceRecordRepository extends ChurchServiceRecordRepo
     }) as Promise<IChurchServiceRecord | null>;
   }
 
-  async findLatestByChurchId(churchId: string): Promise<IChurchServiceRecord | null> {
+  async findLatestByChurchId(
+    churchId: string,
+  ): Promise<IChurchServiceRecord | null> {
     return this.prisma.churchServiceRecord.findFirst({
       where: { churchId, deletedAt: null },
       orderBy: { date: 'desc' },
     }) as Promise<IChurchServiceRecord | null>;
   }
 
-  async update(id: string, data: UpdateChurchServiceRecordInput): Promise<IChurchServiceRecord> {
+  async update(
+    id: string,
+    data: UpdateChurchServiceRecordInput,
+  ): Promise<IChurchServiceRecord> {
     return this.prisma.churchServiceRecord.update({
       where: { id },
       data,

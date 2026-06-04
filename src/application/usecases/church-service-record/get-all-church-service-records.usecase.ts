@@ -4,7 +4,9 @@ import { ChurchServiceRecordRepository } from 'src/domain/repositories/church-se
 
 @Injectable()
 export class GetAllChurchServiceRecordsUsecase {
-  constructor(private readonly churchServiceRecordRepository: ChurchServiceRecordRepository) {}
+  constructor(
+    private readonly churchServiceRecordRepository: ChurchServiceRecordRepository,
+  ) {}
 
   async execute(churchId: string): Promise<IChurchServiceRecord[]> {
     return this.churchServiceRecordRepository.findAllByChurchId(churchId);

@@ -4,7 +4,9 @@ import { AnnouncementRepository } from 'src/domain/repositories/announcement.rep
 
 @Injectable()
 export class GetAllAnnouncementsUsecase {
-  constructor(private readonly announcementRepository: AnnouncementRepository) {}
+  constructor(
+    private readonly announcementRepository: AnnouncementRepository,
+  ) {}
 
   async execute(churchId: string): Promise<IAnnouncement[]> {
     return this.announcementRepository.findAllByChurchId(churchId);

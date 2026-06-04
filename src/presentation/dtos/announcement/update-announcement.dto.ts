@@ -7,7 +7,10 @@ export class UpdateAnnouncementDto {
   @IsString()
   title?: string;
 
-  @ApiProperty({ example: 'Reunião de líderes nesta quinta-feira às 19h no salão principal.', required: false })
+  @ApiProperty({
+    example: 'Reunião de líderes nesta quinta-feira às 19h no salão principal.',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   content?: string;

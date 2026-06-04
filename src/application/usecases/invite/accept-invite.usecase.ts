@@ -1,9 +1,17 @@
-import { ConflictException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  GoneException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { InviteStatus } from '@prisma/client';
 import { Role } from 'src/domain/enums/role.enum';
 import { ChurchInviteRepository } from 'src/domain/repositories/church-invite.repository';
-import { UserRepository, IUserResponse } from 'src/domain/repositories/user.repository';
+import {
+  UserRepository,
+  IUserResponse,
+} from 'src/domain/repositories/user.repository';
 
 export interface IAcceptInviteInput {
   name: string;
@@ -18,12 +26,18 @@ export class AcceptInviteUsecase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(token: string, data: IAcceptInviteInput): Promise<IUserResponse> {
+  async execute(
+    token: string,
+    data: IAcceptInviteInput,
+  ): Promise<IUserResponse> {
     const invite = await this.churchInviteRepository.findByToken(token);
     if (!invite) throw new NotFoundException('Invite not found');
 
     if (invite.expiresAt < new Date()) {
-      await this.churchInviteRepository.updateStatus(invite.id, InviteStatus.EXPIRED);
+      await this.churchInviteRepository.updateStatus(
+        invite.id,
+        InviteStatus.EXPIRED,
+      );
       throw new GoneException('Invite has expired');
     }
 
@@ -42,7 +56,10 @@ export class AcceptInviteUsecase {
       churchId: invite.churchId,
     });
 
-    await this.churchInviteRepository.updateStatus(invite.id, InviteStatus.ACCEPTED);
+    await this.churchInviteRepository.updateStatus(
+      invite.id,
+      InviteStatus.ACCEPTED,
+    );
 
     return user;
   }

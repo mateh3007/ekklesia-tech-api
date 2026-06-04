@@ -27,13 +27,18 @@ export class PrismaChurchProfileRepository extends ChurchProfileRepository {
     }) as Promise<IChurchProfile | null>;
   }
 
-  async findByChurchIdIncludingDeleted(churchId: string): Promise<IChurchProfile | null> {
+  async findByChurchIdIncludingDeleted(
+    churchId: string,
+  ): Promise<IChurchProfile | null> {
     return this.prisma.churchProfile.findUnique({
       where: { churchId },
     }) as Promise<IChurchProfile | null>;
   }
 
-  async update(churchId: string, data: UpdateChurchProfileInput): Promise<IChurchProfile> {
+  async update(
+    churchId: string,
+    data: UpdateChurchProfileInput,
+  ): Promise<IChurchProfile> {
     return this.prisma.churchProfile.update({
       where: { churchId },
       data,

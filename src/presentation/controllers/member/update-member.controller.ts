@@ -17,7 +17,11 @@ export class UpdateMemberController {
   @Patch(':id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @ApiOperation({ summary: 'Update a member' })
-  async execute(@Param('id') id: string, @Body() body: UpdateMemberDto, @GetUser() user: IJwtUser): Promise<IMember> {
+  async execute(
+    @Param('id') id: string,
+    @Body() body: UpdateMemberDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IMember> {
     return this.updateMemberUsecase.execute(
       id,
       {

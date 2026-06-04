@@ -30,7 +30,10 @@ export class PrismaAnnouncementRepository extends AnnouncementRepository {
     }) as Promise<IAnnouncement | null>;
   }
 
-  async update(id: string, data: UpdateAnnouncementInput): Promise<IAnnouncement> {
+  async update(
+    id: string,
+    data: UpdateAnnouncementInput,
+  ): Promise<IAnnouncement> {
     return this.prisma.announcement.update({
       where: { id },
       data,

@@ -7,7 +7,10 @@ export class CreateChurchProfileDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'Uma comunidade cristã comprometida com o evangelho', required: false })
+  @ApiProperty({
+    example: 'Uma comunidade cristã comprometida com o evangelho',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;

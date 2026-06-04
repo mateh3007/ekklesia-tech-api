@@ -17,7 +17,13 @@ export class CreateMemberController {
   @Post()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @ApiOperation({ summary: 'Create a new member in own church' })
-  async execute(@Body() body: CreateMemberDto, @GetUser() user: IJwtUser): Promise<IMember> {
-    return this.createMemberUsecase.execute({ ...body, dateOfBirth: new Date(body.dateOfBirth) }, user.churchId);
+  async execute(
+    @Body() body: CreateMemberDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IMember> {
+    return this.createMemberUsecase.execute(
+      { ...body, dateOfBirth: new Date(body.dateOfBirth) },
+      user.churchId,
+    );
   }
 }

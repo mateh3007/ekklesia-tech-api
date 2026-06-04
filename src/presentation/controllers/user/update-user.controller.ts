@@ -17,7 +17,11 @@ export class UpdateUserController {
   @Roles(Role.ADMIN)
   @Patch(':id')
   @ApiOperation({ summary: 'Update user data' })
-  async execute(@Param('id') id: string, @Body() body: UpdateUserDto, @GetUser() user: IJwtUser): Promise<IUserResponse> {
+  async execute(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IUserResponse> {
     return this.updateUserUsecase.execute(id, body, user.churchId);
   }
 }

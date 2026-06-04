@@ -16,7 +16,10 @@ export class GetUserByIdController {
   @Roles(Role.ADMIN)
   @Get(':id')
   @ApiOperation({ summary: 'Get user by ID' })
-  async execute(@Param('id') id: string, @GetUser() user: IJwtUser): Promise<IUserResponse> {
+  async execute(
+    @Param('id') id: string,
+    @GetUser() user: IJwtUser,
+  ): Promise<IUserResponse> {
     return this.getUserByIdUsecase.execute(id, user.churchId);
   }
 }

@@ -20,7 +20,8 @@ export class CreateUserDto {
   phone: string;
 
   @ApiProperty({ enum: [Role.SUPERVISOR, Role.USER], example: Role.SUPERVISOR })
-  @IsEnum(Role, { message: `role must be one of: ${Role.SUPERVISOR}, ${Role.USER}` })
+  @IsEnum(Role, {
+    message: `role must be one of: ${Role.SUPERVISOR}, ${Role.USER}`,
+  })
   role: Role.SUPERVISOR | Role.USER;
-
 }

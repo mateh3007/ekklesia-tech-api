@@ -11,11 +11,15 @@ import { Roles } from 'src/infra/config/rbac/roles.decorator';
 @ApiTags('Announcements')
 @Controller('announcements')
 export class GetAllAnnouncementsController {
-  constructor(private readonly getAllAnnouncementsUsecase: GetAllAnnouncementsUsecase) {}
+  constructor(
+    private readonly getAllAnnouncementsUsecase: GetAllAnnouncementsUsecase,
+  ) {}
 
   @Get()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @ApiOperation({ summary: 'List all announcements ordered by createdAt descending' })
+  @ApiOperation({
+    summary: 'List all announcements ordered by createdAt descending',
+  })
   async execute(@GetUser() user: IJwtUser): Promise<IAnnouncement[]> {
     return this.getAllAnnouncementsUsecase.execute(user.churchId);
   }

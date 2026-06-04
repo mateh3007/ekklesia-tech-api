@@ -22,7 +22,12 @@ import { UpdateChurchProfileController } from 'src/presentation/controllers/chur
       useExisting: PrismaChurchProfileRepository,
     },
   ],
-  controllers: [CreateChurchProfileController, GetChurchProfileController, UpdateChurchProfileController, DeleteChurchProfileController],
+  controllers: [
+    CreateChurchProfileController,
+    GetChurchProfileController,
+    UpdateChurchProfileController,
+    DeleteChurchProfileController,
+  ],
   exports: [CreateChurchProfileUsecase],
 })
 export class ChurchProfileModule {}

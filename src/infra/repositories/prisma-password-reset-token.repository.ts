@@ -13,22 +13,35 @@ export class PrismaPasswordResetTokenRepository extends PasswordResetTokenReposi
     super();
   }
 
-  async create(data: CreatePasswordResetTokenInput): Promise<IPasswordResetToken> {
-    return this.prisma.passwordResetToken.create({ data }) as Promise<IPasswordResetToken>;
+  async create(
+    data: CreatePasswordResetTokenInput,
+  ): Promise<IPasswordResetToken> {
+    return this.prisma.passwordResetToken.create({
+      data,
+    });
   }
 
   async findAll(): Promise<IPasswordResetToken[]> {
-    return this.prisma.passwordResetToken.findMany() as Promise<IPasswordResetToken[]>;
+    return this.prisma.passwordResetToken.findMany();
   }
 
   async findById(id: string): Promise<IPasswordResetToken> {
-    const token = await this.prisma.passwordResetToken.findUnique({ where: { id } });
-    if (!token) throw new NotFoundException(`PasswordResetToken ${id} not found`);
-    return token as IPasswordResetToken;
+    const token = await this.prisma.passwordResetToken.findUnique({
+      where: { id },
+    });
+    if (!token)
+      throw new NotFoundException(`PasswordResetToken ${id} not found`);
+    return token;
   }
 
-  async update(id: string, data: UpdatePasswordResetTokenInput): Promise<IPasswordResetToken> {
-    return this.prisma.passwordResetToken.update({ where: { id }, data }) as Promise<IPasswordResetToken>;
+  async update(
+    id: string,
+    data: UpdatePasswordResetTokenInput,
+  ): Promise<IPasswordResetToken> {
+    return this.prisma.passwordResetToken.update({
+      where: { id },
+      data,
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -36,10 +49,15 @@ export class PrismaPasswordResetTokenRepository extends PasswordResetTokenReposi
   }
 
   async findByToken(token: string): Promise<IPasswordResetToken | null> {
-    return this.prisma.passwordResetToken.findUnique({ where: { token } }) as Promise<IPasswordResetToken | null>;
+    return this.prisma.passwordResetToken.findUnique({
+      where: { token },
+    });
   }
 
   async markAsUsed(id: string): Promise<void> {
-    await this.prisma.passwordResetToken.update({ where: { id }, data: { usedAt: new Date() } });
+    await this.prisma.passwordResetToken.update({
+      where: { id },
+      data: { usedAt: new Date() },
+    });
   }
 }

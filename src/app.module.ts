@@ -20,7 +20,23 @@ import { RolesGuard } from './infra/config/rbac/roles.guard';
 import { PermissionsGuard } from './infra/config/abac/permissions.guard';
 
 @Module({
-  imports: [PrismaModule, RegisterModule, ChurchModule, UserModule, AuthModule, PermissionModule, ChurchServiceModule, ChurchEventModule, InviteModule, AgendaModule, MemberModule, ChurchProfileModule, ChurchServiceRecordModule, AnnouncementModule, PrayerRequestModule],
+  imports: [
+    PrismaModule,
+    RegisterModule,
+    ChurchModule,
+    UserModule,
+    AuthModule,
+    PermissionModule,
+    ChurchServiceModule,
+    ChurchEventModule,
+    InviteModule,
+    AgendaModule,
+    MemberModule,
+    ChurchProfileModule,
+    ChurchServiceRecordModule,
+    AnnouncementModule,
+    PrayerRequestModule,
+  ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
@@ -28,4 +44,3 @@ import { PermissionsGuard } from './infra/config/abac/permissions.guard';
   ],
 })
 export class AppModule {}
-
