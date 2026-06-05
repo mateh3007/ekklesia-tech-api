@@ -1,5 +1,4 @@
 import { BadRequestException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { ResetPasswordUsecase } from './reset-password.usecase';
 
 jest.mock('bcrypt', () => ({

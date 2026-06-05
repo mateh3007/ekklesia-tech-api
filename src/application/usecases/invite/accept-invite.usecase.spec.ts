@@ -3,7 +3,6 @@ import {
   GoneException,
   NotFoundException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { InviteStatus } from '@prisma/client';
 import { AcceptInviteUsecase } from './accept-invite.usecase';
 

@@ -68,8 +68,11 @@ describe('LoginUsecase', () => {
 
     await usecase.execute({ email: user.email, password: 'pass' });
 
-    const refreshCallArgs = mockJwtService.sign.mock.calls[1][0];
-    expect(refreshCallArgs.pwdAt).toBeNull();
+    expect(mockJwtService.sign).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ pwdAt: null }),
+      expect.any(Object),
+    );
   });
 
   it('should throw UnauthorizedException when user is not found', async () => {

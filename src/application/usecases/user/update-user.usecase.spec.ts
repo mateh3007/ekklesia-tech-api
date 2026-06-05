@@ -3,7 +3,6 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { UpdateUserUsecase } from './update-user.usecase';
 
 jest.mock('bcrypt', () => ({

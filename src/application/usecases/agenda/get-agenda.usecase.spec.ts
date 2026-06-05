@@ -1,4 +1,5 @@
 import { GetAgendaUsecase } from './get-agenda.usecase';
+import { AgendaRepository } from 'src/domain/repositories/agenda.repository';
 import { AgendaFilter } from 'src/presentation/dtos/agenda/get-agenda-query.dto';
 
 const mockAgendaRepository = {
@@ -16,7 +17,8 @@ describe('GetAgendaUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAgendaUsecase(mockAgendaRepository);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    usecase = new GetAgendaUsecase(mockAgendaRepository as AgendaRepository);
     mockAgendaRepository.getAgenda.mockResolvedValue(makeAgenda());
   });
 
@@ -24,28 +26,31 @@ describe('GetAgendaUsecase', () => {
     it('should call repository with correct date range for DAY filter', async () => {
       await usecase.execute('cid', AgendaFilter.DAY, '2026-06-05');
 
-      const [, startDate, endDate] =
-        mockAgendaRepository.getAgenda.mock.calls[0];
-      expect(startDate.toISOString()).toBe('2026-06-05T00:00:00.000Z');
-      expect(endDate.toISOString()).toBe('2026-06-05T23:59:59.999Z');
+      expect(mockAgendaRepository.getAgenda).toHaveBeenCalledWith(
+        'cid',
+        new Date('2026-06-05T00:00:00.000Z'),
+        new Date('2026-06-05T23:59:59.999Z'),
+      );
     });
 
     it('should call repository with correct date range for WEEK filter', async () => {
       await usecase.execute('cid', AgendaFilter.WEEK, '2026-06-05');
 
-      const [, startDate, endDate] =
-        mockAgendaRepository.getAgenda.mock.calls[0];
-      expect(startDate.toISOString()).toBe('2026-06-05T00:00:00.000Z');
-      expect(endDate.toISOString()).toBe('2026-06-11T23:59:59.999Z');
+      expect(mockAgendaRepository.getAgenda).toHaveBeenCalledWith(
+        'cid',
+        new Date('2026-06-05T00:00:00.000Z'),
+        new Date('2026-06-11T23:59:59.999Z'),
+      );
     });
 
     it('should call repository with correct date range for MONTH filter', async () => {
       await usecase.execute('cid', AgendaFilter.MONTH, '2026-06-05');
 
-      const [, startDate, endDate] =
-        mockAgendaRepository.getAgenda.mock.calls[0];
-      expect(startDate.toISOString()).toBe('2026-06-01T00:00:00.000Z');
-      expect(endDate.toISOString()).toBe('2026-06-30T23:59:59.999Z');
+      expect(mockAgendaRepository.getAgenda).toHaveBeenCalledWith(
+        'cid',
+        new Date('2026-06-01T00:00:00.000Z'),
+        new Date('2026-06-30T23:59:59.999Z'),
+      );
     });
 
     it('should return the agenda from the repository', async () => {

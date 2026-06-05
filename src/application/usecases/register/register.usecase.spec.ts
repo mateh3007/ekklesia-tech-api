@@ -1,5 +1,4 @@
 import { BadRequestException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { RegisterUsecase } from './register.usecase';
 import { Role } from 'src/domain/enums/role.enum';
 
