@@ -11,7 +11,9 @@ describe('DeleteChurchProfileUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new DeleteChurchProfileUsecase(mockChurchProfileRepository as any);
+    usecase = new DeleteChurchProfileUsecase(
+      mockChurchProfileRepository as any,
+    );
   });
 
   it('should soft delete church profile when found', async () => {

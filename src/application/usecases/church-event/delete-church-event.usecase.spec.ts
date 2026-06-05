@@ -15,7 +15,10 @@ describe('DeleteChurchEventUsecase', () => {
   });
 
   it('should delete event when found and belongs to the church', async () => {
-    mockChurchEventRepository.findById.mockResolvedValue({ id: 'eid', churchId: 'cid' });
+    mockChurchEventRepository.findById.mockResolvedValue({
+      id: 'eid',
+      churchId: 'cid',
+    });
     mockChurchEventRepository.delete.mockResolvedValue(undefined);
 
     await usecase.execute('eid', 'cid');
@@ -26,12 +29,19 @@ describe('DeleteChurchEventUsecase', () => {
   it('should throw NotFoundException when event does not exist', async () => {
     mockChurchEventRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when event belongs to a different church', async () => {
-    mockChurchEventRepository.findById.mockResolvedValue({ id: 'eid', churchId: 'other-cid' });
+    mockChurchEventRepository.findById.mockResolvedValue({
+      id: 'eid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

@@ -28,21 +28,33 @@ describe('UpdateAnnouncementUsecase', () => {
     mockAnnouncementRepository.findById.mockResolvedValue(announcement);
     mockAnnouncementRepository.update.mockResolvedValue(updated);
 
-    const result = await usecase.execute('aid', { title: 'Aviso Atualizado' }, 'cid');
+    const result = await usecase.execute(
+      'aid',
+      { title: 'Aviso Atualizado' },
+      'cid',
+    );
 
     expect(result).toBe(updated);
-    expect(mockAnnouncementRepository.update).toHaveBeenCalledWith('aid', { title: 'Aviso Atualizado' });
+    expect(mockAnnouncementRepository.update).toHaveBeenCalledWith('aid', {
+      title: 'Aviso Atualizado',
+    });
   });
 
   it('should throw NotFoundException when announcement does not exist', async () => {
     mockAnnouncementRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('aid', {}, 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('aid', {}, 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when announcement belongs to a different church', async () => {
-    mockAnnouncementRepository.findById.mockResolvedValue(makeAnnouncement('other-cid'));
+    mockAnnouncementRepository.findById.mockResolvedValue(
+      makeAnnouncement('other-cid'),
+    );
 
-    await expect(usecase.execute('aid', {}, 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('aid', {}, 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

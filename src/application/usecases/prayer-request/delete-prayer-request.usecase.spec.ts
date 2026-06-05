@@ -11,11 +11,16 @@ describe('DeletePrayerRequestUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new DeletePrayerRequestUsecase(mockPrayerRequestRepository as any);
+    usecase = new DeletePrayerRequestUsecase(
+      mockPrayerRequestRepository as any,
+    );
   });
 
   it('should soft delete prayer request when found and belongs to the church', async () => {
-    mockPrayerRequestRepository.findById.mockResolvedValue({ id: 'prid', churchId: 'cid' });
+    mockPrayerRequestRepository.findById.mockResolvedValue({
+      id: 'prid',
+      churchId: 'cid',
+    });
     mockPrayerRequestRepository.softDelete.mockResolvedValue(undefined);
 
     await usecase.execute('prid', 'cid');
@@ -26,12 +31,19 @@ describe('DeletePrayerRequestUsecase', () => {
   it('should throw NotFoundException when prayer request does not exist', async () => {
     mockPrayerRequestRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('prid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('prid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when prayer request belongs to a different church', async () => {
-    mockPrayerRequestRepository.findById.mockResolvedValue({ id: 'prid', churchId: 'other-cid' });
+    mockPrayerRequestRepository.findById.mockResolvedValue({
+      id: 'prid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('prid', 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('prid', 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

@@ -11,7 +11,9 @@ describe('UpdateChurchServiceUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new UpdateChurchServiceUsecase(mockChurchServiceRepository as any);
+    usecase = new UpdateChurchServiceUsecase(
+      mockChurchServiceRepository as any,
+    );
   });
 
   it('should update church service successfully', async () => {
@@ -20,7 +22,11 @@ describe('UpdateChurchServiceUsecase', () => {
     mockChurchServiceRepository.findById.mockResolvedValue(service);
     mockChurchServiceRepository.update.mockResolvedValue(updated);
 
-    const result = await usecase.execute('sid', { title: 'Culto Atualizado' }, 'cid');
+    const result = await usecase.execute(
+      'sid',
+      { title: 'Culto Atualizado' },
+      'cid',
+    );
 
     expect(result).toBe(updated);
   });
@@ -28,12 +34,19 @@ describe('UpdateChurchServiceUsecase', () => {
   it('should throw NotFoundException when service does not exist', async () => {
     mockChurchServiceRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('sid', {}, 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('sid', {}, 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when service belongs to a different church', async () => {
-    mockChurchServiceRepository.findById.mockResolvedValue({ id: 'sid', churchId: 'other-cid' });
+    mockChurchServiceRepository.findById.mockResolvedValue({
+      id: 'sid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('sid', {}, 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('sid', {}, 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

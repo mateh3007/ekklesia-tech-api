@@ -14,12 +14,16 @@ describe('GetAllAnnouncementsUsecase', () => {
 
   it('should return all announcements for the church', async () => {
     const announcements = [{ id: 'a1' }, { id: 'a2' }];
-    mockAnnouncementRepository.findAllByChurchId.mockResolvedValue(announcements);
+    mockAnnouncementRepository.findAllByChurchId.mockResolvedValue(
+      announcements,
+    );
 
     const result = await usecase.execute('cid');
 
     expect(result).toBe(announcements);
-    expect(mockAnnouncementRepository.findAllByChurchId).toHaveBeenCalledWith('cid');
+    expect(mockAnnouncementRepository.findAllByChurchId).toHaveBeenCalledWith(
+      'cid',
+    );
   });
 
   it('should return empty array when church has no announcements', async () => {

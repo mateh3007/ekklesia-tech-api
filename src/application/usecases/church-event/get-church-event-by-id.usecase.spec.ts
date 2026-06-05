@@ -25,12 +25,19 @@ describe('GetChurchEventByIdUsecase', () => {
   it('should throw NotFoundException when event does not exist', async () => {
     mockChurchEventRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when event belongs to a different church', async () => {
-    mockChurchEventRepository.findById.mockResolvedValue({ id: 'eid', churchId: 'other-cid' });
+    mockChurchEventRepository.findById.mockResolvedValue({
+      id: 'eid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('eid', 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

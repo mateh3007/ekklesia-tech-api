@@ -9,17 +9,23 @@ describe('GetAllChurchServiceRecordsUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAllChurchServiceRecordsUsecase(mockChurchServiceRecordRepository as any);
+    usecase = new GetAllChurchServiceRecordsUsecase(
+      mockChurchServiceRecordRepository as any,
+    );
   });
 
   it('should return all records for the church', async () => {
     const records = [{ id: 'r1' }, { id: 'r2' }];
-    mockChurchServiceRecordRepository.findAllByChurchId.mockResolvedValue(records);
+    mockChurchServiceRecordRepository.findAllByChurchId.mockResolvedValue(
+      records,
+    );
 
     const result = await usecase.execute('cid');
 
     expect(result).toBe(records);
-    expect(mockChurchServiceRecordRepository.findAllByChurchId).toHaveBeenCalledWith('cid');
+    expect(
+      mockChurchServiceRecordRepository.findAllByChurchId,
+    ).toHaveBeenCalledWith('cid');
   });
 
   it('should return empty array when church has no records', async () => {

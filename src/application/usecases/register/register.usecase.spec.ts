@@ -30,7 +30,10 @@ describe('RegisterUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new RegisterUsecase(mockChurchRepository as any, mockUserRepository as any);
+    usecase = new RegisterUsecase(
+      mockChurchRepository as any,
+      mockUserRepository as any,
+    );
   });
 
   it('should register a new church and admin user successfully', async () => {
@@ -58,9 +61,13 @@ describe('RegisterUsecase', () => {
   });
 
   it('should throw BadRequestException when church with same CNPJ already exists', async () => {
-    mockChurchRepository.findByCnpj.mockResolvedValue({ id: 'existing-church' });
+    mockChurchRepository.findByCnpj.mockResolvedValue({
+      id: 'existing-church',
+    });
 
-    await expect(usecase.execute(makeInput())).rejects.toThrow(BadRequestException);
+    await expect(usecase.execute(makeInput())).rejects.toThrow(
+      BadRequestException,
+    );
     expect(mockChurchRepository.create).not.toHaveBeenCalled();
   });
 });

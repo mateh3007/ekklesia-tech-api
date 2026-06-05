@@ -10,7 +10,9 @@ describe('GetChurchServiceByIdUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetChurchServiceByIdUsecase(mockChurchServiceRepository as any);
+    usecase = new GetChurchServiceByIdUsecase(
+      mockChurchServiceRepository as any,
+    );
   });
 
   it('should return service when found and belongs to the church', async () => {
@@ -25,12 +27,19 @@ describe('GetChurchServiceByIdUsecase', () => {
   it('should throw NotFoundException when service does not exist', async () => {
     mockChurchServiceRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('sid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('sid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when service belongs to a different church', async () => {
-    mockChurchServiceRepository.findById.mockResolvedValue({ id: 'sid', churchId: 'other-cid' });
+    mockChurchServiceRepository.findById.mockResolvedValue({
+      id: 'sid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('sid', 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('sid', 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

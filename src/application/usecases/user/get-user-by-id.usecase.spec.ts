@@ -32,12 +32,16 @@ describe('GetUserByIdUsecase', () => {
   it('should throw NotFoundException when user does not exist', async () => {
     mockUserRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('uid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('uid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when user belongs to a different church', async () => {
     mockUserRepository.findById.mockResolvedValue(makeUser('other-church'));
 
-    await expect(usecase.execute('uid', 'church-id')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('uid', 'church-id')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

@@ -44,27 +44,38 @@ describe('ResetPasswordUsecase', () => {
 
     await usecase.execute({ token: token.token, newPassword: 'newPass123' });
 
-    expect(mockUserRepository.updatePassword).toHaveBeenCalledWith(token.userId, 'new-hashed-password');
-    expect(mockPasswordResetTokenRepository.markAsUsed).toHaveBeenCalledWith(token.id);
+    expect(mockUserRepository.updatePassword).toHaveBeenCalledWith(
+      token.userId,
+      'new-hashed-password',
+    );
+    expect(mockPasswordResetTokenRepository.markAsUsed).toHaveBeenCalledWith(
+      token.id,
+    );
   });
 
   it('should throw BadRequestException when token is not found', async () => {
     mockPasswordResetTokenRepository.findByToken.mockResolvedValue(null);
 
-    await expect(usecase.execute({ token: 'bad', newPassword: 'pass' })).rejects.toThrow(BadRequestException);
+    await expect(
+      usecase.execute({ token: 'bad', newPassword: 'pass' }),
+    ).rejects.toThrow(BadRequestException);
   });
 
   it('should throw BadRequestException when token has already been used', async () => {
     const token = makeToken({ usedAt: new Date() });
     mockPasswordResetTokenRepository.findByToken.mockResolvedValue(token);
 
-    await expect(usecase.execute({ token: token.token, newPassword: 'pass' })).rejects.toThrow(BadRequestException);
+    await expect(
+      usecase.execute({ token: token.token, newPassword: 'pass' }),
+    ).rejects.toThrow(BadRequestException);
   });
 
   it('should throw BadRequestException when token has expired', async () => {
     const token = makeToken({ expiresAt: new Date(Date.now() - 1000) });
     mockPasswordResetTokenRepository.findByToken.mockResolvedValue(token);
 
-    await expect(usecase.execute({ token: token.token, newPassword: 'pass' })).rejects.toThrow(BadRequestException);
+    await expect(
+      usecase.execute({ token: token.token, newPassword: 'pass' }),
+    ).rejects.toThrow(BadRequestException);
   });
 });

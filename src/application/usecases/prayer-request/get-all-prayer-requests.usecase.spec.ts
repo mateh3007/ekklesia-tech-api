@@ -9,7 +9,9 @@ describe('GetAllPrayerRequestsUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAllPrayerRequestsUsecase(mockPrayerRequestRepository as any);
+    usecase = new GetAllPrayerRequestsUsecase(
+      mockPrayerRequestRepository as any,
+    );
   });
 
   it('should return all prayer requests for the church', async () => {
@@ -19,7 +21,9 @@ describe('GetAllPrayerRequestsUsecase', () => {
     const result = await usecase.execute('cid');
 
     expect(result).toBe(requests);
-    expect(mockPrayerRequestRepository.findAllByChurchId).toHaveBeenCalledWith('cid');
+    expect(mockPrayerRequestRepository.findAllByChurchId).toHaveBeenCalledWith(
+      'cid',
+    );
   });
 
   it('should return empty array when church has no prayer requests', async () => {

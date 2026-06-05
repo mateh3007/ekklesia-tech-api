@@ -30,7 +30,13 @@ describe('CreateUserUsecase', () => {
 
   it('should create user successfully', async () => {
     const input = makeInput();
-    const created = { id: 'uid', ...input, churchId: 'cid', createdAt: new Date(), updatedAt: new Date() };
+    const created = {
+      id: 'uid',
+      ...input,
+      churchId: 'cid',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockUserRepository.findByEmail.mockResolvedValue(null);
     mockUserRepository.create.mockResolvedValue(created);
 
@@ -43,14 +49,18 @@ describe('CreateUserUsecase', () => {
   });
 
   it('should throw BadRequestException when trying to create admin user', async () => {
-    await expect(usecase.execute(makeInput(Role.ADMIN), 'cid')).rejects.toThrow(BadRequestException);
+    await expect(usecase.execute(makeInput(Role.ADMIN), 'cid')).rejects.toThrow(
+      BadRequestException,
+    );
     expect(mockUserRepository.findByEmail).not.toHaveBeenCalled();
   });
 
   it('should throw BadRequestException when email already in use', async () => {
     mockUserRepository.findByEmail.mockResolvedValue({ id: 'existing' });
 
-    await expect(usecase.execute(makeInput(), 'cid')).rejects.toThrow(BadRequestException);
+    await expect(usecase.execute(makeInput(), 'cid')).rejects.toThrow(
+      BadRequestException,
+    );
     expect(mockUserRepository.create).not.toHaveBeenCalled();
   });
 });

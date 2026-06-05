@@ -9,7 +9,9 @@ describe('GetAllChurchServicesUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAllChurchServicesUsecase(mockChurchServiceRepository as any);
+    usecase = new GetAllChurchServicesUsecase(
+      mockChurchServiceRepository as any,
+    );
   });
 
   it('should return all services for the church', async () => {

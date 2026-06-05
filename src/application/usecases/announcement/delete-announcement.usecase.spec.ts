@@ -23,7 +23,9 @@ describe('DeleteAnnouncementUsecase', () => {
   });
 
   it('should soft delete announcement when found and belongs to the church', async () => {
-    mockAnnouncementRepository.findById.mockResolvedValue(makeAnnouncement('cid'));
+    mockAnnouncementRepository.findById.mockResolvedValue(
+      makeAnnouncement('cid'),
+    );
     mockAnnouncementRepository.softDelete.mockResolvedValue(undefined);
 
     await usecase.execute('aid', 'cid');
@@ -34,12 +36,18 @@ describe('DeleteAnnouncementUsecase', () => {
   it('should throw NotFoundException when announcement does not exist', async () => {
     mockAnnouncementRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('aid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('aid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when announcement belongs to a different church', async () => {
-    mockAnnouncementRepository.findById.mockResolvedValue(makeAnnouncement('other-cid'));
+    mockAnnouncementRepository.findById.mockResolvedValue(
+      makeAnnouncement('other-cid'),
+    );
 
-    await expect(usecase.execute('aid', 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('aid', 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

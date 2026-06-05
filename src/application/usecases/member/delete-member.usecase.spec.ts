@@ -15,7 +15,10 @@ describe('DeleteMemberUsecase', () => {
   });
 
   it('should delete member when found and belongs to the church', async () => {
-    mockMemberRepository.findById.mockResolvedValue({ id: 'mid', churchId: 'cid' });
+    mockMemberRepository.findById.mockResolvedValue({
+      id: 'mid',
+      churchId: 'cid',
+    });
     mockMemberRepository.delete.mockResolvedValue(undefined);
 
     await usecase.execute('mid', 'cid');
@@ -26,12 +29,19 @@ describe('DeleteMemberUsecase', () => {
   it('should throw NotFoundException when member does not exist', async () => {
     mockMemberRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('mid', 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('mid', 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when member belongs to a different church', async () => {
-    mockMemberRepository.findById.mockResolvedValue({ id: 'mid', churchId: 'other-cid' });
+    mockMemberRepository.findById.mockResolvedValue({
+      id: 'mid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('mid', 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('mid', 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

@@ -17,17 +17,26 @@ describe('CreateChurchServiceRecordUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new CreateChurchServiceRecordUsecase(mockChurchServiceRecordRepository as any);
+    usecase = new CreateChurchServiceRecordUsecase(
+      mockChurchServiceRecordRepository as any,
+    );
   });
 
   it('should create a church service record and return it', async () => {
     const input = makeInput();
-    const created = { id: 'rid', ...input, createdAt: new Date(), updatedAt: new Date() };
+    const created = {
+      id: 'rid',
+      ...input,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockChurchServiceRecordRepository.create.mockResolvedValue(created);
 
     const result = await usecase.execute(input);
 
     expect(result).toBe(created);
-    expect(mockChurchServiceRecordRepository.create).toHaveBeenCalledWith(input);
+    expect(mockChurchServiceRecordRepository.create).toHaveBeenCalledWith(
+      input,
+    );
   });
 });

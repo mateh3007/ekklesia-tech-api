@@ -21,7 +21,12 @@ describe('CreateChurchEventUsecase', () => {
 
   it('should create a church event and return it', async () => {
     const input = makeInput();
-    const created = { id: 'eid', ...input, createdAt: new Date(), updatedAt: new Date() };
+    const created = {
+      id: 'eid',
+      ...input,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockChurchEventRepository.create.mockResolvedValue(created);
 
     const result = await usecase.execute(input);

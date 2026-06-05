@@ -16,12 +16,19 @@ describe('CreatePrayerRequestUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new CreatePrayerRequestUsecase(mockPrayerRequestRepository as any);
+    usecase = new CreatePrayerRequestUsecase(
+      mockPrayerRequestRepository as any,
+    );
   });
 
   it('should create a prayer request and return it', async () => {
     const input = makeInput();
-    const created = { id: 'prid', ...input, createdAt: new Date(), updatedAt: new Date() };
+    const created = {
+      id: 'prid',
+      ...input,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockPrayerRequestRepository.create.mockResolvedValue(created);
 
     const result = await usecase.execute(input);

@@ -23,18 +23,27 @@ describe('UpdateMemberUsecase', () => {
     const result = await usecase.execute('mid', { name: 'João Silva' }, 'cid');
 
     expect(result).toBe(updated);
-    expect(mockMemberRepository.update).toHaveBeenCalledWith('mid', { name: 'João Silva' });
+    expect(mockMemberRepository.update).toHaveBeenCalledWith('mid', {
+      name: 'João Silva',
+    });
   });
 
   it('should throw NotFoundException when member does not exist', async () => {
     mockMemberRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('mid', {}, 'cid')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('mid', {}, 'cid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when member belongs to a different church', async () => {
-    mockMemberRepository.findById.mockResolvedValue({ id: 'mid', churchId: 'other-cid' });
+    mockMemberRepository.findById.mockResolvedValue({
+      id: 'mid',
+      churchId: 'other-cid',
+    });
 
-    await expect(usecase.execute('mid', {}, 'cid')).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute('mid', {}, 'cid')).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 });

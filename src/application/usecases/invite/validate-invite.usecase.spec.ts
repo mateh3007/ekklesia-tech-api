@@ -1,4 +1,8 @@
-import { ConflictException, GoneException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  GoneException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InviteStatus } from '@prisma/client';
 import { ValidateInviteUsecase } from './validate-invite.usecase';
 
@@ -42,8 +46,14 @@ describe('ValidateInviteUsecase', () => {
   it('should return invite info when token is valid', async () => {
     const invite = makeInvite();
     mockChurchInviteRepository.findByToken.mockResolvedValue(invite);
-    mockChurchRepository.findById.mockResolvedValue({ id: 'cid', corporateName: 'Igreja Vida' });
-    mockUserRepository.findById.mockResolvedValue({ id: 'admin-id', name: 'Pastor Admin' });
+    mockChurchRepository.findById.mockResolvedValue({
+      id: 'cid',
+      corporateName: 'Igreja Vida',
+    });
+    mockUserRepository.findById.mockResolvedValue({
+      id: 'admin-id',
+      name: 'Pastor Admin',
+    });
 
     const result = await usecase.execute('valid-token');
 
@@ -57,16 +67,23 @@ describe('ValidateInviteUsecase', () => {
   it('should throw NotFoundException when token is not found', async () => {
     mockChurchInviteRepository.findByToken.mockResolvedValue(null);
 
-    await expect(usecase.execute('bad-token')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('bad-token')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw GoneException and mark as EXPIRED when invite has expired', async () => {
-    const expiredInvite = makeInvite({ expiresAt: new Date(Date.now() - 1000) });
+    const expiredInvite = makeInvite({
+      expiresAt: new Date(Date.now() - 1000),
+    });
     mockChurchInviteRepository.findByToken.mockResolvedValue(expiredInvite);
     mockChurchInviteRepository.updateStatus.mockResolvedValue(undefined);
 
     await expect(usecase.execute('token')).rejects.toThrow(GoneException);
-    expect(mockChurchInviteRepository.updateStatus).toHaveBeenCalledWith(expiredInvite.id, InviteStatus.EXPIRED);
+    expect(mockChurchInviteRepository.updateStatus).toHaveBeenCalledWith(
+      expiredInvite.id,
+      InviteStatus.EXPIRED,
+    );
   });
 
   it('should throw ConflictException when invite has already been accepted', async () => {

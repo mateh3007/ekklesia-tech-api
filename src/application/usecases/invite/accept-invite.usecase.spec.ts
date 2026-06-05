@@ -1,4 +1,8 @@
-import { ConflictException, GoneException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  GoneException,
+  NotFoundException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { InviteStatus } from '@prisma/client';
 import { AcceptInviteUsecase } from './accept-invite.usecase';
@@ -41,7 +45,12 @@ describe('AcceptInviteUsecase', () => {
 
   it('should accept invite and create user when invite is valid', async () => {
     const invite = makeInvite();
-    const user = { id: 'uid', name: 'New User', email: invite.email, churchId: invite.churchId };
+    const user = {
+      id: 'uid',
+      name: 'New User',
+      email: invite.email,
+      churchId: invite.churchId,
+    };
 
     mockChurchInviteRepository.findByToken.mockResolvedValue(invite);
     mockUserRepository.create.mockResolvedValue(user);
@@ -61,27 +70,43 @@ describe('AcceptInviteUsecase', () => {
         password: 'hashed-password',
       }),
     );
-    expect(mockChurchInviteRepository.updateStatus).toHaveBeenCalledWith(invite.id, InviteStatus.ACCEPTED);
+    expect(mockChurchInviteRepository.updateStatus).toHaveBeenCalledWith(
+      invite.id,
+      InviteStatus.ACCEPTED,
+    );
   });
 
   it('should throw NotFoundException when invite token is not found', async () => {
     mockChurchInviteRepository.findByToken.mockResolvedValue(null);
 
     await expect(
-      usecase.execute('bad-token', { name: 'User', password: 'pass', phone: '123' }),
+      usecase.execute('bad-token', {
+        name: 'User',
+        password: 'pass',
+        phone: '123',
+      }),
     ).rejects.toThrow(NotFoundException);
   });
 
   it('should throw GoneException and mark as EXPIRED when invite has expired', async () => {
-    const expiredInvite = makeInvite({ expiresAt: new Date(Date.now() - 1000) });
+    const expiredInvite = makeInvite({
+      expiresAt: new Date(Date.now() - 1000),
+    });
     mockChurchInviteRepository.findByToken.mockResolvedValue(expiredInvite);
     mockChurchInviteRepository.updateStatus.mockResolvedValue(undefined);
 
     await expect(
-      usecase.execute('token', { name: 'User', password: 'pass', phone: '123' }),
+      usecase.execute('token', {
+        name: 'User',
+        password: 'pass',
+        phone: '123',
+      }),
     ).rejects.toThrow(GoneException);
 
-    expect(mockChurchInviteRepository.updateStatus).toHaveBeenCalledWith(expiredInvite.id, InviteStatus.EXPIRED);
+    expect(mockChurchInviteRepository.updateStatus).toHaveBeenCalledWith(
+      expiredInvite.id,
+      InviteStatus.EXPIRED,
+    );
   });
 
   it('should throw ConflictException when invite has already been accepted', async () => {
@@ -89,7 +114,11 @@ describe('AcceptInviteUsecase', () => {
     mockChurchInviteRepository.findByToken.mockResolvedValue(acceptedInvite);
 
     await expect(
-      usecase.execute('token', { name: 'User', password: 'pass', phone: '123' }),
+      usecase.execute('token', {
+        name: 'User',
+        password: 'pass',
+        phone: '123',
+      }),
     ).rejects.toThrow(ConflictException);
   });
 });

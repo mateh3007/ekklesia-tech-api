@@ -20,12 +20,19 @@ describe('CreateChurchServiceUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new CreateChurchServiceUsecase(mockChurchServiceRepository as any);
+    usecase = new CreateChurchServiceUsecase(
+      mockChurchServiceRepository as any,
+    );
   });
 
   it('should create a church service and return it', async () => {
     const input = makeInput();
-    const created = { id: 'sid', ...input, createdAt: new Date(), updatedAt: new Date() };
+    const created = {
+      id: 'sid',
+      ...input,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockChurchServiceRepository.create.mockResolvedValue(created);
 
     const result = await usecase.execute(input);

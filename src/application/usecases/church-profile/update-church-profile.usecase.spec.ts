@@ -11,7 +11,9 @@ describe('UpdateChurchProfileUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new UpdateChurchProfileUsecase(mockChurchProfileRepository as any);
+    usecase = new UpdateChurchProfileUsecase(
+      mockChurchProfileRepository as any,
+    );
   });
 
   it('should update church profile successfully', async () => {
@@ -23,7 +25,9 @@ describe('UpdateChurchProfileUsecase', () => {
     const result = await usecase.execute('cid', { name: 'Igreja Atualizada' });
 
     expect(result).toBe(updated);
-    expect(mockChurchProfileRepository.update).toHaveBeenCalledWith('cid', { name: 'Igreja Atualizada' });
+    expect(mockChurchProfileRepository.update).toHaveBeenCalledWith('cid', {
+      name: 'Igreja Atualizada',
+    });
   });
 
   it('should throw NotFoundException when profile does not exist', async () => {

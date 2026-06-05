@@ -26,6 +26,8 @@ describe('GetMeUsecase', () => {
   it('should throw NotFoundException when user is not found', async () => {
     mockUserRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('nonexistent')).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute('nonexistent')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

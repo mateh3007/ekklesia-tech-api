@@ -22,7 +22,12 @@ describe('CreateAnnouncementUsecase', () => {
 
   it('should create an announcement and return it', async () => {
     const input = makeInput();
-    const created = { id: 'aid', ...input, createdAt: new Date(), updatedAt: new Date() };
+    const created = {
+      id: 'aid',
+      ...input,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockAnnouncementRepository.create.mockResolvedValue(created);
 
     const result = await usecase.execute(input);

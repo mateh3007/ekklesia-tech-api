@@ -37,18 +37,31 @@ describe('RefreshTokenUsecase', () => {
   it('should return new tokens when refresh token is valid', async () => {
     const user = makeUser();
     const pwdAt = user.passwordChangedAt.toISOString();
-    mockJwtService.verify.mockReturnValue({ sub: user.id, pwdAt, type: 'refresh' });
+    mockJwtService.verify.mockReturnValue({
+      sub: user.id,
+      pwdAt,
+      type: 'refresh',
+    });
     mockUserRepository.findById.mockResolvedValue(user);
-    mockJwtService.sign.mockReturnValueOnce('new-access').mockReturnValueOnce('new-refresh');
+    mockJwtService.sign
+      .mockReturnValueOnce('new-access')
+      .mockReturnValueOnce('new-refresh');
 
     const result = await usecase.execute('valid-refresh-token');
 
-    expect(result).toEqual({ accessToken: 'new-access', refreshToken: 'new-refresh' });
+    expect(result).toEqual({
+      accessToken: 'new-access',
+      refreshToken: 'new-refresh',
+    });
   });
 
   it('should handle user with no passwordChangedAt', async () => {
     const user = { ...makeUser(), passwordChangedAt: undefined };
-    mockJwtService.verify.mockReturnValue({ sub: user.id, pwdAt: null, type: 'refresh' });
+    mockJwtService.verify.mockReturnValue({
+      sub: user.id,
+      pwdAt: null,
+      type: 'refresh',
+    });
     mockUserRepository.findById.mockResolvedValue(user);
     mockJwtService.sign.mockReturnValue('token');
 
@@ -57,29 +70,51 @@ describe('RefreshTokenUsecase', () => {
   });
 
   it('should throw UnauthorizedException when jwt.verify throws', async () => {
-    mockJwtService.verify.mockImplementation(() => { throw new Error('invalid'); });
+    mockJwtService.verify.mockImplementation(() => {
+      throw new Error('invalid');
+    });
 
-    await expect(usecase.execute('bad-token')).rejects.toThrow(UnauthorizedException);
+    await expect(usecase.execute('bad-token')).rejects.toThrow(
+      UnauthorizedException,
+    );
   });
 
   it('should throw UnauthorizedException when token type is not refresh', async () => {
-    mockJwtService.verify.mockReturnValue({ sub: 'id', pwdAt: null, type: 'access' });
+    mockJwtService.verify.mockReturnValue({
+      sub: 'id',
+      pwdAt: null,
+      type: 'access',
+    });
 
-    await expect(usecase.execute('access-token')).rejects.toThrow(UnauthorizedException);
+    await expect(usecase.execute('access-token')).rejects.toThrow(
+      UnauthorizedException,
+    );
   });
 
   it('should throw UnauthorizedException when user is not found', async () => {
-    mockJwtService.verify.mockReturnValue({ sub: 'id', pwdAt: null, type: 'refresh' });
+    mockJwtService.verify.mockReturnValue({
+      sub: 'id',
+      pwdAt: null,
+      type: 'refresh',
+    });
     mockUserRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute('token')).rejects.toThrow(UnauthorizedException);
+    await expect(usecase.execute('token')).rejects.toThrow(
+      UnauthorizedException,
+    );
   });
 
   it('should throw UnauthorizedException when password was changed after token issued', async () => {
     const user = makeUser();
-    mockJwtService.verify.mockReturnValue({ sub: user.id, pwdAt: 'old-date', type: 'refresh' });
+    mockJwtService.verify.mockReturnValue({
+      sub: user.id,
+      pwdAt: 'old-date',
+      type: 'refresh',
+    });
     mockUserRepository.findById.mockResolvedValue(user);
 
-    await expect(usecase.execute('token')).rejects.toThrow(UnauthorizedException);
+    await expect(usecase.execute('token')).rejects.toThrow(
+      UnauthorizedException,
+    );
   });
 });

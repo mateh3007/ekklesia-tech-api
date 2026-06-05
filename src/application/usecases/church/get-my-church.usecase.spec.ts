@@ -14,7 +14,10 @@ describe('GetMyChurchUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetMyChurchUsecase(mockChurchRepository as any, mockUserRepository as any);
+    usecase = new GetMyChurchUsecase(
+      mockChurchRepository as any,
+      mockUserRepository as any,
+    );
   });
 
   it('should return church with its users', async () => {
