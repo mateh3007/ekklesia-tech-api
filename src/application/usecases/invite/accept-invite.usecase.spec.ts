@@ -31,7 +31,6 @@ const makeInvite = (overrides = {}) => ({
   ...overrides,
 });
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -47,7 +46,7 @@ describe('AcceptInviteUsecase', () => {
     usecase = new AcceptInviteUsecase(
       mockChurchInviteRepository as any,
       mockUserRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

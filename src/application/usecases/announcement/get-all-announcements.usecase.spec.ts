@@ -4,7 +4,6 @@ const mockAnnouncementRepository = {
   findAllByChurchId: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -17,7 +16,10 @@ describe('GetAllAnnouncementsUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAllAnnouncementsUsecase(mockAnnouncementRepository as any, mockCacheAdapter as any);
+    usecase = new GetAllAnnouncementsUsecase(
+      mockAnnouncementRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should return all announcements for the church', async () => {

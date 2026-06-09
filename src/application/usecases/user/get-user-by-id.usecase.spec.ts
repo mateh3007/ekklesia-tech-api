@@ -12,7 +12,6 @@ const makeUser = (churchId = 'church-id') => ({
   churchId,
 });
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -25,7 +24,10 @@ describe('GetUserByIdUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetUserByIdUsecase(mockUserRepository as any, mockCacheAdapter as any);
+    usecase = new GetUserByIdUsecase(
+      mockUserRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should return user when found and belongs to the church', async () => {

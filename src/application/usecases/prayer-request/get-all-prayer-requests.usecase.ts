@@ -16,8 +16,7 @@ export class GetAllPrayerRequestsUsecase {
     const cached = await this.cache.get<IPrayerRequest[]>(cacheKey);
     if (cached) return cached;
 
-    const data =
-      await this.prayerRequestRepository.findAllByChurchId(churchId);
+    const data = await this.prayerRequestRepository.findAllByChurchId(churchId);
     await this.cache.set(cacheKey, data, CacheTTL.PRAYER_REQUESTS);
     return data;
   }

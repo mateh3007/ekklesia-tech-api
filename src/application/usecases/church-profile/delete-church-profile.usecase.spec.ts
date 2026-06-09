@@ -6,7 +6,6 @@ const mockChurchProfileRepository = {
   softDelete: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -21,7 +20,7 @@ describe('DeleteChurchProfileUsecase', () => {
     jest.clearAllMocks();
     usecase = new DeleteChurchProfileUsecase(
       mockChurchProfileRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

@@ -5,7 +5,6 @@ const mockChurchProfileRepository = {
   findByChurchId: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -18,7 +17,10 @@ describe('GetChurchProfileUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetChurchProfileUsecase(mockChurchProfileRepository as any, mockCacheAdapter as any);
+    usecase = new GetChurchProfileUsecase(
+      mockChurchProfileRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should return church profile when found', async () => {

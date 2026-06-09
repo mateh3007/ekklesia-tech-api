@@ -15,7 +15,6 @@ const makeInput = () => ({
   isOnline: false,
 });
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -30,7 +29,7 @@ describe('CreateChurchServiceUsecase', () => {
     jest.clearAllMocks();
     usecase = new CreateChurchServiceUsecase(
       mockChurchServiceRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

@@ -6,7 +6,6 @@ const mockChurchServiceRepository = {
   delete: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -21,7 +20,7 @@ describe('DeleteChurchServiceUsecase', () => {
     jest.clearAllMocks();
     usecase = new DeleteChurchServiceUsecase(
       mockChurchServiceRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

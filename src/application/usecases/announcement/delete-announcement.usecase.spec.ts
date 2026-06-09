@@ -14,7 +14,6 @@ const makeAnnouncement = (churchId = 'cid') => ({
   date: new Date(),
 });
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -27,7 +26,10 @@ describe('DeleteAnnouncementUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new DeleteAnnouncementUsecase(mockAnnouncementRepository as any, mockCacheAdapter as any);
+    usecase = new DeleteAnnouncementUsecase(
+      mockAnnouncementRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should soft delete announcement when found and belongs to the church', async () => {

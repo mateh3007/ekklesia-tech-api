@@ -6,7 +6,6 @@ const mockChurchEventRepository = {
   update: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -19,7 +18,10 @@ describe('UpdateChurchEventUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new UpdateChurchEventUsecase(mockChurchEventRepository as any, mockCacheAdapter as any);
+    usecase = new UpdateChurchEventUsecase(
+      mockChurchEventRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should update event successfully', async () => {

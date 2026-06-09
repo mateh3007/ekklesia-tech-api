@@ -14,7 +14,6 @@ const mockChurchRepository = {
   findById: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -31,7 +30,7 @@ describe('AssignChurchPermissionUsecase', () => {
       mockChurchPermissionRepository as any,
       mockPermissionRepository as any,
       mockChurchRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

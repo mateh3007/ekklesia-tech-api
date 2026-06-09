@@ -11,7 +11,6 @@ const makeInput = () => ({
   request: 'Ore pela minha família',
 });
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -26,7 +25,7 @@ describe('CreatePrayerRequestUsecase', () => {
     jest.clearAllMocks();
     usecase = new CreatePrayerRequestUsecase(
       mockPrayerRequestRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

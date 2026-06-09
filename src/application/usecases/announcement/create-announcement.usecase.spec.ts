@@ -12,7 +12,6 @@ const makeInput = () => ({
   date: new Date('2026-06-10'),
 });
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -25,7 +24,10 @@ describe('CreateAnnouncementUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new CreateAnnouncementUsecase(mockAnnouncementRepository as any, mockCacheAdapter as any);
+    usecase = new CreateAnnouncementUsecase(
+      mockAnnouncementRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should create an announcement and return it', async () => {

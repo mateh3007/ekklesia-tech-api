@@ -4,7 +4,6 @@ const mockChurchServiceRepository = {
   findAll: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -19,7 +18,7 @@ describe('GetAllChurchServicesUsecase', () => {
     jest.clearAllMocks();
     usecase = new GetAllChurchServicesUsecase(
       mockChurchServiceRepository as any,
-      mockCacheAdapter as any,
+      mockCacheAdapter,
     );
   });
 

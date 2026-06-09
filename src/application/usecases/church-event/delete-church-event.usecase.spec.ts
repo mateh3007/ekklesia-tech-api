@@ -6,7 +6,6 @@ const mockChurchEventRepository = {
   delete: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -19,7 +18,10 @@ describe('DeleteChurchEventUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new DeleteChurchEventUsecase(mockChurchEventRepository as any, mockCacheAdapter as any);
+    usecase = new DeleteChurchEventUsecase(
+      mockChurchEventRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should delete event when found and belongs to the church', async () => {

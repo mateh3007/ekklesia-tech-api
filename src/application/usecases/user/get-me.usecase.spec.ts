@@ -5,7 +5,6 @@ const mockUserRepository = {
   findById: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -18,7 +17,7 @@ describe('GetMeUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetMeUsecase(mockUserRepository as any, mockCacheAdapter as any);
+    usecase = new GetMeUsecase(mockUserRepository as any, mockCacheAdapter);
   });
 
   it('should return the authenticated user', async () => {

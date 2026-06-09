@@ -1,5 +1,4 @@
 import { GetAgendaUsecase } from './get-agenda.usecase';
-import { AgendaRepository } from 'src/domain/repositories/agenda.repository';
 import { AgendaFilter } from 'src/presentation/dtos/agenda/get-agenda-query.dto';
 
 const mockAgendaRepository = {
@@ -11,7 +10,6 @@ const makeAgenda = () => ({
   events: [],
   birthdays: [],
 });
-
 
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
@@ -25,8 +23,8 @@ describe('GetAgendaUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    usecase = new GetAgendaUsecase(mockAgendaRepository as AgendaRepository, mockCacheAdapter as any);
+
+    usecase = new GetAgendaUsecase(mockAgendaRepository, mockCacheAdapter);
     mockAgendaRepository.getAgenda.mockResolvedValue(makeAgenda());
   });
 

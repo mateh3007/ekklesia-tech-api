@@ -4,7 +4,6 @@ const mockMemberRepository = {
   create: jest.fn(),
 };
 
-
 const mockCacheAdapter = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue(undefined),
@@ -17,7 +16,10 @@ describe('CreateMemberUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new CreateMemberUsecase(mockMemberRepository as any, mockCacheAdapter as any);
+    usecase = new CreateMemberUsecase(
+      mockMemberRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should create a member and return it', async () => {
