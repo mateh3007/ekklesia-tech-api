@@ -39,7 +39,12 @@ describe('GetMeUsecase', () => {
   });
 
   it('should return cached user without hitting the repository', async () => {
-    const cached = { id: 'uid', name: 'Cached', email: 'c@c.com', churchId: 'cid' };
+    const cached = {
+      id: 'uid',
+      name: 'Cached',
+      email: 'c@c.com',
+      churchId: 'cid',
+    };
     mockCacheAdapter.get.mockResolvedValueOnce(cached);
 
     const result = await usecase.execute('uid');

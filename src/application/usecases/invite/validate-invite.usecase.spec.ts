@@ -102,7 +102,11 @@ describe('ValidateInviteUsecase', () => {
   });
 
   it('should return cached invite info without hitting the repository', async () => {
-    const cached = { email: 'a@b.com', churchName: 'Igreja', inviterName: 'Pastor' };
+    const cached = {
+      email: 'a@b.com',
+      churchName: 'Igreja',
+      inviterName: 'Pastor',
+    };
     mockCacheAdapter.get.mockResolvedValueOnce(cached);
 
     const result = await usecase.execute('valid-token');

@@ -49,6 +49,8 @@ describe('GetAllPrayerRequestsUsecase', () => {
     const result = await usecase.execute('cid');
 
     expect(result).toBe(cached);
-    expect(mockPrayerRequestRepository.findAllByChurchId).not.toHaveBeenCalled();
+    expect(
+      mockPrayerRequestRepository.findAllByChurchId,
+    ).not.toHaveBeenCalled();
   });
 });

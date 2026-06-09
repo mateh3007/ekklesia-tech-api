@@ -81,7 +81,11 @@ describe('GetAgendaUsecase', () => {
       const cached = makeAgenda();
       mockCacheAdapter.get.mockResolvedValueOnce(cached);
 
-      const result = await usecase.execute('cid', AgendaFilter.DAY, '2026-06-05');
+      const result = await usecase.execute(
+        'cid',
+        AgendaFilter.DAY,
+        '2026-06-05',
+      );
 
       expect(result).toBe(cached);
       expect(mockAgendaRepository.getAgenda).not.toHaveBeenCalled();
