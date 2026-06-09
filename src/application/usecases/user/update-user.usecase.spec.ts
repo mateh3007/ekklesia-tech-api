@@ -22,12 +22,22 @@ const makeUser = (id = 'user-id', churchId = 'church-id') => ({
   churchId,
 });
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('UpdateUserUsecase', () => {
   let usecase: UpdateUserUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new UpdateUserUsecase(mockUserRepository as any);
+    usecase = new UpdateUserUsecase(
+      mockUserRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should update user successfully without changing email or password', async () => {

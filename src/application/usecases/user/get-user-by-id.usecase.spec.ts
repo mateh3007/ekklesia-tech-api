@@ -12,12 +12,22 @@ const makeUser = (churchId = 'church-id') => ({
   churchId,
 });
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetUserByIdUsecase', () => {
   let usecase: GetUserByIdUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetUserByIdUsecase(mockUserRepository as any);
+    usecase = new GetUserByIdUsecase(
+      mockUserRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should return user when found and belongs to the church', async () => {
@@ -43,5 +53,25 @@ describe('GetUserByIdUsecase', () => {
     await expect(usecase.execute('uid', 'church-id')).rejects.toThrow(
       ForbiddenException,
     );
+  });
+
+  it('should return cached user without hitting the repository', async () => {
+    const cached = makeUser('church-id');
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('user-id', 'church-id');
+
+    expect(result).toBe(cached);
+    expect(mockUserRepository.findById).not.toHaveBeenCalled();
+  });
+
+  it('should throw ForbiddenException when cached user belongs to a different church', async () => {
+    const cached = makeUser('other-church');
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    await expect(usecase.execute('user-id', 'church-id')).rejects.toThrow(
+      ForbiddenException,
+    );
+    expect(mockUserRepository.findById).not.toHaveBeenCalled();
   });
 });

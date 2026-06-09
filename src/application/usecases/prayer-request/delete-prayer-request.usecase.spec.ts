@@ -6,6 +6,13 @@ const mockPrayerRequestRepository = {
   softDelete: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('DeletePrayerRequestUsecase', () => {
   let usecase: DeletePrayerRequestUsecase;
 
@@ -13,6 +20,7 @@ describe('DeletePrayerRequestUsecase', () => {
     jest.clearAllMocks();
     usecase = new DeletePrayerRequestUsecase(
       mockPrayerRequestRepository as any,
+      mockCacheAdapter,
     );
   });
 

@@ -15,6 +15,14 @@ export class PrismaChurchPermissionRepository extends ChurchPermissionRepository
     });
   }
 
+  async findPermissionNamesByChurchId(churchId: string): Promise<string[]> {
+    const records = await this.prisma.churchPermission.findMany({
+      where: { churchId },
+      include: { permission: { select: { name: true } } },
+    });
+    return records.map((r) => r.permission.name);
+  }
+
   async hasPermission(
     churchId: string,
     permissionName: string,

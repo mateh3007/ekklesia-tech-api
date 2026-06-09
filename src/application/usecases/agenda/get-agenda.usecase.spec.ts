@@ -1,5 +1,4 @@
 import { GetAgendaUsecase } from './get-agenda.usecase';
-import { AgendaRepository } from 'src/domain/repositories/agenda.repository';
 import { AgendaFilter } from 'src/presentation/dtos/agenda/get-agenda-query.dto';
 
 const mockAgendaRepository = {
@@ -12,13 +11,20 @@ const makeAgenda = () => ({
   birthdays: [],
 });
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAgendaUsecase', () => {
   let usecase: GetAgendaUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    usecase = new GetAgendaUsecase(mockAgendaRepository as AgendaRepository);
+
+    usecase = new GetAgendaUsecase(mockAgendaRepository, mockCacheAdapter);
     mockAgendaRepository.getAgenda.mockResolvedValue(makeAgenda());
   });
 
@@ -69,6 +75,20 @@ describe('GetAgendaUsecase', () => {
         expect.any(Date),
         expect.any(Date),
       );
+    });
+
+    it('should return cached agenda without hitting the repository', async () => {
+      const cached = makeAgenda();
+      mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+      const result = await usecase.execute(
+        'cid',
+        AgendaFilter.DAY,
+        '2026-06-05',
+      );
+
+      expect(result).toBe(cached);
+      expect(mockAgendaRepository.getAgenda).not.toHaveBeenCalled();
     });
   });
 });

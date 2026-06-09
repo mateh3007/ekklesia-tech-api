@@ -11,12 +11,22 @@ const makeInput = () => ({
   date: new Date('2026-07-15'),
 });
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('CreateChurchEventUsecase', () => {
   let usecase: CreateChurchEventUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new CreateChurchEventUsecase(mockChurchEventRepository as any);
+    usecase = new CreateChurchEventUsecase(
+      mockChurchEventRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should create a church event and return it', async () => {

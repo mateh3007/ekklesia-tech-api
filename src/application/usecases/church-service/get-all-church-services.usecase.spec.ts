@@ -4,6 +4,13 @@ const mockChurchServiceRepository = {
   findAll: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAllChurchServicesUsecase', () => {
   let usecase: GetAllChurchServicesUsecase;
 
@@ -11,6 +18,7 @@ describe('GetAllChurchServicesUsecase', () => {
     jest.clearAllMocks();
     usecase = new GetAllChurchServicesUsecase(
       mockChurchServiceRepository as any,
+      mockCacheAdapter,
     );
   });
 
@@ -30,5 +38,15 @@ describe('GetAllChurchServicesUsecase', () => {
     const result = await usecase.execute('cid');
 
     expect(result).toEqual([]);
+  });
+
+  it('should return cached services without hitting the repository', async () => {
+    const cached = [{ id: 's1' }];
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(mockChurchServiceRepository.findAll).not.toHaveBeenCalled();
   });
 });

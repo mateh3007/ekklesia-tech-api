@@ -6,6 +6,13 @@ const mockChurchProfileRepository = {
   update: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('UpdateChurchProfileUsecase', () => {
   let usecase: UpdateChurchProfileUsecase;
 
@@ -13,6 +20,7 @@ describe('UpdateChurchProfileUsecase', () => {
     jest.clearAllMocks();
     usecase = new UpdateChurchProfileUsecase(
       mockChurchProfileRepository as any,
+      mockCacheAdapter,
     );
   });
 

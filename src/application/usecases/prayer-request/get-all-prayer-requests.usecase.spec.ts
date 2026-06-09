@@ -4,6 +4,13 @@ const mockPrayerRequestRepository = {
   findAllByChurchId: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAllPrayerRequestsUsecase', () => {
   let usecase: GetAllPrayerRequestsUsecase;
 
@@ -11,6 +18,7 @@ describe('GetAllPrayerRequestsUsecase', () => {
     jest.clearAllMocks();
     usecase = new GetAllPrayerRequestsUsecase(
       mockPrayerRequestRepository as any,
+      mockCacheAdapter,
     );
   });
 
@@ -32,5 +40,17 @@ describe('GetAllPrayerRequestsUsecase', () => {
     const result = await usecase.execute('cid');
 
     expect(result).toEqual([]);
+  });
+
+  it('should return cached prayer requests without hitting the repository', async () => {
+    const cached = [{ id: 'pr1' }];
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(
+      mockPrayerRequestRepository.findAllByChurchId,
+    ).not.toHaveBeenCalled();
   });
 });

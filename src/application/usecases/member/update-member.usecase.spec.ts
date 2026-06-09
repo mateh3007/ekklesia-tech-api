@@ -6,12 +6,22 @@ const mockMemberRepository = {
   update: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('UpdateMemberUsecase', () => {
   let usecase: UpdateMemberUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new UpdateMemberUsecase(mockMemberRepository as any);
+    usecase = new UpdateMemberUsecase(
+      mockMemberRepository as any,
+      mockCacheAdapter,
+    );
   });
 
   it('should update member successfully', async () => {

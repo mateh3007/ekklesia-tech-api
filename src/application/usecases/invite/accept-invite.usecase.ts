@@ -6,12 +6,14 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { InviteStatus } from '@prisma/client';
+import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { Role } from 'src/domain/enums/role.enum';
 import { ChurchInviteRepository } from 'src/domain/repositories/church-invite.repository';
 import {
   UserRepository,
   IUserResponse,
 } from 'src/domain/repositories/user.repository';
+import { CacheKeys } from 'src/infra/adapters/cache-key.util';
 
 export interface IAcceptInviteInput {
   name: string;
@@ -24,6 +26,7 @@ export class AcceptInviteUsecase {
   constructor(
     private readonly churchInviteRepository: ChurchInviteRepository,
     private readonly userRepository: UserRepository,
+    private readonly cache: CacheAdapter,
   ) {}
 
   async execute(
@@ -60,6 +63,8 @@ export class AcceptInviteUsecase {
       invite.id,
       InviteStatus.ACCEPTED,
     );
+
+    await this.cache.delete(CacheKeys.inviteToken(token));
 
     return user;
   }

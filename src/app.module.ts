@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { PrismaModule } from './infra/config/prisma/prisma.module';
+import { CacheModule } from './infra/modules/cache/cache.module';
 import { RegisterModule } from './infra/modules/register/register.module';
 import { ChurchModule } from './infra/modules/church/church.module';
 import { UserModule } from './infra/modules/user/user.module';
@@ -21,6 +22,7 @@ import { PermissionsGuard } from './infra/config/abac/permissions.guard';
 
 @Module({
   imports: [
+    CacheModule,
     PrismaModule,
     RegisterModule,
     ChurchModule,

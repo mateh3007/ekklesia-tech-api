@@ -24,6 +24,13 @@ const makeToken = (overrides = {}) => ({
   ...overrides,
 });
 
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('ResetPasswordUsecase', () => {
   let usecase: ResetPasswordUsecase;
 
@@ -32,6 +39,7 @@ describe('ResetPasswordUsecase', () => {
     usecase = new ResetPasswordUsecase(
       mockUserRepository as any,
       mockPasswordResetTokenRepository as any,
+      mockCacheAdapter,
     );
   });
 
