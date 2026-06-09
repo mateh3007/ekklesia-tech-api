@@ -54,4 +54,24 @@ describe('GetUserByIdUsecase', () => {
       ForbiddenException,
     );
   });
+
+  it('should return cached user without hitting the repository', async () => {
+    const cached = makeUser('church-id');
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('user-id', 'church-id');
+
+    expect(result).toBe(cached);
+    expect(mockUserRepository.findById).not.toHaveBeenCalled();
+  });
+
+  it('should throw ForbiddenException when cached user belongs to a different church', async () => {
+    const cached = makeUser('other-church');
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    await expect(usecase.execute('user-id', 'church-id')).rejects.toThrow(
+      ForbiddenException,
+    );
+    expect(mockUserRepository.findById).not.toHaveBeenCalled();
+  });
 });

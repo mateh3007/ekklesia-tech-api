@@ -57,13 +57,10 @@ export class ValidateInviteUsecase {
       inviterName: inviter!.name,
     };
 
-    const ttl = Math.max(
-      0,
-      Math.floor((new Date(invite.expiresAt).getTime() - Date.now()) / 1000),
+    const ttl = Math.floor(
+      (new Date(invite.expiresAt).getTime() - Date.now()) / 1000,
     );
-    if (ttl > 0) {
-      await this.cache.set(cacheKey, result, ttl);
-    }
+    await this.cache.set(cacheKey, result, ttl);
 
     return result;
   }

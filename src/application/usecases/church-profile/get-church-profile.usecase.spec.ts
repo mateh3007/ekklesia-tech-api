@@ -37,4 +37,14 @@ describe('GetChurchProfileUsecase', () => {
 
     await expect(usecase.execute('cid')).rejects.toThrow(NotFoundException);
   });
+
+  it('should return cached profile without hitting the repository', async () => {
+    const cached = { id: 'pid', churchId: 'cid', name: 'Igreja Cached' };
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(mockChurchProfileRepository.findByChurchId).not.toHaveBeenCalled();
+  });
 });

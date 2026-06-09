@@ -43,4 +43,14 @@ describe('GetAllAnnouncementsUsecase', () => {
 
     expect(result).toEqual([]);
   });
+
+  it('should return cached announcements without hitting the repository', async () => {
+    const cached = [{ id: 'a1' }];
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(mockAnnouncementRepository.findAllByChurchId).not.toHaveBeenCalled();
+  });
 });

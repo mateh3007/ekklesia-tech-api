@@ -37,4 +37,14 @@ describe('GetMeUsecase', () => {
       NotFoundException,
     );
   });
+
+  it('should return cached user without hitting the repository', async () => {
+    const cached = { id: 'uid', name: 'Cached', email: 'c@c.com', churchId: 'cid' };
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('uid');
+
+    expect(result).toBe(cached);
+    expect(mockUserRepository.findById).not.toHaveBeenCalled();
+  });
 });

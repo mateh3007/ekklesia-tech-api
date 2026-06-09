@@ -41,4 +41,14 @@ describe('GetAllPrayerRequestsUsecase', () => {
 
     expect(result).toEqual([]);
   });
+
+  it('should return cached prayer requests without hitting the repository', async () => {
+    const cached = [{ id: 'pr1' }];
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(mockPrayerRequestRepository.findAllByChurchId).not.toHaveBeenCalled();
+  });
 });

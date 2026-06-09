@@ -39,4 +39,14 @@ describe('GetAllChurchEventsUsecase', () => {
 
     expect(result).toEqual([]);
   });
+
+  it('should return cached events without hitting the repository', async () => {
+    const cached = [{ id: 'e1' }];
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(mockChurchEventRepository.findAll).not.toHaveBeenCalled();
+  });
 });

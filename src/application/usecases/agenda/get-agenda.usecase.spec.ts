@@ -76,5 +76,15 @@ describe('GetAgendaUsecase', () => {
         expect.any(Date),
       );
     });
+
+    it('should return cached agenda without hitting the repository', async () => {
+      const cached = makeAgenda();
+      mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+      const result = await usecase.execute('cid', AgendaFilter.DAY, '2026-06-05');
+
+      expect(result).toBe(cached);
+      expect(mockAgendaRepository.getAgenda).not.toHaveBeenCalled();
+    });
   });
 });

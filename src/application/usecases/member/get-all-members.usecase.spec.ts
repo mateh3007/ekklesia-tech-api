@@ -39,4 +39,14 @@ describe('GetAllMembersUsecase', () => {
 
     expect(result).toEqual([]);
   });
+
+  it('should return cached members without hitting the repository', async () => {
+    const cached = [{ id: 'm1' }];
+    mockCacheAdapter.get.mockResolvedValueOnce(cached);
+
+    const result = await usecase.execute('cid');
+
+    expect(result).toBe(cached);
+    expect(mockMemberRepository.findByChurchId).not.toHaveBeenCalled();
+  });
 });
