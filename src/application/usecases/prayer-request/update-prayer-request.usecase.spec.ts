@@ -6,6 +6,14 @@ const mockPrayerRequestRepository = {
   update: jest.fn(),
 };
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('UpdatePrayerRequestUsecase', () => {
   let usecase: UpdatePrayerRequestUsecase;
 
@@ -13,6 +21,7 @@ describe('UpdatePrayerRequestUsecase', () => {
     jest.clearAllMocks();
     usecase = new UpdatePrayerRequestUsecase(
       mockPrayerRequestRepository as any,
+      mockCacheAdapter as any,
     );
   });
 

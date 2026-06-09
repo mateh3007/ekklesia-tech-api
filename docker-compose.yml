@@ -17,5 +17,16 @@ services:
       timeout: 3s
       retries: 20
 
+  redis:
+    image: redis:7-alpine
+    container_name: ekklesia_redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - ekklesia_redis_data:/data
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --bind 0.0.0.0
+
 volumes:
   ekklesia_pgdata:
+  ekklesia_redis_data:

@@ -14,12 +14,20 @@ const makeAnnouncement = (churchId = 'cid') => ({
   date: new Date(),
 });
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('UpdateAnnouncementUsecase', () => {
   let usecase: UpdateAnnouncementUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new UpdateAnnouncementUsecase(mockAnnouncementRepository as any);
+    usecase = new UpdateAnnouncementUsecase(mockAnnouncementRepository as any, mockCacheAdapter as any);
   });
 
   it('should update announcement successfully', async () => {

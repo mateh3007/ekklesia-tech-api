@@ -4,6 +4,14 @@ const mockPrayerRequestRepository = {
   findAllByChurchId: jest.fn(),
 };
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAllPrayerRequestsUsecase', () => {
   let usecase: GetAllPrayerRequestsUsecase;
 
@@ -11,6 +19,7 @@ describe('GetAllPrayerRequestsUsecase', () => {
     jest.clearAllMocks();
     usecase = new GetAllPrayerRequestsUsecase(
       mockPrayerRequestRepository as any,
+      mockCacheAdapter as any,
     );
   });
 

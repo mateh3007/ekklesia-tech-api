@@ -4,12 +4,20 @@ const mockChurchEventRepository = {
   findAll: jest.fn(),
 };
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAllChurchEventsUsecase', () => {
   let usecase: GetAllChurchEventsUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAllChurchEventsUsecase(mockChurchEventRepository as any);
+    usecase = new GetAllChurchEventsUsecase(mockChurchEventRepository as any, mockCacheAdapter as any);
   });
 
   it('should return all events for the church', async () => {

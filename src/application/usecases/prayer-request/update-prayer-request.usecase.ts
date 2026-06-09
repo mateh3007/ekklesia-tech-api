@@ -3,16 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { IPrayerRequest } from 'src/domain/entities/prayer-request.entity';
 import {
   PrayerRequestRepository,
   UpdatePrayerRequestInput,
 } from 'src/domain/repositories/prayer-request.repository';
+import { CacheKeys } from 'src/infra/adapters/cache-key.util';
 
 @Injectable()
 export class UpdatePrayerRequestUsecase {
   constructor(
     private readonly prayerRequestRepository: PrayerRequestRepository,
+    private readonly cache: CacheAdapter,
   ) {}
 
   async execute(
@@ -24,6 +27,9 @@ export class UpdatePrayerRequestUsecase {
     if (!prayerRequest) throw new NotFoundException('Prayer request not found');
     if (prayerRequest.churchId !== churchId)
       throw new ForbiddenException('Access denied to this prayer request');
-    return this.prayerRequestRepository.update(id, data);
+
+    const updated = await this.prayerRequestRepository.update(id, data);
+    await this.cache.delete(CacheKeys.prayerRequests(churchId));
+    return updated;
   }
 }

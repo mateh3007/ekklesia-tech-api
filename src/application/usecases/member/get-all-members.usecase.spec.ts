@@ -4,12 +4,20 @@ const mockMemberRepository = {
   findByChurchId: jest.fn(),
 };
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAllMembersUsecase', () => {
   let usecase: GetAllMembersUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new GetAllMembersUsecase(mockMemberRepository as any);
+    usecase = new GetAllMembersUsecase(mockMemberRepository as any, mockCacheAdapter as any);
   });
 
   it('should return all members for the church', async () => {

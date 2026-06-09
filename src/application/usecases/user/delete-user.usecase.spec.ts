@@ -6,12 +6,20 @@ const mockUserRepository = {
   delete: jest.fn(),
 };
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('DeleteUserUsecase', () => {
   let usecase: DeleteUserUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    usecase = new DeleteUserUsecase(mockUserRepository as any);
+    usecase = new DeleteUserUsecase(mockUserRepository as any, mockCacheAdapter as any);
   });
 
   it('should delete user when found and belongs to the church', async () => {

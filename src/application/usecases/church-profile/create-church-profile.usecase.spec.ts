@@ -11,6 +11,14 @@ const makeInput = () => ({
   name: 'Igreja Teste',
 });
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('CreateChurchProfileUsecase', () => {
   let usecase: CreateChurchProfileUsecase;
 
@@ -18,6 +26,7 @@ describe('CreateChurchProfileUsecase', () => {
     jest.clearAllMocks();
     usecase = new CreateChurchProfileUsecase(
       mockChurchProfileRepository as any,
+      mockCacheAdapter as any,
     );
   });
 

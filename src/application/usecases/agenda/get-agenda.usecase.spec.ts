@@ -12,13 +12,21 @@ const makeAgenda = () => ({
   birthdays: [],
 });
 
+
+const mockCacheAdapter = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue(undefined),
+  delete: jest.fn().mockResolvedValue(undefined),
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('GetAgendaUsecase', () => {
   let usecase: GetAgendaUsecase;
 
   beforeEach(() => {
     jest.clearAllMocks();
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    usecase = new GetAgendaUsecase(mockAgendaRepository as AgendaRepository);
+    usecase = new GetAgendaUsecase(mockAgendaRepository as AgendaRepository, mockCacheAdapter as any);
     mockAgendaRepository.getAgenda.mockResolvedValue(makeAgenda());
   });
 

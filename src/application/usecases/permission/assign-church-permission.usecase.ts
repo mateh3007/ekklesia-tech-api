@@ -3,10 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { IChurchPermission } from 'src/domain/entities/church-permission.entity';
 import { ChurchPermissionRepository } from 'src/domain/repositories/church-permission.repository';
 import { PermissionRepository } from 'src/domain/repositories/permission.repository';
 import { ChurchRepository } from 'src/domain/repositories/church.repository';
+import { CacheKeys } from 'src/infra/adapters/cache-key.util';
 
 @Injectable()
 export class AssignChurchPermissionUsecase {
@@ -14,6 +16,7 @@ export class AssignChurchPermissionUsecase {
     private readonly churchPermissionRepository: ChurchPermissionRepository,
     private readonly permissionRepository: PermissionRepository,
     private readonly churchRepository: ChurchRepository,
+    private readonly cache: CacheAdapter,
   ) {}
 
   async execute(
@@ -34,6 +37,11 @@ export class AssignChurchPermissionUsecase {
     if (duplicate)
       throw new ConflictException('Permission already assigned to this church');
 
-    return this.churchPermissionRepository.assign(churchId, permissionId);
+    const result = await this.churchPermissionRepository.assign(
+      churchId,
+      permissionId,
+    );
+    await this.cache.delete(CacheKeys.churchPermissions(churchId));
+    return result;
   }
 }
