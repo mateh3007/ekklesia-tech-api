@@ -6,6 +6,10 @@ const mockChurchServiceRecordRepository = {
   softDelete: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('DeleteChurchServiceRecordUsecase', () => {
   let usecase: DeleteChurchServiceRecordUsecase;
 
@@ -13,6 +17,7 @@ describe('DeleteChurchServiceRecordUsecase', () => {
     jest.clearAllMocks();
     usecase = new DeleteChurchServiceRecordUsecase(
       mockChurchServiceRecordRepository as any,
+      mockCacheAdapter as any,
     );
   });
 

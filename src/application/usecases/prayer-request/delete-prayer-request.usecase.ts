@@ -20,6 +20,6 @@ export class DeletePrayerRequestUsecase {
     if (prayerRequest.churchId !== churchId)
       throw new ForbiddenException('Access denied to this prayer request');
     await this.prayerRequestRepository.softDelete(id);
-    await this.cache.delete(CacheKeys.prayerRequests(churchId));
+    await this.cache.deleteByPattern(CacheKeys.prayerRequestsPattern(churchId));
   }
 }

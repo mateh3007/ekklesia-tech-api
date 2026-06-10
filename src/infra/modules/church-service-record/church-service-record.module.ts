@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ChurchServiceModule } from '../church-service/church-service.module';
 import { CreateChurchServiceRecordUsecase } from 'src/application/usecases/church-service-record/create-church-service-record.usecase';
 import { DeleteChurchServiceRecordUsecase } from 'src/application/usecases/church-service-record/delete-church-service-record.usecase';
 import { GetAllChurchServiceRecordsUsecase } from 'src/application/usecases/church-service-record/get-all-church-service-records.usecase';
@@ -15,6 +16,7 @@ import { GetLatestChurchServiceRecordController } from 'src/presentation/control
 import { UpdateChurchServiceRecordController } from 'src/presentation/controllers/church-service-record/update-church-service-record.controller';
 
 @Module({
+  imports: [ChurchServiceModule],
   providers: [
     CreateChurchServiceRecordUsecase,
     GetAllChurchServiceRecordsUsecase,

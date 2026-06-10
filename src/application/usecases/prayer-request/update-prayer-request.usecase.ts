@@ -29,7 +29,7 @@ export class UpdatePrayerRequestUsecase {
       throw new ForbiddenException('Access denied to this prayer request');
 
     const updated = await this.prayerRequestRepository.update(id, data);
-    await this.cache.delete(CacheKeys.prayerRequests(churchId));
+    await this.cache.deleteByPattern(CacheKeys.prayerRequestsPattern(churchId));
     return updated;
   }
 }

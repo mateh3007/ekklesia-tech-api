@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { IChurchProfile } from 'src/domain/entities/church-profile.entity';
 import {
@@ -18,6 +18,11 @@ export class UpdateChurchProfileUsecase {
     churchId: string,
     data: UpdateChurchProfileInput,
   ): Promise<IChurchProfile> {
+    if (data.pixKeyType && !data.pixKey)
+      throw new BadRequestException(
+        'pixKey is required when changing pixKeyType',
+      );
+
     const profile = await this.churchProfileRepository.findByChurchId(churchId);
     if (!profile) throw new NotFoundException('Church profile not found');
 

@@ -20,7 +20,7 @@ export class CreateMemberUsecase {
   async execute(input: CreateMemberBody, churchId: string): Promise<IMember> {
     const member = await this.memberRepository.create({ ...input, churchId });
     await Promise.all([
-      this.cache.delete(CacheKeys.members(churchId)),
+      this.cache.deleteByPattern(CacheKeys.membersPattern(churchId)),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(churchId)),
     ]);
     return member;

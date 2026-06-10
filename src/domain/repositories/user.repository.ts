@@ -1,5 +1,7 @@
 import { BaseRepository } from '../base/base.repository';
 import { IUser } from '../entities/user.entity';
+import { Role } from '../enums/role.enum';
+import { PaginatedResult } from '../types/paginated-result.type';
 
 export type CreateUserInput = Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateUserInput = Partial<
@@ -14,5 +16,14 @@ export abstract class UserRepository extends BaseRepository<
 > {
   abstract findByEmail(email: string): Promise<IUser | null>;
   abstract findByChurchId(churchId: string): Promise<IUserResponse[]>;
+  abstract findByChurchIdAndRoles(
+    churchId: string,
+    roles: Role[],
+  ): Promise<IUserResponse[]>;
+  abstract findByChurchIdPaginated(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IUserResponse>>;
   abstract updatePassword(id: string, hashedPassword: string): Promise<void>;
 }

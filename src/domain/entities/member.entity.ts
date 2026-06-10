@@ -4,5 +4,5 @@ export interface IMember extends IBaseEntity {
   churchId: string;
   name: string;
   phone?: string;
-  dateOfBirth: Date;
+  dateOfBirth?: Date;
 }

@@ -1,3 +1,4 @@
+import { PaginatedResult } from '../types/paginated-result.type';
 import { IChurchService } from '../entities/church-service.entity';
 
 export type CreateChurchServiceInput = Omit<
@@ -11,6 +12,11 @@ export type UpdateChurchServiceInput = Partial<
 export abstract class ChurchServiceRepository {
   abstract create(data: CreateChurchServiceInput): Promise<IChurchService>;
   abstract findAll(churchId: string): Promise<IChurchService[]>;
+  abstract findPaginated(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IChurchService>>;
   abstract findById(id: string): Promise<IChurchService | null>;
   abstract update(
     id: string,

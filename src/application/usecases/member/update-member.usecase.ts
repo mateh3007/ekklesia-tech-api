@@ -30,7 +30,7 @@ export class UpdateMemberUsecase {
 
     const updated = await this.memberRepository.update(id, data);
     await Promise.all([
-      this.cache.delete(CacheKeys.members(churchId)),
+      this.cache.deleteByPattern(CacheKeys.membersPattern(churchId)),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(churchId)),
     ]);
     return updated;

@@ -29,7 +29,7 @@ export class UpdateChurchServiceUsecase {
 
     const updated = await this.churchServiceRepository.update(id, input);
     await Promise.all([
-      this.cache.delete(CacheKeys.churchServices(churchId)),
+      this.cache.deleteByPattern(CacheKeys.churchServicesPattern(churchId)),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(churchId)),
     ]);
     return updated;

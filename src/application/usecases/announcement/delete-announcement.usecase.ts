@@ -20,6 +20,6 @@ export class DeleteAnnouncementUsecase {
     if (announcement.churchId !== churchId)
       throw new ForbiddenException('Access denied to this announcement');
     await this.announcementRepository.softDelete(id);
-    await this.cache.delete(CacheKeys.announcements(churchId));
+    await this.cache.deleteByPattern(CacheKeys.announcementsPattern(churchId));
   }
 }

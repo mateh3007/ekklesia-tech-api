@@ -17,7 +17,7 @@ export class CreateChurchEventUsecase {
   async execute(input: CreateChurchEventInput): Promise<IChurchEvent> {
     const event = await this.churchEventRepository.create(input);
     await Promise.all([
-      this.cache.delete(CacheKeys.churchEvents(input.churchId)),
+      this.cache.deleteByPattern(CacheKeys.churchEventsPattern(input.churchId)),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(input.churchId)),
     ]);
     return event;

@@ -28,6 +28,7 @@ import { UpdateUserController } from 'src/presentation/controllers/user/update-u
       useExisting: PrismaUserRepository,
     },
   ],
+  exports: [UserRepository],
   controllers: [
     GetMeController,
     CreateUserController,
