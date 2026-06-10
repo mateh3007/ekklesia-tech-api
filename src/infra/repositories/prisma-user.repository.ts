@@ -7,6 +7,8 @@ import {
   UserRepository,
 } from 'src/domain/repositories/user.repository';
 import { IUser } from 'src/domain/entities/user.entity';
+import { Role } from 'src/domain/enums/role.enum';
+import { PaginatedResult } from 'src/domain/types/paginated-result.type';
 
 @Injectable()
 export class PrismaUserRepository extends UserRepository {
@@ -52,6 +54,35 @@ export class PrismaUserRepository extends UserRepository {
   async findByChurchId(churchId: string): Promise<IUserResponse[]> {
     const users = await this.prisma.user.findMany({ where: { churchId } });
     return users.map((u) => this.exclude(u as IUser));
+  }
+
+  async findByChurchIdAndRoles(
+    churchId: string,
+    roles: Role[],
+  ): Promise<IUserResponse[]> {
+    const users = await this.prisma.user.findMany({
+      where: { churchId, role: { in: roles } },
+    });
+    return users.map((u) => this.exclude(u as IUser));
+  }
+
+  async findByChurchIdPaginated(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IUserResponse>> {
+    const skip = (page - 1) * limit;
+    const [users, total] = await Promise.all([
+      this.prisma.user.findMany({ where: { churchId }, skip, take: limit }),
+      this.prisma.user.count({ where: { churchId } }),
+    ]);
+    return {
+      data: users.map((u) => this.exclude(u as IUser)),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async updatePassword(id: string, hashedPassword: string): Promise<void> {

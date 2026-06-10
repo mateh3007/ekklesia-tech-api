@@ -20,7 +20,7 @@ export class DeleteChurchEventUsecase {
     if (event.churchId !== churchId) throw new ForbiddenException();
     await this.churchEventRepository.delete(id);
     await Promise.all([
-      this.cache.delete(CacheKeys.churchEvents(churchId)),
+      this.cache.deleteByPattern(CacheKeys.churchEventsPattern(churchId)),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(churchId)),
     ]);
   }

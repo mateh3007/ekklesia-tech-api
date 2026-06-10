@@ -29,7 +29,7 @@ export class UpdateAnnouncementUsecase {
       throw new ForbiddenException('Access denied to this announcement');
 
     const updated = await this.announcementRepository.update(id, data);
-    await this.cache.delete(CacheKeys.announcements(churchId));
+    await this.cache.deleteByPattern(CacheKeys.announcementsPattern(churchId));
     return updated;
   }
 }

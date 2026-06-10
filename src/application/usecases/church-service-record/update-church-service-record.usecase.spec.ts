@@ -6,6 +6,10 @@ const mockChurchServiceRecordRepository = {
   update: jest.fn(),
 };
 
+const mockCacheAdapter = {
+  deleteByPattern: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('UpdateChurchServiceRecordUsecase', () => {
   let usecase: UpdateChurchServiceRecordUsecase;
 
@@ -13,6 +17,7 @@ describe('UpdateChurchServiceRecordUsecase', () => {
     jest.clearAllMocks();
     usecase = new UpdateChurchServiceRecordUsecase(
       mockChurchServiceRecordRepository as any,
+      mockCacheAdapter as any,
     );
   });
 

@@ -1,3 +1,4 @@
+import { PaginatedResult } from '../types/paginated-result.type';
 import { IAnnouncement } from '../entities/announcement.entity';
 
 export type CreateAnnouncementInput = Omit<
@@ -11,6 +12,11 @@ export type UpdateAnnouncementInput = Partial<
 export abstract class AnnouncementRepository {
   abstract create(data: CreateAnnouncementInput): Promise<IAnnouncement>;
   abstract findAllByChurchId(churchId: string): Promise<IAnnouncement[]>;
+  abstract findPaginated(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IAnnouncement>>;
   abstract findById(id: string): Promise<IAnnouncement | null>;
   abstract update(
     id: string,

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { IChurchService } from 'src/domain/entities/church-service.entity';
 import { ChurchServiceRepository } from 'src/domain/repositories/church-service.repository';
+import { PaginatedResult } from 'src/domain/types/paginated-result.type';
 import { CacheKeys, CacheTTL } from 'src/infra/adapters/cache-key.util';
 
 @Injectable()
@@ -11,13 +12,22 @@ export class GetAllChurchServicesUsecase {
     private readonly cache: CacheAdapter,
   ) {}
 
-  async execute(churchId: string): Promise<IChurchService[]> {
-    const cacheKey = CacheKeys.churchServices(churchId);
-    const cached = await this.cache.get<IChurchService[]>(cacheKey);
+  async execute(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IChurchService>> {
+    const cacheKey = CacheKeys.churchServices(churchId, page, limit);
+    const cached =
+      await this.cache.get<PaginatedResult<IChurchService>>(cacheKey);
     if (cached) return cached;
 
-    const services = await this.churchServiceRepository.findAll(churchId);
-    await this.cache.set(cacheKey, services, CacheTTL.CHURCH_SERVICES);
-    return services;
+    const result = await this.churchServiceRepository.findPaginated(
+      churchId,
+      page,
+      limit,
+    );
+    await this.cache.set(cacheKey, result, CacheTTL.CHURCH_SERVICES);
+    return result;
   }
 }

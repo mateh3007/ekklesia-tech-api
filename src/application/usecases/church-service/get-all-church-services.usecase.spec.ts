@@ -1,7 +1,8 @@
 import { GetAllChurchServicesUsecase } from './get-all-church-services.usecase';
+import { PaginatedResult } from 'src/domain/types/paginated-result.type';
 
 const mockChurchServiceRepository = {
-  findAll: jest.fn(),
+  findPaginated: jest.fn(),
 };
 
 const mockCacheAdapter = {
@@ -10,6 +11,14 @@ const mockCacheAdapter = {
   delete: jest.fn().mockResolvedValue(undefined),
   deleteByPattern: jest.fn().mockResolvedValue(undefined),
 };
+
+const makePaginated = (data: unknown[]): PaginatedResult<unknown> => ({
+  data,
+  total: data.length,
+  page: 1,
+  limit: 10,
+  totalPages: 1,
+});
 
 describe('GetAllChurchServicesUsecase', () => {
   let usecase: GetAllChurchServicesUsecase;
@@ -22,31 +31,37 @@ describe('GetAllChurchServicesUsecase', () => {
     );
   });
 
-  it('should return all services for the church', async () => {
-    const services = [{ id: 's1' }, { id: 's2' }];
-    mockChurchServiceRepository.findAll.mockResolvedValue(services);
+  it('should return paginated services for the church', async () => {
+    const result = makePaginated([{ id: 's1' }, { id: 's2' }]);
+    mockChurchServiceRepository.findPaginated.mockResolvedValue(result);
 
-    const result = await usecase.execute('cid');
+    const response = await usecase.execute('cid', 1, 10);
 
-    expect(result).toBe(services);
-    expect(mockChurchServiceRepository.findAll).toHaveBeenCalledWith('cid');
+    expect(response).toBe(result);
+    expect(mockChurchServiceRepository.findPaginated).toHaveBeenCalledWith(
+      'cid',
+      1,
+      10,
+    );
   });
 
-  it('should return empty array when church has no services', async () => {
-    mockChurchServiceRepository.findAll.mockResolvedValue([]);
+  it('should return empty paginated result when no services exist', async () => {
+    const result = makePaginated([]);
+    mockChurchServiceRepository.findPaginated.mockResolvedValue(result);
 
-    const result = await usecase.execute('cid');
+    const response = await usecase.execute('cid', 1, 10);
 
-    expect(result).toEqual([]);
+    expect(response.data).toEqual([]);
+    expect(response.total).toBe(0);
   });
 
-  it('should return cached services without hitting the repository', async () => {
-    const cached = [{ id: 's1' }];
+  it('should return cached result without hitting the repository', async () => {
+    const cached = makePaginated([{ id: 's1' }]);
     mockCacheAdapter.get.mockResolvedValueOnce(cached);
 
-    const result = await usecase.execute('cid');
+    const response = await usecase.execute('cid', 1, 10);
 
-    expect(result).toBe(cached);
-    expect(mockChurchServiceRepository.findAll).not.toHaveBeenCalled();
+    expect(response).toBe(cached);
+    expect(mockChurchServiceRepository.findPaginated).not.toHaveBeenCalled();
   });
 });

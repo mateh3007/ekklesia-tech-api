@@ -43,4 +43,8 @@ export class PrismaMemberRepository extends MemberRepository {
       IMember[]
     >;
   }
+
+  async countByChurchId(churchId: string): Promise<number> {
+    return this.prisma.member.count({ where: { churchId } });
+  }
 }

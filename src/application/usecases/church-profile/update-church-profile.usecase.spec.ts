@@ -1,4 +1,5 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { PixKeyType } from 'src/domain/enums/pix-key-type.enum';
 import { UpdateChurchProfileUsecase } from './update-church-profile.usecase';
 
 const mockChurchProfileRepository = {
@@ -42,5 +43,29 @@ describe('UpdateChurchProfileUsecase', () => {
     mockChurchProfileRepository.findByChurchId.mockResolvedValue(null);
 
     await expect(usecase.execute('cid', {})).rejects.toThrow(NotFoundException);
+  });
+
+  it('should throw BadRequestException when pixKeyType is provided without pixKey', async () => {
+    await expect(
+      usecase.execute('cid', { pixKeyType: PixKeyType.CPF }),
+    ).rejects.toThrow(BadRequestException);
+  });
+
+  it('should update successfully when both pixKeyType and pixKey are provided', async () => {
+    const profile = { id: 'pid', churchId: 'cid' };
+    const updated = {
+      ...profile,
+      pixKeyType: PixKeyType.CPF,
+      pixKey: '123.456.789-00',
+    };
+    mockChurchProfileRepository.findByChurchId.mockResolvedValue(profile);
+    mockChurchProfileRepository.update.mockResolvedValue(updated);
+
+    const result = await usecase.execute('cid', {
+      pixKeyType: PixKeyType.CPF,
+      pixKey: '123.456.789-00',
+    });
+
+    expect(result).toBe(updated);
   });
 });

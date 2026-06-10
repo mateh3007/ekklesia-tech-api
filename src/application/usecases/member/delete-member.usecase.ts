@@ -21,7 +21,7 @@ export class DeleteMemberUsecase {
       throw new ForbiddenException('Access denied to this member');
     await this.memberRepository.delete(id);
     await Promise.all([
-      this.cache.delete(CacheKeys.members(churchId)),
+      this.cache.deleteByPattern(CacheKeys.membersPattern(churchId)),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(churchId)),
     ]);
   }

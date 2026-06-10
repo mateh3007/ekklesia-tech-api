@@ -5,6 +5,7 @@ import {
   CreateChurchServiceInput,
   UpdateChurchServiceInput,
 } from 'src/domain/repositories/church-service.repository';
+import { PaginatedResult } from 'src/domain/types/paginated-result.type';
 import { PrismaService } from 'src/infra/config/prisma/prisma.service';
 
 @Injectable()
@@ -23,6 +24,29 @@ export class PrismaChurchServiceRepository extends ChurchServiceRepository {
     return this.prisma.churchService.findMany({
       where: { churchId },
     }) as Promise<IChurchService[]>;
+  }
+
+  async findPaginated(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IChurchService>> {
+    const skip = (page - 1) * limit;
+    const [data, total] = await Promise.all([
+      this.prisma.churchService.findMany({
+        where: { churchId },
+        skip,
+        take: limit,
+      }),
+      this.prisma.churchService.count({ where: { churchId } }),
+    ]);
+    return {
+      data: data as IChurchService[],
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findById(id: string): Promise<IChurchService | null> {

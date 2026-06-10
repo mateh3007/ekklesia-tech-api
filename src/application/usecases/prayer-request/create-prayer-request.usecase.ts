@@ -16,7 +16,9 @@ export class CreatePrayerRequestUsecase {
 
   async execute(input: CreatePrayerRequestInput): Promise<IPrayerRequest> {
     const prayerRequest = await this.prayerRequestRepository.create(input);
-    await this.cache.delete(CacheKeys.prayerRequests(input.churchId));
+    await this.cache.deleteByPattern(
+      CacheKeys.prayerRequestsPattern(input.churchId),
+    );
     return prayerRequest;
   }
 }

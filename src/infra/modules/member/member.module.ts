@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { UserModule } from '../user/user.module';
 import { CreateMemberUsecase } from 'src/application/usecases/member/create-member.usecase';
 import { DeleteMemberUsecase } from 'src/application/usecases/member/delete-member.usecase';
 import { GetAllMembersUsecase } from 'src/application/usecases/member/get-all-members.usecase';
@@ -13,6 +14,7 @@ import { GetMemberByIdController } from 'src/presentation/controllers/member/get
 import { UpdateMemberController } from 'src/presentation/controllers/member/update-member.controller';
 
 @Module({
+  imports: [UserModule],
   providers: [
     CreateMemberUsecase,
     GetAllMembersUsecase,

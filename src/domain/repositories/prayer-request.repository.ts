@@ -1,3 +1,4 @@
+import { PaginatedResult } from '../types/paginated-result.type';
 import { IPrayerRequest } from '../entities/prayer-request.entity';
 
 export type CreatePrayerRequestInput = Omit<
@@ -11,6 +12,11 @@ export type UpdatePrayerRequestInput = Partial<
 export abstract class PrayerRequestRepository {
   abstract create(data: CreatePrayerRequestInput): Promise<IPrayerRequest>;
   abstract findAllByChurchId(churchId: string): Promise<IPrayerRequest[]>;
+  abstract findPaginated(
+    churchId: string,
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IPrayerRequest>>;
   abstract findById(id: string): Promise<IPrayerRequest | null>;
   abstract update(
     id: string,
