@@ -14,7 +14,9 @@ export class GetChurchServicesNoPaginationController {
   ) {}
 
   @Get('no-pagination')
-  @ApiOperation({ summary: 'List all church services (id and name only) without pagination' })
+  @ApiOperation({
+    summary: 'List all church services (id and name only) without pagination',
+  })
   async execute(@GetUser() user: IJwtUser): Promise<IdName[]> {
     return this.getChurchServicesNoPaginationUsecase.execute(user.churchId);
   }

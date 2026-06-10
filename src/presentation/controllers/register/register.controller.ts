@@ -16,7 +16,10 @@ export class RegisterController {
   @ApiOperation({ summary: 'Registrar uma nova igreja' })
   @ApiResponse({ status: 201, description: 'Igreja registrada com sucesso' })
   @ApiResponse({ status: 400, description: 'Erro ao registrar a igreja' })
-  @ApiResponse({ status: 429, description: 'Muitas tentativas. Tente novamente em 15 minutos.' })
+  @ApiResponse({
+    status: 429,
+    description: 'Muitas tentativas. Tente novamente em 15 minutos.',
+  })
   @ApiBody({ type: RegisterDto })
   async execute(@Body() body: RegisterDto): Promise<void> {
     await this.registerUsecase.execute(body);

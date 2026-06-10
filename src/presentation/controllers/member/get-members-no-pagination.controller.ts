@@ -17,7 +17,9 @@ export class GetMembersNoPaginationController {
 
   @Get('no-pagination')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @ApiOperation({ summary: 'List all members (id and name only) without pagination' })
+  @ApiOperation({
+    summary: 'List all members (id and name only) without pagination',
+  })
   async execute(@GetUser() user: IJwtUser): Promise<IdName[]> {
     return this.getMembersNoPaginationUsecase.execute(user.churchId);
   }
