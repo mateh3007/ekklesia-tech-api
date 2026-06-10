@@ -3,6 +3,7 @@ import { CreateChurchServiceUsecase } from 'src/application/usecases/church-serv
 import { DeleteChurchServiceUsecase } from 'src/application/usecases/church-service/delete-church-service.usecase';
 import { GetAllChurchServicesUsecase } from 'src/application/usecases/church-service/get-all-church-services.usecase';
 import { GetChurchServiceByIdUsecase } from 'src/application/usecases/church-service/get-church-service-by-id.usecase';
+import { GetChurchServicesNoPaginationUsecase } from 'src/application/usecases/church-service/get-church-services-no-pagination.usecase';
 import { UpdateChurchServiceUsecase } from 'src/application/usecases/church-service/update-church-service.usecase';
 import { ChurchServiceRepository } from 'src/domain/repositories/church-service.repository';
 import { PrismaChurchServiceRepository } from 'src/infra/repositories/prisma-church-service.repository';
@@ -10,6 +11,7 @@ import { CreateChurchServiceController } from 'src/presentation/controllers/chur
 import { DeleteChurchServiceController } from 'src/presentation/controllers/church-service/delete-church-service.controller';
 import { GetAllChurchServicesController } from 'src/presentation/controllers/church-service/get-all-church-services.controller';
 import { GetChurchServiceByIdController } from 'src/presentation/controllers/church-service/get-church-service-by-id.controller';
+import { GetChurchServicesNoPaginationController } from 'src/presentation/controllers/church-service/get-church-services-no-pagination.controller';
 import { UpdateChurchServiceController } from 'src/presentation/controllers/church-service/update-church-service.controller';
 
 @Module({
@@ -17,6 +19,7 @@ import { UpdateChurchServiceController } from 'src/presentation/controllers/chur
     CreateChurchServiceUsecase,
     GetAllChurchServicesUsecase,
     GetChurchServiceByIdUsecase,
+    GetChurchServicesNoPaginationUsecase,
     UpdateChurchServiceUsecase,
     DeleteChurchServiceUsecase,
     PrismaChurchServiceRepository,
@@ -29,6 +32,7 @@ import { UpdateChurchServiceController } from 'src/presentation/controllers/chur
   controllers: [
     CreateChurchServiceController,
     GetAllChurchServicesController,
+    GetChurchServicesNoPaginationController,
     GetChurchServiceByIdController,
     UpdateChurchServiceController,
     DeleteChurchServiceController,

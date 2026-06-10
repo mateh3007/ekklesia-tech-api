@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { PrismaModule } from './infra/config/prisma/prisma.module';
 import { CacheModule } from './infra/modules/cache/cache.module';
 import { RegisterModule } from './infra/modules/register/register.module';
@@ -22,6 +23,13 @@ import { PermissionsGuard } from './infra/config/abac/permissions.guard';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ttl: 60000,
+        limit: 60,
+      },
+    ]),
     CacheModule,
     PrismaModule,
     RegisterModule,
@@ -40,6 +48,7 @@ import { PermissionsGuard } from './infra/config/abac/permissions.guard';
     PrayerRequestModule,
   ],
   providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_GUARD, useClass: PermissionsGuard },
