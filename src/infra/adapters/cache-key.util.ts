@@ -21,6 +21,10 @@ export const CacheKeys = {
     `church:announcements:${churchId}:p${page}:l${limit}`,
   prayerRequests: (churchId: string, page: number, limit: number) =>
     `church:prayer-requests:${churchId}:p${page}:l${limit}`,
+  membersNoPagination: (churchId: string) =>
+    `church:members:${churchId}:no-pagination`,
+  churchServicesNoPagination: (churchId: string) =>
+    `church:services:${churchId}:no-pagination`,
   churchServicesPattern: (churchId: string) => `church:services:${churchId}:*`,
   churchServiceRecordsPattern: (churchId: string) =>
     `church:service-records:${churchId}:*`,

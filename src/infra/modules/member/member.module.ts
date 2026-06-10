@@ -4,6 +4,7 @@ import { CreateMemberUsecase } from 'src/application/usecases/member/create-memb
 import { DeleteMemberUsecase } from 'src/application/usecases/member/delete-member.usecase';
 import { GetAllMembersUsecase } from 'src/application/usecases/member/get-all-members.usecase';
 import { GetMemberByIdUsecase } from 'src/application/usecases/member/get-member-by-id.usecase';
+import { GetMembersNoPaginationUsecase } from 'src/application/usecases/member/get-members-no-pagination.usecase';
 import { UpdateMemberUsecase } from 'src/application/usecases/member/update-member.usecase';
 import { MemberRepository } from 'src/domain/repositories/member.repository';
 import { PrismaMemberRepository } from 'src/infra/repositories/prisma-member.repository';
@@ -11,6 +12,7 @@ import { CreateMemberController } from 'src/presentation/controllers/member/crea
 import { DeleteMemberController } from 'src/presentation/controllers/member/delete-member.controller';
 import { GetAllMembersController } from 'src/presentation/controllers/member/get-all-members.controller';
 import { GetMemberByIdController } from 'src/presentation/controllers/member/get-member-by-id.controller';
+import { GetMembersNoPaginationController } from 'src/presentation/controllers/member/get-members-no-pagination.controller';
 import { UpdateMemberController } from 'src/presentation/controllers/member/update-member.controller';
 
 @Module({
@@ -19,6 +21,7 @@ import { UpdateMemberController } from 'src/presentation/controllers/member/upda
     CreateMemberUsecase,
     GetAllMembersUsecase,
     GetMemberByIdUsecase,
+    GetMembersNoPaginationUsecase,
     UpdateMemberUsecase,
     DeleteMemberUsecase,
     PrismaMemberRepository,
@@ -30,6 +33,7 @@ import { UpdateMemberController } from 'src/presentation/controllers/member/upda
   controllers: [
     CreateMemberController,
     GetAllMembersController,
+    GetMembersNoPaginationController,
     GetMemberByIdController,
     UpdateMemberController,
     DeleteMemberController,
