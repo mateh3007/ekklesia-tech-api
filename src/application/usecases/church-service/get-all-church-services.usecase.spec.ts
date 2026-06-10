@@ -38,7 +38,11 @@ describe('GetAllChurchServicesUsecase', () => {
     const response = await usecase.execute('cid', 1, 10);
 
     expect(response).toBe(result);
-    expect(mockChurchServiceRepository.findPaginated).toHaveBeenCalledWith('cid', 1, 10);
+    expect(mockChurchServiceRepository.findPaginated).toHaveBeenCalledWith(
+      'cid',
+      1,
+      10,
+    );
   });
 
   it('should return empty paginated result when no services exist', async () => {

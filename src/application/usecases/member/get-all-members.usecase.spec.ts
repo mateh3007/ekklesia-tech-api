@@ -89,7 +89,13 @@ describe('GetAllMembersUsecase', () => {
   });
 
   it('should return cached result without hitting repositories', async () => {
-    const cached = { data: [{ id: 'm1' }], total: 1, page: 1, limit: 10, totalPages: 1 };
+    const cached = {
+      data: [{ id: 'm1' }],
+      total: 1,
+      page: 1,
+      limit: 10,
+      totalPages: 1,
+    };
     mockCacheAdapter.get.mockResolvedValueOnce(cached);
 
     const result = await usecase.execute('cid', 1, 10);

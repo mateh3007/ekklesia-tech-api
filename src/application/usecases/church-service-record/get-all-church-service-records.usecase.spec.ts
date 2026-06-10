@@ -38,7 +38,9 @@ describe('GetAllChurchServiceRecordsUsecase', () => {
     const response = await usecase.execute('cid', 1, 10);
 
     expect(response).toBe(result);
-    expect(mockChurchServiceRecordRepository.findPaginated).toHaveBeenCalledWith('cid', 1, 10);
+    expect(
+      mockChurchServiceRecordRepository.findPaginated,
+    ).toHaveBeenCalledWith('cid', 1, 10);
   });
 
   it('should return empty paginated result when no records exist', async () => {
@@ -58,6 +60,8 @@ describe('GetAllChurchServiceRecordsUsecase', () => {
     const response = await usecase.execute('cid', 1, 10);
 
     expect(response).toBe(cached);
-    expect(mockChurchServiceRecordRepository.findPaginated).not.toHaveBeenCalled();
+    expect(
+      mockChurchServiceRecordRepository.findPaginated,
+    ).not.toHaveBeenCalled();
   });
 });

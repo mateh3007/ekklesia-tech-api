@@ -18,10 +18,15 @@ export class GetAllAnnouncementsUsecase {
     limit: number,
   ): Promise<PaginatedResult<IAnnouncement>> {
     const cacheKey = CacheKeys.announcements(churchId, page, limit);
-    const cached = await this.cache.get<PaginatedResult<IAnnouncement>>(cacheKey);
+    const cached =
+      await this.cache.get<PaginatedResult<IAnnouncement>>(cacheKey);
     if (cached) return cached;
 
-    const result = await this.announcementRepository.findPaginated(churchId, page, limit);
+    const result = await this.announcementRepository.findPaginated(
+      churchId,
+      page,
+      limit,
+    );
     await this.cache.set(cacheKey, result, CacheTTL.ANNOUNCEMENTS);
     return result;
   }

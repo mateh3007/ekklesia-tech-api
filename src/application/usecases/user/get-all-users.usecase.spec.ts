@@ -38,7 +38,11 @@ describe('GetAllUsersUsecase', () => {
     const response = await usecase.execute('cid', 1, 10);
 
     expect(response).toBe(result);
-    expect(mockUserRepository.findByChurchIdPaginated).toHaveBeenCalledWith('cid', 1, 10);
+    expect(mockUserRepository.findByChurchIdPaginated).toHaveBeenCalledWith(
+      'cid',
+      1,
+      10,
+    );
   });
 
   it('should return empty paginated result when no users exist', async () => {

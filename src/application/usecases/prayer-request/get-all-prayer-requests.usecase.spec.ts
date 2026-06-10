@@ -38,7 +38,11 @@ describe('GetAllPrayerRequestsUsecase', () => {
     const response = await usecase.execute('cid', 1, 10);
 
     expect(response).toBe(result);
-    expect(mockPrayerRequestRepository.findPaginated).toHaveBeenCalledWith('cid', 1, 10);
+    expect(mockPrayerRequestRepository.findPaginated).toHaveBeenCalledWith(
+      'cid',
+      1,
+      10,
+    );
   });
 
   it('should return empty paginated result when no prayer requests exist', async () => {

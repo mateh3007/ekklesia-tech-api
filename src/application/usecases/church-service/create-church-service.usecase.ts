@@ -17,7 +17,9 @@ export class CreateChurchServiceUsecase {
   async execute(input: CreateChurchServiceInput): Promise<IChurchService> {
     const service = await this.churchServiceRepository.create(input);
     await Promise.all([
-      this.cache.deleteByPattern(CacheKeys.churchServicesPattern(input.churchId)),
+      this.cache.deleteByPattern(
+        CacheKeys.churchServicesPattern(input.churchId),
+      ),
       this.cache.deleteByPattern(CacheKeys.agendaPattern(input.churchId)),
     ]);
     return service;

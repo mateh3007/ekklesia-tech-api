@@ -41,8 +41,16 @@ describe('CreateChurchServiceRecordUsecase', () => {
 
   it('should create a church service record with a valid serviceId', async () => {
     const input = makeInput();
-    const created = { id: 'rid', ...input, createdAt: new Date(), updatedAt: new Date() };
-    mockChurchServiceRepository.findById.mockResolvedValue({ id: 'sid', churchId: 'cid' });
+    const created = {
+      id: 'rid',
+      ...input,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    mockChurchServiceRepository.findById.mockResolvedValue({
+      id: 'sid',
+      churchId: 'cid',
+    });
     mockChurchServiceRecordRepository.findByServiceId.mockResolvedValue(null);
     mockChurchServiceRecordRepository.create.mockResolvedValue(created);
 
@@ -55,7 +63,9 @@ describe('CreateChurchServiceRecordUsecase', () => {
   it('should throw NotFoundException when serviceId does not exist', async () => {
     mockChurchServiceRepository.findById.mockResolvedValue(null);
 
-    await expect(usecase.execute(makeInput())).rejects.toThrow(NotFoundException);
+    await expect(usecase.execute(makeInput())).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('should throw ForbiddenException when serviceId belongs to another church', async () => {
@@ -64,13 +74,22 @@ describe('CreateChurchServiceRecordUsecase', () => {
       churchId: 'other-cid',
     });
 
-    await expect(usecase.execute(makeInput())).rejects.toThrow(ForbiddenException);
+    await expect(usecase.execute(makeInput())).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('should throw ConflictException when a record already exists for the serviceId', async () => {
-    mockChurchServiceRepository.findById.mockResolvedValue({ id: 'sid', churchId: 'cid' });
-    mockChurchServiceRecordRepository.findByServiceId.mockResolvedValue({ id: 'existing-rid' });
+    mockChurchServiceRepository.findById.mockResolvedValue({
+      id: 'sid',
+      churchId: 'cid',
+    });
+    mockChurchServiceRecordRepository.findByServiceId.mockResolvedValue({
+      id: 'existing-rid',
+    });
 
-    await expect(usecase.execute(makeInput())).rejects.toThrow(ConflictException);
+    await expect(usecase.execute(makeInput())).rejects.toThrow(
+      ConflictException,
+    );
   });
 });

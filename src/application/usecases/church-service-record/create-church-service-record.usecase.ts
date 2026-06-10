@@ -24,7 +24,9 @@ export class CreateChurchServiceRecordUsecase {
   async execute(
     input: CreateChurchServiceRecordInput,
   ): Promise<IChurchServiceRecord> {
-    const service = await this.churchServiceRepository.findById(input.serviceId);
+    const service = await this.churchServiceRepository.findById(
+      input.serviceId,
+    );
     if (!service) throw new NotFoundException('Church service not found');
     if (service.churchId !== input.churchId)
       throw new ForbiddenException('Service does not belong to this church');

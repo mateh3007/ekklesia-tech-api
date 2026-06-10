@@ -16,7 +16,9 @@ export class CreateAnnouncementUsecase {
 
   async execute(input: CreateAnnouncementInput): Promise<IAnnouncement> {
     const announcement = await this.announcementRepository.create(input);
-    await this.cache.deleteByPattern(CacheKeys.announcementsPattern(input.churchId));
+    await this.cache.deleteByPattern(
+      CacheKeys.announcementsPattern(input.churchId),
+    );
     return announcement;
   }
 }

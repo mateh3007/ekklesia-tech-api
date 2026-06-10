@@ -60,7 +60,9 @@ export class PrismaChurchServiceRecordRepository extends ChurchServiceRecordRepo
     };
   }
 
-  async findByServiceId(serviceId: string): Promise<IChurchServiceRecord | null> {
+  async findByServiceId(
+    serviceId: string,
+  ): Promise<IChurchServiceRecord | null> {
     return this.prisma.churchServiceRecord.findFirst({
       where: { serviceId, deletedAt: null },
     }) as Promise<IChurchServiceRecord | null>;

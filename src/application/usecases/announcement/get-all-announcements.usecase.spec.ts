@@ -38,7 +38,11 @@ describe('GetAllAnnouncementsUsecase', () => {
     const response = await usecase.execute('cid', 1, 10);
 
     expect(response).toBe(result);
-    expect(mockAnnouncementRepository.findPaginated).toHaveBeenCalledWith('cid', 1, 10);
+    expect(mockAnnouncementRepository.findPaginated).toHaveBeenCalledWith(
+      'cid',
+      1,
+      10,
+    );
   });
 
   it('should return empty paginated result when no announcements exist', async () => {

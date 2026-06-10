@@ -18,10 +18,15 @@ export class GetAllChurchServiceRecordsUsecase {
     limit: number,
   ): Promise<PaginatedResult<IChurchServiceRecord>> {
     const cacheKey = CacheKeys.churchServiceRecords(churchId, page, limit);
-    const cached = await this.cache.get<PaginatedResult<IChurchServiceRecord>>(cacheKey);
+    const cached =
+      await this.cache.get<PaginatedResult<IChurchServiceRecord>>(cacheKey);
     if (cached) return cached;
 
-    const result = await this.churchServiceRecordRepository.findPaginated(churchId, page, limit);
+    const result = await this.churchServiceRecordRepository.findPaginated(
+      churchId,
+      page,
+      limit,
+    );
     await this.cache.set(cacheKey, result, CacheTTL.CHURCH_SERVICE_RECORDS);
     return result;
   }

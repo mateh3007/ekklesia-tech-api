@@ -53,7 +53,11 @@ describe('UpdateChurchProfileUsecase', () => {
 
   it('should update successfully when both pixKeyType and pixKey are provided', async () => {
     const profile = { id: 'pid', churchId: 'cid' };
-    const updated = { ...profile, pixKeyType: PixKeyType.CPF, pixKey: '123.456.789-00' };
+    const updated = {
+      ...profile,
+      pixKeyType: PixKeyType.CPF,
+      pixKey: '123.456.789-00',
+    };
     mockChurchProfileRepository.findByChurchId.mockResolvedValue(profile);
     mockChurchProfileRepository.update.mockResolvedValue(updated);
 

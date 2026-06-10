@@ -20,10 +20,15 @@ export class GetAllUsersUsecase {
     limit: number,
   ): Promise<PaginatedResult<IUserResponse>> {
     const cacheKey = CacheKeys.users(churchId, page, limit);
-    const cached = await this.cache.get<PaginatedResult<IUserResponse>>(cacheKey);
+    const cached =
+      await this.cache.get<PaginatedResult<IUserResponse>>(cacheKey);
     if (cached) return cached;
 
-    const result = await this.userRepository.findByChurchIdPaginated(churchId, page, limit);
+    const result = await this.userRepository.findByChurchIdPaginated(
+      churchId,
+      page,
+      limit,
+    );
     await this.cache.set(cacheKey, result, CacheTTL.USERS);
     return result;
   }
