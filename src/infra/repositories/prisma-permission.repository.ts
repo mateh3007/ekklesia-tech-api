@@ -10,16 +10,20 @@ export class PrismaPermissionRepository extends PermissionRepository {
   }
 
   async findAll(): Promise<IPermission[]> {
-    return this.prisma.permission.findMany() as Promise<IPermission[]>;
+    return this.prisma.permission.findMany();
   }
 
   async findById(id: string): Promise<IPermission> {
-    const permission = await this.prisma.permission.findUnique({ where: { id } });
+    const permission = await this.prisma.permission.findUnique({
+      where: { id },
+    });
     if (!permission) throw new NotFoundException(`Permission ${id} not found`);
-    return permission as IPermission;
+    return permission;
   }
 
   async findByName(name: string): Promise<IPermission | null> {
-    return this.prisma.permission.findUnique({ where: { name } }) as Promise<IPermission | null>;
+    return this.prisma.permission.findUnique({
+      where: { name },
+    });
   }
 }

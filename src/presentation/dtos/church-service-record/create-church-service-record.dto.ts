@@ -2,10 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateChurchServiceRecordDto {
-  @ApiProperty({ example: 'uuid-do-culto', required: false })
-  @IsOptional()
+  @ApiProperty({ example: 'uuid-do-culto' })
   @IsUUID()
-  serviceId?: string;
+  serviceId: string;
 
   @ApiProperty({ example: 'Pr. João Silva' })
   @IsString()

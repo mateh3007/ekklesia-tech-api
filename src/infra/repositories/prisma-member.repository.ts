@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/infra/config/prisma/prisma.service';
-import { CreateMemberInput, MemberRepository, UpdateMemberInput } from 'src/domain/repositories/member.repository';
+import {
+  CreateMemberInput,
+  MemberRepository,
+  UpdateMemberInput,
+} from 'src/domain/repositories/member.repository';
 import { IMember } from 'src/domain/entities/member.entity';
 
 @Injectable()
@@ -18,11 +22,16 @@ export class PrismaMemberRepository extends MemberRepository {
   }
 
   async findById(id: string): Promise<IMember | null> {
-    return this.prisma.member.findUnique({ where: { id } }) as Promise<IMember | null>;
+    return this.prisma.member.findUnique({
+      where: { id },
+    }) as Promise<IMember | null>;
   }
 
   async update(id: string, data: UpdateMemberInput): Promise<IMember> {
-    return this.prisma.member.update({ where: { id }, data }) as Promise<IMember>;
+    return this.prisma.member.update({
+      where: { id },
+      data,
+    }) as Promise<IMember>;
   }
 
   async delete(id: string): Promise<void> {
@@ -30,6 +39,12 @@ export class PrismaMemberRepository extends MemberRepository {
   }
 
   async findByChurchId(churchId: string): Promise<IMember[]> {
-    return this.prisma.member.findMany({ where: { churchId } }) as Promise<IMember[]>;
+    return this.prisma.member.findMany({ where: { churchId } }) as Promise<
+      IMember[]
+    >;
+  }
+
+  async countByChurchId(churchId: string): Promise<number> {
+    return this.prisma.member.count({ where: { churchId } });
   }
 }

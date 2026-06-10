@@ -11,7 +11,9 @@ import { Roles } from 'src/infra/config/rbac/roles.decorator';
 @ApiTags('Church Profile')
 @Controller('church-profile')
 export class GetChurchProfileController {
-  constructor(private readonly getChurchProfileUsecase: GetChurchProfileUsecase) {}
+  constructor(
+    private readonly getChurchProfileUsecase: GetChurchProfileUsecase,
+  ) {}
 
   @Get()
   @Roles(Role.ADMIN, Role.SUPERVISOR)

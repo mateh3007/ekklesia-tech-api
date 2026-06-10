@@ -12,12 +12,17 @@ import { UpdateChurchProfileDto } from 'src/presentation/dtos/church-profile/upd
 @ApiTags('Church Profile')
 @Controller('church-profile')
 export class UpdateChurchProfileController {
-  constructor(private readonly updateChurchProfileUsecase: UpdateChurchProfileUsecase) {}
+  constructor(
+    private readonly updateChurchProfileUsecase: UpdateChurchProfileUsecase,
+  ) {}
 
   @Patch()
   @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Update own church profile' })
-  async execute(@Body() body: UpdateChurchProfileDto, @GetUser() user: IJwtUser): Promise<IChurchProfile> {
+  async execute(
+    @Body() body: UpdateChurchProfileDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IChurchProfile> {
     return this.updateChurchProfileUsecase.execute(user.churchId, {
       ...body,
       foundedAt: body.foundedAt ? new Date(body.foundedAt) : undefined,

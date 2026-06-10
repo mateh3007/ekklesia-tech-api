@@ -1,12 +1,30 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { IUserResponse, UpdateUserInput, UserRepository } from 'src/domain/repositories/user.repository';
+import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
+import {
+  IUserResponse,
+  UpdateUserInput,
+  UserRepository,
+} from 'src/domain/repositories/user.repository';
+import { CacheKeys } from 'src/infra/adapters/cache-key.util';
 
 @Injectable()
 export class UpdateUserUsecase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly cache: CacheAdapter,
+  ) {}
 
-  async execute(id: string, input: UpdateUserInput, churchId: string): Promise<IUserResponse> {
+  async execute(
+    id: string,
+    input: UpdateUserInput,
+    churchId: string,
+  ): Promise<IUserResponse> {
     const user = await this.userRepository.findById(id);
     if (!user) throw new NotFoundException('User not found');
     if (user.churchId !== churchId) throw new ForbiddenException();
@@ -24,6 +42,8 @@ export class UpdateUserUsecase {
       data.password = await bcrypt.hash(input.password, 10);
     }
 
-    return this.userRepository.update(id, data);
+    const updated = await this.userRepository.update(id, data);
+    await this.cache.delete(CacheKeys.userById(id));
+    return updated;
   }
 }

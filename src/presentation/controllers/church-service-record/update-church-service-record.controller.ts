@@ -12,7 +12,9 @@ import { UpdateChurchServiceRecordDto } from 'src/presentation/dtos/church-servi
 @ApiTags('Church Service Records')
 @Controller('church-service-records')
 export class UpdateChurchServiceRecordController {
-  constructor(private readonly updateChurchServiceRecordUsecase: UpdateChurchServiceRecordUsecase) {}
+  constructor(
+    private readonly updateChurchServiceRecordUsecase: UpdateChurchServiceRecordUsecase,
+  ) {}
 
   @Patch(':id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)

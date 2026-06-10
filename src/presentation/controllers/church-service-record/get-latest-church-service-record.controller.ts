@@ -11,12 +11,18 @@ import { Roles } from 'src/infra/config/rbac/roles.decorator';
 @ApiTags('Church Service Records')
 @Controller('church-service-records')
 export class GetLatestChurchServiceRecordController {
-  constructor(private readonly getLatestChurchServiceRecordUsecase: GetLatestChurchServiceRecordUsecase) {}
+  constructor(
+    private readonly getLatestChurchServiceRecordUsecase: GetLatestChurchServiceRecordUsecase,
+  ) {}
 
   @Get('latest')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @ApiOperation({ summary: 'Get the most recent church service record (dashboard)' })
-  async execute(@GetUser() user: IJwtUser): Promise<IChurchServiceRecord | null> {
+  @ApiOperation({
+    summary: 'Get the most recent church service record (dashboard)',
+  })
+  async execute(
+    @GetUser() user: IJwtUser,
+  ): Promise<IChurchServiceRecord | null> {
     return this.getLatestChurchServiceRecordUsecase.execute(user.churchId);
   }
 }

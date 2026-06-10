@@ -19,7 +19,15 @@ export class ForgotPasswordUsecase {
     const token = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
-    await this.passwordResetTokenRepository.create({ userId: user.id, token, expiresAt });
-    await this.emailAdapter.sendPasswordResetEmail(user.email, user.name, token);
+    await this.passwordResetTokenRepository.create({
+      userId: user.id,
+      token,
+      expiresAt,
+    });
+    await this.emailAdapter.sendPasswordResetEmail(
+      user.email,
+      user.name,
+      token,
+    );
   }
 }

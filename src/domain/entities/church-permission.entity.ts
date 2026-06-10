@@ -1,6 +1,6 @@
-import { IBaseEntity } from "../base/base.entity";
+import { IBaseEntity } from '../base/base.entity';
 
 export interface IChurchPermission extends IBaseEntity {
-    churchId: string;
-    permissionId: string;
+  churchId: string;
+  permissionId: string;
 }

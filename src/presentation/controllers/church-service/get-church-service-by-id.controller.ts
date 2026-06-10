@@ -9,11 +9,16 @@ import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 @ApiTags('Church Services')
 @Controller('church-services')
 export class GetChurchServiceByIdController {
-  constructor(private readonly getChurchServiceByIdUsecase: GetChurchServiceByIdUsecase) {}
+  constructor(
+    private readonly getChurchServiceByIdUsecase: GetChurchServiceByIdUsecase,
+  ) {}
 
   @Get(':id')
   @ApiOperation({ summary: 'Get church service by ID' })
-  async execute(@Param('id') id: string, @GetUser() user: IJwtUser): Promise<IChurchService> {
+  async execute(
+    @Param('id') id: string,
+    @GetUser() user: IJwtUser,
+  ): Promise<IChurchService> {
     return this.getChurchServiceByIdUsecase.execute(id, user.churchId);
   }
 }

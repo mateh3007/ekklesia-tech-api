@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 import { PixKeyType } from 'src/domain/enums/pix-key-type.enum';
 
 export class UpdateChurchProfileDto {
@@ -8,7 +8,10 @@ export class UpdateChurchProfileDto {
   @IsString()
   name?: string;
 
-  @ApiProperty({ example: 'Uma comunidade cristã comprometida com o evangelho', required: false })
+  @ApiProperty({
+    example: 'Uma comunidade cristã comprometida com o evangelho',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;

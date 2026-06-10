@@ -1,22 +1,35 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetAllAnnouncementsUsecase } from 'src/application/usecases/announcement/get-all-announcements.usecase';
 import { IAnnouncement } from 'src/domain/entities/announcement.entity';
 import { Role } from 'src/domain/enums/role.enum';
+import { PaginatedResult } from 'src/domain/types/paginated-result.type';
 import { GetUser } from 'src/infra/config/jwt/get-user.decorator';
 import type { IJwtUser } from 'src/infra/config/jwt/get-user.decorator';
 import { Roles } from 'src/infra/config/rbac/roles.decorator';
+import { PaginationDto } from 'src/presentation/dtos/common/pagination.dto';
 
 @ApiBearerAuth()
 @ApiTags('Announcements')
 @Controller('announcements')
 export class GetAllAnnouncementsController {
-  constructor(private readonly getAllAnnouncementsUsecase: GetAllAnnouncementsUsecase) {}
+  constructor(
+    private readonly getAllAnnouncementsUsecase: GetAllAnnouncementsUsecase,
+  ) {}
 
   @Get()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @ApiOperation({ summary: 'List all announcements ordered by createdAt descending' })
-  async execute(@GetUser() user: IJwtUser): Promise<IAnnouncement[]> {
-    return this.getAllAnnouncementsUsecase.execute(user.churchId);
+  @ApiOperation({
+    summary: 'List all announcements ordered by createdAt descending',
+  })
+  async execute(
+    @GetUser() user: IJwtUser,
+    @Query() pagination: PaginationDto,
+  ): Promise<PaginatedResult<IAnnouncement>> {
+    return this.getAllAnnouncementsUsecase.execute(
+      user.churchId,
+      pagination.page ?? 1,
+      pagination.limit ?? 10,
+    );
   }
 }

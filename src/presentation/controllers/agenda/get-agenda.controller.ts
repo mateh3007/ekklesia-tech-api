@@ -1,4 +1,10 @@
-import { Controller, ForbiddenException, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  ForbiddenException,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetAgendaUsecase } from 'src/application/usecases/agenda/get-agenda.usecase';
 import type { IAgenda } from 'src/application/usecases/agenda/get-agenda.usecase';
@@ -16,7 +22,9 @@ export class GetAgendaController {
 
   @Get(':churchId/agenda')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @ApiOperation({ summary: 'Get church agenda (services, events and birthdays)' })
+  @ApiOperation({
+    summary: 'Get church agenda (services, events and birthdays)',
+  })
   async execute(
     @Param('churchId') churchId: string,
     @Query() query: GetAgendaQueryDto,

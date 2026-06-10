@@ -1,6 +1,6 @@
-import { IBaseEntity } from "../base/base.entity";
+import { IBaseEntity } from '../base/base.entity';
 
 export interface IPermission extends IBaseEntity {
-    name: string;
-    description: string;
+  name: string;
+  description: string;
 }

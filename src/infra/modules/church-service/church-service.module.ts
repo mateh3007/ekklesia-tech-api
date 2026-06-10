@@ -25,6 +25,7 @@ import { UpdateChurchServiceController } from 'src/presentation/controllers/chur
       useExisting: PrismaChurchServiceRepository,
     },
   ],
+  exports: [ChurchServiceRepository],
   controllers: [
     CreateChurchServiceController,
     GetAllChurchServicesController,

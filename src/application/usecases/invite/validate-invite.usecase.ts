@@ -1,8 +1,15 @@
-import { ConflictException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  GoneException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InviteStatus } from '@prisma/client';
+import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { ChurchInviteRepository } from 'src/domain/repositories/church-invite.repository';
 import { ChurchRepository } from 'src/domain/repositories/church.repository';
 import { UserRepository } from 'src/domain/repositories/user.repository';
+import { CacheKeys } from 'src/infra/adapters/cache-key.util';
 
 export interface IInviteInfo {
   email: string;
@@ -16,14 +23,22 @@ export class ValidateInviteUsecase {
     private readonly churchInviteRepository: ChurchInviteRepository,
     private readonly churchRepository: ChurchRepository,
     private readonly userRepository: UserRepository,
+    private readonly cache: CacheAdapter,
   ) {}
 
   async execute(token: string): Promise<IInviteInfo> {
+    const cacheKey = CacheKeys.inviteToken(token);
+    const cached = await this.cache.get<IInviteInfo>(cacheKey);
+    if (cached) return cached;
+
     const invite = await this.churchInviteRepository.findByToken(token);
     if (!invite) throw new NotFoundException('Invite not found');
 
     if (invite.expiresAt < new Date()) {
-      await this.churchInviteRepository.updateStatus(invite.id, InviteStatus.EXPIRED);
+      await this.churchInviteRepository.updateStatus(
+        invite.id,
+        InviteStatus.EXPIRED,
+      );
       throw new GoneException('Invite has expired');
     }
 
@@ -36,6 +51,17 @@ export class ValidateInviteUsecase {
       this.userRepository.findById(invite.invitedBy),
     ]);
 
-    return { email: invite.email, churchName: church!.corporateName, inviterName: inviter!.name };
+    const result: IInviteInfo = {
+      email: invite.email,
+      churchName: church!.corporateName,
+      inviterName: inviter!.name,
+    };
+
+    const ttl = Math.floor(
+      (new Date(invite.expiresAt).getTime() - Date.now()) / 1000,
+    );
+    await this.cache.set(cacheKey, result, ttl);
+
+    return result;
   }
 }

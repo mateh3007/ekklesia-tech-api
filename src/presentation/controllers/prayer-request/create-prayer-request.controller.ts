@@ -12,12 +12,17 @@ import { CreatePrayerRequestDto } from 'src/presentation/dtos/prayer-request/cre
 @ApiTags('Prayer Requests')
 @Controller('prayer-requests')
 export class CreatePrayerRequestController {
-  constructor(private readonly createPrayerRequestUsecase: CreatePrayerRequestUsecase) {}
+  constructor(
+    private readonly createPrayerRequestUsecase: CreatePrayerRequestUsecase,
+  ) {}
 
   @Post()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @ApiOperation({ summary: 'Create a new prayer request' })
-  async execute(@Body() body: CreatePrayerRequestDto, @GetUser() user: IJwtUser): Promise<IPrayerRequest> {
+  async execute(
+    @Body() body: CreatePrayerRequestDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IPrayerRequest> {
     return this.createPrayerRequestUsecase.execute({
       ...body,
       churchId: user.churchId,

@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/infra/config/prisma/prisma.service';
-import { ChurchRepository, CreateChurchInput } from 'src/domain/repositories/church.repository';
+import {
+  ChurchRepository,
+  CreateChurchInput,
+} from 'src/domain/repositories/church.repository';
 import { IChurch } from 'src/domain/entities/church.entity';
 
 @Injectable()
@@ -50,4 +53,3 @@ export class PrismaChurchRepository extends ChurchRepository {
     return this.prisma.church.findUnique({ where: { cnpj } });
   }
 }
-

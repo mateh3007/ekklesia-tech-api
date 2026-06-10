@@ -6,7 +6,9 @@ export class CreateAnnouncementDto {
   @IsString()
   title: string;
 
-  @ApiProperty({ example: 'Reunião de líderes nesta quinta-feira às 19h no salão principal.' })
+  @ApiProperty({
+    example: 'Reunião de líderes nesta quinta-feira às 19h no salão principal.',
+  })
   @IsString()
   content: string;
 

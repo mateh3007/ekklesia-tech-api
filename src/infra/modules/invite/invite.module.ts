@@ -20,7 +20,10 @@ import { ValidateInviteController } from 'src/presentation/controllers/invite/va
     ValidateInviteUsecase,
     AcceptInviteUsecase,
     PrismaChurchInviteRepository,
-    { provide: ChurchInviteRepository, useExisting: PrismaChurchInviteRepository },
+    {
+      provide: ChurchInviteRepository,
+      useExisting: PrismaChurchInviteRepository,
+    },
     PrismaUserRepository,
     { provide: UserRepository, useExisting: PrismaUserRepository },
     PrismaChurchRepository,
@@ -28,6 +31,10 @@ import { ValidateInviteController } from 'src/presentation/controllers/invite/va
     StubEmailAdapter,
     { provide: EmailAdapter, useExisting: StubEmailAdapter },
   ],
-  controllers: [CreateInviteController, ValidateInviteController, AcceptInviteController],
+  controllers: [
+    CreateInviteController,
+    ValidateInviteController,
+    AcceptInviteController,
+  ],
 })
 export class InviteModule {}

@@ -12,12 +12,18 @@ import { UpdateChurchEventDto } from 'src/presentation/dtos/church-event/update-
 @ApiTags('Church Events')
 @Controller('church-events')
 export class UpdateChurchEventController {
-  constructor(private readonly updateChurchEventUsecase: UpdateChurchEventUsecase) {}
+  constructor(
+    private readonly updateChurchEventUsecase: UpdateChurchEventUsecase,
+  ) {}
 
   @Roles(Role.ADMIN)
   @Patch(':id')
   @ApiOperation({ summary: 'Update a church event' })
-  async execute(@Param('id') id: string, @Body() body: UpdateChurchEventDto, @GetUser() user: IJwtUser): Promise<IChurchEvent> {
+  async execute(
+    @Param('id') id: string,
+    @Body() body: UpdateChurchEventDto,
+    @GetUser() user: IJwtUser,
+  ): Promise<IChurchEvent> {
     return this.updateChurchEventUsecase.execute(id, body, user.churchId);
   }
 }

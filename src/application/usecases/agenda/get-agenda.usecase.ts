@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { CacheAdapter } from 'src/domain/adapter/cache.adapter';
 import { IChurchEvent } from 'src/domain/entities/church-event.entity';
 import { IChurchService } from 'src/domain/entities/church-service.entity';
 import { AgendaRepository } from 'src/domain/repositories/agenda.repository';
+import { CacheKeys, CacheTTL } from 'src/infra/adapters/cache-key.util';
 import { AgendaFilter } from 'src/presentation/dtos/agenda/get-agenda-query.dto';
 
 export interface IBirthday {
@@ -18,14 +20,35 @@ export interface IAgenda {
 
 @Injectable()
 export class GetAgendaUsecase {
-  constructor(private readonly agendaRepository: AgendaRepository) {}
+  constructor(
+    private readonly agendaRepository: AgendaRepository,
+    private readonly cache: CacheAdapter,
+  ) {}
 
-  async execute(churchId: string, filter: AgendaFilter, date: string): Promise<IAgenda> {
+  async execute(
+    churchId: string,
+    filter: AgendaFilter,
+    date: string,
+  ): Promise<IAgenda> {
+    const cacheKey = CacheKeys.agenda(churchId, filter, date);
+    const cached = await this.cache.get<IAgenda>(cacheKey);
+    if (cached) return cached;
+
     const { startDate, endDate } = this.computeDateRange(filter, date);
-    return this.agendaRepository.getAgenda(churchId, startDate, endDate);
+    const agenda = await this.agendaRepository.getAgenda(
+      churchId,
+      startDate,
+      endDate,
+    );
+
+    await this.cache.set(cacheKey, agenda, CacheTTL.AGENDA);
+    return agenda;
   }
 
-  private computeDateRange(filter: AgendaFilter, date: string): { startDate: Date; endDate: Date } {
+  private computeDateRange(
+    filter: AgendaFilter,
+    date: string,
+  ): { startDate: Date; endDate: Date } {
     const startDate = new Date(`${date}T00:00:00.000Z`);
 
     if (filter === AgendaFilter.DAY) {

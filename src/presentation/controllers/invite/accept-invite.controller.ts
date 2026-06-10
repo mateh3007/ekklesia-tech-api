@@ -13,7 +13,10 @@ export class AcceptInviteController {
   @Post(':token/accept')
   @Public()
   @ApiOperation({ summary: 'Accept an invite and create a supervisor account' })
-  async execute(@Param('token') token: string, @Body() body: AcceptInviteDto): Promise<IUserResponse> {
+  async execute(
+    @Param('token') token: string,
+    @Body() body: AcceptInviteDto,
+  ): Promise<IUserResponse> {
     return this.acceptInviteUsecase.execute(token, body);
   }
 }

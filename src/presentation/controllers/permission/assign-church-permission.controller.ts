@@ -10,12 +10,21 @@ import { IChurchPermission } from 'src/domain/entities/church-permission.entity'
 @ApiTags('Permissions')
 @Controller('church-permissions')
 export class AssignChurchPermissionController {
-  constructor(private readonly assignChurchPermissionUsecase: AssignChurchPermissionUsecase) {}
+  constructor(
+    private readonly assignChurchPermissionUsecase: AssignChurchPermissionUsecase,
+  ) {}
 
   @Post()
   @Roles(Role.SUPERADMIN)
-  @ApiOperation({ summary: 'Assign a permission to a church (SUPERADMIN only)' })
-  async execute(@Body() dto: AssignChurchPermissionDto): Promise<IChurchPermission> {
-    return this.assignChurchPermissionUsecase.execute(dto.churchId, dto.permissionId);
+  @ApiOperation({
+    summary: 'Assign a permission to a church (SUPERADMIN only)',
+  })
+  async execute(
+    @Body() dto: AssignChurchPermissionDto,
+  ): Promise<IChurchPermission> {
+    return this.assignChurchPermissionUsecase.execute(
+      dto.churchId,
+      dto.permissionId,
+    );
   }
 }

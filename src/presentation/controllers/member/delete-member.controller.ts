@@ -1,4 +1,10 @@
-import { Controller, Delete, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteMemberUsecase } from 'src/application/usecases/member/delete-member.usecase';
 import { Role } from 'src/domain/enums/role.enum';
@@ -16,7 +22,10 @@ export class DeleteMemberController {
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a member' })
-  async execute(@Param('id') id: string, @GetUser() user: IJwtUser): Promise<void> {
+  async execute(
+    @Param('id') id: string,
+    @GetUser() user: IJwtUser,
+  ): Promise<void> {
     return this.deleteMemberUsecase.execute(id, user.churchId);
   }
 }

@@ -48,6 +48,12 @@ import { LogoutController } from 'src/presentation/controllers/auth/logout.contr
       useExisting: PrismaPasswordResetTokenRepository,
     },
   ],
-  controllers: [LoginController, ForgotPasswordController, ResetPasswordController, RefreshTokenController, LogoutController],
+  controllers: [
+    LoginController,
+    ForgotPasswordController,
+    ResetPasswordController,
+    RefreshTokenController,
+    LogoutController,
+  ],
 })
 export class AuthModule {}
